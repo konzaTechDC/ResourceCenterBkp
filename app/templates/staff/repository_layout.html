@@ -1,0 +1,581 @@
+﻿<!DOCTYPE html>
+
+<html class="fixed" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	
+		{% load staticfiles %}
+		<!-- Basic -->
+		<meta charset="UTF-8">
+	{% load static %}
+		<title>{{ title }} - KOTDA Resource Centre</title>
+		<meta name="keywords" content="Konza, Smart city, KOTDA" />
+		<meta name="description" content="KOTDA - Resource Center">
+		<meta name="author" content="KOTDA">
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<!-- Web Fonts  -->
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+		
+		<script src="{% static 'repository_assets/vendor/jquery/jquery.js' %}"></script>
+
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/bootstrap/css/bootstrap.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/font-awesome/css/font-awesome.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/magnific-popup/magnific-popup.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/bootstrap-datepicker/css/datepicker3.css' %}" />
+
+
+		<!-- Specific [advanced forms] Page Vendor CSS -->
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/select2/select2.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/bootstrap-tagsinput/bootstrap-tagsinput.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/dropzone/css/basic.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/dropzone/css/dropzone.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/bootstrap-markdown/css/bootstrap-markdown.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/summernote/summernote.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/summernote/summernote-bs3.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/codemirror/lib/codemirror.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/codemirror/theme/monokai.css' %}" />
+		
+		{% block styles %}
+
+		{% endblock %}
+		<!-- Specific Page [media gallery] Vendor CSS -->
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/isotope/jquery.isotope.css' %}" />
+
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="{% static 'repository_assets/stylesheets/theme.css' %}" />
+
+		<!-- Skin CSS -->
+		<link rel="stylesheet" href="{% static 'repository_assets/stylesheets/skins/default.css' %}" />
+
+		<!-- Theme Custom CSS -->
+		<link rel="stylesheet" href="{% static 'repository_assets/stylesheets/theme-custom.css' %}">
+
+		<!-- Head Libs -->
+		<script src="{% static 'repository_assets/vendor/modernizr/modernizr.js' %}"></script>
+
+	</head>
+	<body>
+		<section class="body">
+
+			<!-- start: header -->
+			<header class="header">
+				<div class="logo-container">
+					<a href="{% url 'dashboard' %}" class="logo">
+						<img src="{% static 'assets/img/Konza_Logo.png' %}" height="35" alt="Resource Center" />
+					</a>
+					<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+						<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+					</div>
+				</div>
+			
+				<!-- start: search & user box -->
+				<div class="header-right">
+			
+					<form method="post" enctype="multipart/form-data" action="{% url 'search_repository' %}" class="search nav-form">
+						{% csrf_token %}
+						<div class="input-group input-search">
+							<input required type="text" class="form-control" name="q" id="q" placeholder="Search...">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+							</span>
+						</div>
+					</form>
+			
+					<span class="separator"></span>
+					{% if request.user.is_authenticated %}
+					<ul class="notifications">
+						<li>
+							<a href="" data-toggle="modal" data-target="#modalCart" class="btn btn-primary">
+								Create Resource
+							</a>
+							<!-- <a href="" data-toggle="modal" data-target="#modalCart">Create Repository Resource<span class="submenu-indicator"></span></a> -->
+						</li>
+						<li>
+							<a href="" data-toggle="modal" data-target="#modalManage" class="btn btn-primary">
+								Manage Resources
+							</a>
+			
+						</li>
+					</ul>
+					
+					<!-- Modal: modal repo create -->
+					<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+					  aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+						<div class="modal-content">
+						  <!--Header-->
+						  <div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">Create new repository resource</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">×</span>
+							</button>
+						  </div>
+						  <!--Body-->
+
+						<form method="post" action="{% url 'create_repo_resource' %}">
+							{% csrf_token %}
+							<div class="modal-body">
+							  {% load form_tags %}
+							  {% get_repository_form as form %}
+							  {% if form %}
+								<div class="form-group">
+									<label>{{form.title.label_tag}}</label>
+									{{ form.title }}
+								</div>
+
+								<div class="form-group">
+									<label>{{form.department_folder.label_tag}}</label>
+									{{ form.department_folder }}
+								</div>
+
+								<div class="form-group">
+									<label>{{form.upload_type.label_tag}}</label>
+									{{ form.upload_type }}
+								</div>
+							  {% endif %}
+        
+
+						  </div>
+						  <!--Footer-->
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Continue</button>
+						  </div>
+						</form>
+     
+						</div>
+					  </div>
+					</div>
+					<!-- Modal: modal Repo create -->
+
+					<!-- Modal: modal repo manage -->
+					<div class="modal fade" id="modalManage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+					  aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+						<div class="modal-content">
+						  <!--Header-->
+						  <div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">Manage your resources</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">×</span>
+							</button>
+						  </div>
+						  <!--Body-->
+
+						
+							<div class="modal-body">
+							  {% load model_tags %}
+							  {% get_my_repositories request.user as my_resources %}
+								<div style="overflow:scroll; height:400px;">
+									<ul type="None">
+										{% for resource in my_resources %}
+											<li><a href="{% url 'get_update_repo_resource' resource.id %}">{{ resource.title }}</a></li>
+										{% endfor %}
+									</ul>
+								</div>
+							  
+        
+
+						  </div>
+						  <!--Footer-->
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+							<!--<button type="button" class="btn btn-primary">Continue</button>-->
+						  </div>
+     
+						</div>
+					  </div>
+					</div>
+					<!-- Modal: modal Repo manage -->
+					{% endif %}
+					<span class="separator"></span>
+			
+					<div id="userbox" class="userbox">
+						<a href="#" data-toggle="dropdown">
+							<figure class="profile-picture">
+								<img src="assets/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="assets/images/!logged-user.jpg" />
+							</figure>
+							<div class="profile-info" data-lock-name="{{ request.user.first_name }}" data-lock-email="{{ request.user.email }}">
+								<span class="name">{{ request.user.first_name }}</span>
+								<span class="role">{{ request.user.profile.role }}</span>
+							</div>
+			
+							<i class="fa custom-caret"></i>
+						</a>
+			
+						<div class="dropdown-menu">
+							<ul class="list-unstyled">
+								<li class="divider"></li>
+								{% if request.user.is_authenticated %}
+								<li>
+									<a role="menuitem" tabindex="-1" href="{% url 'get_user_dashboard' request.user.id ' ' %}"><i class="fa fa-user"></i> My Profile</a>
+								</li>
+								<!-- <li>
+									<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
+								</li> -->
+								<li>
+									<a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><i class="fa fa-power-off"></i> Logout</a>
+								</li>
+								{% else %}
+								<li>
+									<a role="menuitem" tabindex="-1" href="{% url 'login' %}"><i class="fa fa-power-off"></i> Login</a>
+								</li>
+								{% endif %}
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- end: search & user box -->
+			</header>
+			<!-- end: header -->
+
+			<div class="inner-wrapper">
+				<!-- start: sidebar -->
+				<aside id="sidebar-left" class="sidebar-left" style="background-color:#008234;">
+				
+					<div class="sidebar-header">
+						<div class="sidebar-title">
+							<!--title goes here-->
+						</div>
+						<div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+							<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+						</div>
+					</div>
+				
+					<div class="nano">
+						<div class="nano-content">
+							<nav id="menu" class="nav-main" role="navigation">
+								<ul class="nav nav-main">
+									<li>
+										<a href="{% url 'repository_index' %}">
+											<i class="fa fa-home" aria-hidden="true"></i>
+											<span>Dashboard</span>
+										</a>
+									</li>
+									{% load model_tags %}
+									{% get_all_departments as departments %}
+									<li class="nav-parent">
+										<a>
+											<i class="fa fa-building-o" aria-hidden="true"></i>
+											<span>Departments</span>
+										</a>
+										<ul class="nav nav-children">
+											<li>
+												<a>Browse All</a>
+											</li>
+											{% for department in departments %}
+											<li class="nav-parent">
+												<a>{{ department }}</a>
+												<ul class="nav nav-children">
+													<li class="nav-parent">
+														<a>Resources</a>
+														<ul class="nav nav-children">
+															<li class="nav-parent">
+																<a>
+																	 Documents
+																</a>
+																<ul class="nav nav-children">
+																	{% for folder in department.get_folder_relationships %}
+																	<li><a href="{% url 'filter_repo_by_folder' folder.folder.id %}">{{ folder.folder }}</a></li>
+																	{% endfor %}
+																</ul>
+															</li>
+											
+															<li>
+																<a href="{% url 'get_repo_videos_by_dept' department.id %}">
+																	 Videos
+																</a>
+															</li>
+
+															<li>
+																<a href="{% url 'get_repo_images_by_dept' department.id %}">
+																	 Images
+																</a>
+															</li>
+														</ul>
+													</li>
+													<!--
+													<li>
+														<a>Second Level Link #1</a>
+													</li>
+													-->
+													
+												</ul>
+											</li>
+											{% endfor %}
+										</ul>
+									</li>
+									
+									<!--
+									<li class="nav-parent">
+										<a>
+											<i class="fa fa-tasks" aria-hidden="true"></i>
+											<span>Analytics</span>
+										</a>
+									</li>
+									
+									
+									<li class="nav-parent">
+										<a>
+											<i class="fa fa-align-left" aria-hidden="true"></i>
+											<span>Menu Levels</span>
+										</a>
+										<ul class="nav nav-children">
+											<li>
+												<a>First Level</a>
+											</li>
+											<li class="nav-parent">
+												<a>Second Level</a>
+												<ul class="nav nav-children">
+													<li class="nav-parent">
+														<a>Third Level</a>
+														<ul class="nav nav-children">
+															<li>
+																<a>Third Level Link #1</a>
+															</li>
+															<li>
+																<a>Third Level Link #2</a>
+															</li>
+														</ul>
+													</li>
+													<li>
+														<a>Second Level Link #1</a>
+													</li>
+													<li>
+														<a>Second Level Link #2</a>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									-->
+								</ul>
+							</nav>
+				
+							<hr class="separator" />
+				
+							<div class="sidebar-widget widget-tasks">
+								<div class="widget-header">
+									<h6></h6>
+									<div class="widget-toggle">+</div>
+								</div>
+								<div class="widget-content">
+									<!--
+									<ul class="list-unstyled m-none">
+										<li><a href="#">Porto HTML5 Template</a></li>
+										<li><a href="#">Tucson Template</a></li>
+										<li><a href="#">Porto Admin</a></li>
+									</ul>
+									-->
+								</div>
+							</div>
+				
+							<hr class="separator" />
+				
+						</div>
+				
+					</div>
+				
+				</aside>
+				<!-- end: sidebar -->
+
+				<section role="main" class="content-body">
+					<header class="page-header" style="background-color:#008234;">
+						<h2>KoTDA - Resource Center</h2>
+					
+						<div class="right-wrapper pull-right">
+							<ol class="breadcrumbs">
+								<!--
+								<li>
+									<a href="{% url 'dashboard' %}">
+										<i class="fa fa-home"></i>
+									</a>
+								</li>
+								
+			
+									<li><span>Layouts</span></li>
+								<li><span>Default</span></li>
+									-->
+							</ol>
+					
+							<a class="sidebar-right-toggle"></a>
+						</div>
+					</header>
+					<!--notification start-->
+				  <div class="clearfix"></div>
+					{% if messages %}
+					{% for message in messages %}
+					{% if message.level_tag == 'error' %}
+					<div class="panel-body" style="float: right;">
+						<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<strong>{{ message.level_tag }}!</strong> <p>{{ message }}</p>.
+							{% for error in errors %}
+							<p>{{ error }}</p>
+							{% endfor %}
+						</div>
+					</div>
+					{% else %}
+					<div class="panel-body" style="float: right;">
+						<div class="alert alert-{{ message.level_tag }}">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<strong>{{ message.level_tag }}!</strong> <p>{{ message }}</p>.
+							{% for error in errors %}
+							<p>{{ error }}</p>
+							{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					{% endfor %}
+					{% endif %}
+				  <!--notification end-->
+
+					
+					<!-- start: page -->
+					{% block content %}
+					<!--content goes here-->
+					{% endblock %}
+					<!-- end: page -->
+				</section>
+			</div>
+
+			<!-- 
+			<aside id="sidebar-right" class="sidebar-right">
+				<div class="nano">
+					<div class="nano-content">
+						<a href="#" class="mobile-close visible-xs">
+							Collapse <i class="fa fa-chevron-right"></i>
+						</a>
+			
+						<div class="sidebar-right-wrapper">
+			
+							<div class="sidebar-widget widget-calendar">
+								<h6>Upcoming Tasks</h6>
+								<div data-plugin-datepicker data-plugin-skin="dark" ></div>
+			
+								<ul>
+									<li>
+										<time datetime="2014-04-19T00:00+00:00">04/19/2014</time>
+										<span>Company Meeting</span>
+									</li>
+								</ul>
+							</div>
+			
+							<div class="sidebar-widget widget-friends">
+								<h6>Friends</h6>
+								<ul>
+									<li class="status-online">
+										<figure class="profile-picture">
+											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+										</figure>
+										<div class="profile-info">
+											<span class="name">Joseph Doe Junior</span>
+											<span class="title">Hey, how are you?</span>
+										</div>
+									</li>
+									<li class="status-online">
+										<figure class="profile-picture">
+											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+										</figure>
+										<div class="profile-info">
+											<span class="name">Joseph Doe Junior</span>
+											<span class="title">Hey, how are you?</span>
+										</div>
+									</li>
+									<li class="status-offline">
+										<figure class="profile-picture">
+											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+										</figure>
+										<div class="profile-info">
+											<span class="name">Joseph Doe Junior</span>
+											<span class="title">Hey, how are you?</span>
+										</div>
+									</li>
+									<li class="status-offline">
+										<figure class="profile-picture">
+											<img src="assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle">
+										</figure>
+										<div class="profile-info">
+											<span class="name">Joseph Doe Junior</span>
+											<span class="title">Hey, how are you?</span>
+										</div>
+									</li>
+								</ul>
+							</div>
+			
+						</div>
+					</div>
+				</div>
+			</aside>
+ -->
+
+			<!-- Vendor -->
+			<script src="{% static 'repository_assets/vendor/jquery/jquery.js' %}"></script>
+			<script src="{% static 'repository_assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js' %}"></script>
+			<script src="{% static 'repository_assets/vendor/bootstrap/js/bootstrap.js' %}"></script>
+			<script src="{% static 'repository_assets/vendor/nanoscroller/nanoscroller.js' %}"></script>
+			<script src="{% static 'repository_assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
+			<script src="{% static 'repository_assets/vendor/magnific-popup/magnific-popup.js' %}"></script>
+			<script src="{% static 'repository_assets/vendor/jquery-placeholder/jquery.placeholder.js' %}"></script>
+			
+			<!-- Specific Page Vendor -->
+			
+
+			{% block javascript %}
+
+			{% endblock %}
+
+			<!-- Specific [advanced forms] Page Vendor -->
+		<script src="{% static 'repository_assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/select2/select2.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/jquery-maskedinput/jquery.maskedinput.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/bootstrap-timepicker/js/bootstrap-timepicker.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/fuelux/js/spinner.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/dropzone/dropzone.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/bootstrap-markdown/js/markdown.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/bootstrap-markdown/js/to-markdown.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/bootstrap-markdown/js/bootstrap-markdown.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/codemirror/lib/codemirror.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/codemirror/addon/selection/active-line.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/codemirror/addon/edit/matchbrackets.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/codemirror/mode/javascript/javascript.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/codemirror/mode/xml/xml.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/codemirror/mode/htmlmixed/htmlmixed.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/codemirror/mode/css/css.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/summernote/summernote.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/bootstrap-maxlength/bootstrap-maxlength.js' %}"></script>
+		<script src="{% static 'repository_assets/vendor/ios7-switch/ios7-switch.js' %}"></script>
+
+
+			<!-- Specific Page [media gallery] Vendor -->
+		<script src="{% static 'repository_assets/vendor/isotope/jquery.isotope.js' %}"></script>
+
+			<!-- Specific Page [lightbox] Vendor -->
+		<script src="{% static 'repository_assets/vendor/pnotify/pnotify.custom.js' %}"></script>
+
+			<!-- Theme Base, Components and Settings -->
+			<script src="{% static 'repository_assets/javascripts/theme.js' %}"></script>
+			
+			<!-- Theme Custom -->
+			<script src="{% static 'repository_assets/javascripts/theme.custom.js' %}"></script>
+			
+			<!-- Theme Initialization Files -->
+			<script src="{% static 'repository_assets/javascripts/theme.init.js' %}"></script>
+
+			<!-- Examples -->
+			<script src="{% static 'repository_assets/javascripts/pages/examples.mediagallery.js' %}" ></script>
+			<script src="{% static 'repository_assets/javascripts/ui-elements/examples.modals.js' %}"></script>
+		</section>
+	</body>
+</html>

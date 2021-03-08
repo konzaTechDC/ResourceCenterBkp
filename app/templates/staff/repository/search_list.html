@@ -1,0 +1,138 @@
+﻿{% extends 'staff/repository_layout.html' %}
+
+{% block content %}
+
+<!-- start: page -->
+	<div class="search-content">
+		<div class="search-control-wrapper">
+			<form method="post" enctype="multipart/form-data" action="{% url 'search_repository' %}" class="search nav-form">
+			{% csrf_token %}
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" name="q" required class="form-control" value="{{search_tag}}">
+						<span class="input-group-btn">
+							<button class="btn btn-primary" type="submit">Search</button>
+						</span>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="search-toolbar">
+			<ul class="list-unstyled nav nav-pills">
+				<li class="active">
+					<a href="#everything" data-toggle="tab">Everything</a>
+				</li>
+				<li>
+					<a href="#medias" data-toggle="tab">Media</a>
+				</li>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div id="everything" class="tab-pane active">
+				{% if resources %}
+				<p class="total-results text-muted">Found {{ resources.count }} results for "<strong>{{ search_tag }}"</strong></p>
+				{% else %}
+				<p>Search for repositories</p>
+				{% endif %}
+				<ul class="list-unstyled search-results-list">
+
+					{% for resource in resources %}
+					<li>
+						<p class="result-type">
+							<span class="label label-primary">article</span>
+						</p>
+						<a href="#">
+							<div class="result-data">
+								<p class="h3 title text-primary">{{ resource.title }}</p>
+								<p class="description">{{ resource.description | safe }}</p>
+							</div>
+						</a>
+					</li>
+					{% endfor %}
+		
+				</ul>
+
+				<hr class="solid mb-none" />
+
+				{% if page_obj %}
+					<div class="pagination">
+						<span class="step-links">
+							{% if page_obj.has_previous %}
+								<a href="?page=1">&laquo; first</a>
+								<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+							{% endif %}
+
+							<span class="current">
+								Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+							</span>
+
+							{% if page_obj.has_next %}
+								<a href="?page={{ page_obj.next_page_number }}">next</a>
+								<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+							{% endif %}
+						</span>
+					</div>
+				{% endif %}
+			</div>
+			<div id="medias" class="tab-pane">
+				<div class="row">
+					<h3>Photos</h3>
+					{% for resource in resources %}
+						{% for image in resource.get_images %}
+							<div class="col-sm-6 col-md-4 col-lg-3">
+								<div class="thumbnail">
+									<div class="thumb-preview">
+										<a class="thumb-image" href="{{ image.image.url }}">
+											<img src="{{ image.image.url }}" class="img-responsive" alt="Project">
+										</a>
+									</div>
+									<h5 class="mg-title text-semibold">{{ image.name_of_image }}<small>.png</small></h5>
+								</div>
+							</div>
+						{% endfor %}
+					{% endfor %}
+								
+				</div>
+
+				<div class="row">
+					<h3>Videos</h3>
+					{% for resource in resources %}
+						{% for video in resource.get_videos %}
+							<div class="col-md-4">
+								<h5 class="text-semibold text-dark text-uppercase">{{video.name_of_video}}</h5>
+								<div class="embed-responsive embed-responsive-4by3">
+									<video width='320' height= '240' controls>
+									<source src="{{ video.video_file.url }}">
+									Your browser does not support the video tag.
+									</video>
+								</div>
+								<br />
+							</div>
+						{% endfor %}
+					{% endfor %}
+				</div>
+
+				<div class="row">
+					<h3>Documents</h3>
+					{% for resource in resources %}
+						{% for document in resource.get_documents %}
+							<div class="col-md-4">
+								<h5 class="text-semibold text-dark text-uppercase">{{document.name_of_document}}</h5>
+								<div class="embed-responsive embed-responsive-4by3">
+									<a target="_blank" href="{{ document.reference_material_download.url }}" class="btn btn-primary">Download {{document.name_of_document}}</a>
+								</div>
+								<br />
+							</div>
+						{% endfor %}
+					{% endfor %}
+				</div>
+			</div>
+			<div id="emails" class="tab-pane">
+				<p>Recent</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.</p>
+			</div>
+		</div>
+	</div>
+	<!-- end: page -->
+
+{% endblock %}

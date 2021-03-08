@@ -1,0 +1,48 @@
+﻿{% extends 'staff/repository_layout.html' %}
+
+{% block content %}
+{% load model_tags %}
+{% get_all_departments as departments %}
+<h3>Browse by Department</h3>
+
+
+
+<div class="col-md-12 col-lg-12 col-xl-4">
+	<div class="row">
+		{% for department in departments %}
+		<div class="col-md-6 col-xl-12">
+			
+			<section class="panel">
+				
+				<div class="panel-body bg-primary">
+					<div class="widget-summary">
+						<!--
+						<div class="widget-summary-col widget-summary-col-icon">
+							<div class="summary-icon">
+								<i class="fa fa-life-ring"></i>
+							</div>
+						</div>
+						-->
+						<div class="widget-summary-col">
+							<div class="summary">
+								<h4 class="title">{{ department.name }}</h4>
+								<div class="info">
+									<strong class="amount"></strong>
+								</div>
+							</div>
+							<div class="summary-footer">
+								<a href="{% url 'get_repo_articles_by_dept' department.id %}" class="text-uppercase">(browse)</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</section>
+			
+		</div>
+			{% endfor %}						
+	</div>
+</div>
+
+
+{% endblock %}

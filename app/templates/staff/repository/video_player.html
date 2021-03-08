@@ -1,0 +1,17 @@
+﻿{% extends 'staff/repository_layout.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="embed-responsive embed-responsive-4by3">
+        <video width='320' height='240' controls>
+            <source src="{{ video.video_file.url }}">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="panel">
+        <h2>{{ video.name_of_video }}</h2>
+        <p>{{ video.repository.description | safe }}</p>
+    </div>
+</div>
+{% endblock %}

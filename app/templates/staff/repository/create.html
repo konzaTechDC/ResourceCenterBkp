@@ -1,0 +1,106 @@
+﻿{% extends 'staff/repository_layout.html' %}
+
+{% block content %}
+  
+
+	<div class="row">
+		<div class="col-md-12">
+			<section class="panel">
+				<header class="panel-heading">
+					
+					<h2 class="panel-title">Create new resource</h2>
+				</header>
+				
+				<div class="panel-body">
+					<form method="post" enctype="multipart/form-data" action="{% url 'create_repo_resource' %}" class="form-horizontal form-bordered">
+					{% csrf_token %}
+					{% load form_tags %}
+					{% get_repository_form as form %}
+					{% if form %}
+					<div class="form-group">
+						<label class="col-md-3 control-label">Title</label>
+						{{ form.title }}
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-3 control-label">Type</label>
+						{{ form.type }}
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Article</label>
+						<div class="col-md-12">
+							{{ form.description }}
+						</div>
+					</div>
+
+					{% endif %}
+
+					
+
+					<div class="form-group">
+						<label for="tags-input-multiple" class="col-md-3 control-label">Tags</label>
+						<div class="col-md-7">
+							<select id="tags-input-multiple" name="tags[]" multiple data-role="tagsinput" data-tag-class="label label-primary">
+								
+							</select>
+							<p>
+								Set tags to make your content easy to find
+							</p>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-md-3 control-label">Target departments</label>
+						<div class="col-md-6">
+							<select class="form-control" name="department[]" multiple="multiple" data-plugin-multiselect data-plugin-options='{ "includeSelectAllOption": true }' id="ms_example5">
+								{% load model_tags %}
+								{% get_all_departments as departments %}
+								
+								
+								<optgroup label="KoTDA Departments">
+									{% for department in departments %}
+									<option value="{{ department.id }}"  >{{ department.name }}</option>
+									{% endfor %}
+									
+								</optgroup>
+								
+							</select>
+						</div>
+					</div>
+					
+				  <!--Footer-->
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save</button>
+				  </div>
+      
+				</form>
+				</div>
+				
+			</section>
+		</div>
+	</div>
+
+	
+
+<script type="text/javascript">
+let i = 1;
+document.getElementById('add-new-requirement').onclick = function () {
+    let template = `
+        <div class="form-group">
+		    <label>External website link</label>
+		    <input type="text" name="url[]" class="form-control simple">
+	    </div>
+        `;
+   
+
+    let container = document.getElementById('requirement-container');
+    let div = document.createElement('div');
+    div.innerHTML = template;
+    container.appendChild(div);
+
+    i++;
+}
+</script>
+{% endblock %}

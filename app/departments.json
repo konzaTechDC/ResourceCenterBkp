@@ -1,0 +1,231 @@
+[
+  {
+    "department_name": "Office of the CEO",
+    "department_description": "CEO Office ",
+    "folder": [
+      {
+        "folder_name": "Circulars",
+        "description": "Circulars",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "Approvals",
+        "description": "Approvals",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Executive Reports",
+        "description": "Executive Reports",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "CEO & Chairman’s speeches",
+        "description": "CEO & Chairman’s speeches",
+        "access_level": "Public",
+        "is_static": true
+      }
+    ]
+
+  },
+  {
+    "department_name": "Business Development and Innovation",
+    "department_description": "Business Development and Innovation",
+    "folder": [
+      {
+        "folder_name": "Land Disposition Policy",
+        "description": "Land Disposition Policy",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Project Updates",
+        "description": "Project Updates",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "Newsletters",
+        "description": "Newsletters",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "Investor Presentations",
+        "description": "Investor Presentations",
+        "access_level": "Public",
+        "is_static": true
+      }
+    ]
+  },
+  {
+    "department_name": "Legal Services Division",
+    "department_description": "Legal Services Division",
+    "folder": [
+      {
+        "folder_name": "Legal Services Division Policy",
+        "description": "Legal Services Division Policy",
+        "access_level": "Public",
+        "is_static": false
+      }
+    ]
+  },
+  {
+    "department_name": "Corporate Research and Strategy",
+    "department_description": "Corporate Research and Strategy",
+    "folder": [
+      {
+        "folder_name": "Strategic Plan",
+        "description": "Strategic Plan",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "Economic Delivery Plan",
+        "description": "Economic Delivery Plan",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "Internal Policies",
+        "description": "Internal Policies",
+        "access_level": "Protected",
+        "is_static": true
+      }
+    ]
+  },
+  {
+    "department_name": "Construction and Operations Management",
+    "department_description": "Construction and Operations Management",
+    "folder": [
+      {
+        "folder_name": "Designs",
+        "description": "Designs",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Project Updates",
+        "description": "Project Updates",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "Workplans",
+        "description": "Workplans",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Maintenance Schedules",
+        "description": "Maintenance Schedules",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Feasibility Reports",
+        "description": "Feasibility Reports",
+        "access_level": "Protected",
+        "is_static": true
+      }
+    ]
+  },
+  {
+    "department_name": "Finance, Human Resource and Administration",
+    "department_description": "Finance, Human Resource and Administration",
+    "folder": [
+      {
+        "folder_name": "Human Resource Manuals",
+        "description": "Human Resource Manuals",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Organogram",
+        "description": "Organogram",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Workplans",
+        "description": "Workplans",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Budgets",
+        "description": "Budgets",
+        "access_level": "Protected",
+        "is_static": true
+      }
+    ]
+  },
+  {
+    "department_name": "Procurement",
+    "department_description": "Procurement",
+    "folder": [
+      {
+        "folder_name": "Procurement Plan",
+        "description": "Procurement Plan",
+        "access_level": "Protected",
+        "is_static": true
+      },
+      {
+        "folder_name": "Prequalified Suppliers",
+        "description": "Prequalified Suppliers",
+        "access_level": "Public",
+        "is_static": true
+      }
+    ]
+  },
+  {
+    "department_name": "Supply Chain Management",
+    "department_description": "Supply Chain Management",
+    "folder": [
+      {
+        "folder_name": "Supply Chain Management Policy",
+        "description": "Supply Chain Management Policy",
+        "access_level": "Public",
+        "is_static": false
+      }
+    ]
+  },
+  {
+    "department_name": "Internal Audit",
+    "department_description": "Internal Audit",
+    "folder": [
+      {
+        "folder_name": "Internal Audit Policy",
+        "description": "Internal Audit Policy",
+        "access_level": "Public",
+        "is_static": false
+      }
+    ]
+  },
+  {
+    "department_name": "Physical Planning and Development Control",
+    "department_description": "Physical Planning and Development Control",
+    "folder": [
+      {
+        "folder_name": "Masterplan",
+        "description": "Masterplan",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "Development Guidelines",
+        "description": "Development Guidelines",
+        "access_level": "Public",
+        "is_static": true
+      },
+      {
+        "folder_name": "Building Codes",
+        "description": "Building Codes",
+        "access_level": "Public",
+        "is_static": true
+      }
+    ]
+  }
+]

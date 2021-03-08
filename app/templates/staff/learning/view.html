@@ -1,0 +1,366 @@
+﻿{% extends 'staff/layout.html' %}
+
+{% block content %}
+
+
+{% load model_tags %}
+{% load form_tags %}
+<!-- End Navigation -->
+<div class="clearfix"></div>
+<!-- ============================================================== -->
+<!-- Top header  -->
+<!-- ============================================================== -->
+<!-- ============================ Page Title Start================================== -->
+<div class="ed_detail_head">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-4 col-md-5">
+
+				<div class="property_video">
+					<div class="thumb">
+						<img class="pro_img img-fluid w100" src="{{ resource.featured_image.url }}" alt="7.jpg">
+						<div class="overlay_icon">
+							<div class="bb-video-box">
+								<div class="bb-video-box-inner">
+									<div class="bb-video-box-innerup">
+										<a href="https://www.youtube.com/watch?v=A8EI6JaFbv4" data-toggle="modal" data-target="#popup-video" class="theme-cl"><i class="ti-control-play"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-lg-8 col-md-7">
+				<div class="ed_detail_wrap">
+					<ul class="cources_facts_list">
+						<!--
+							<li class="facts-1">SEO</li>
+							<li class="facts-5">Design</li>
+						-->
+					</ul>
+					<div class="ed_header_caption">
+						<h2 class="ed_title">{{ resource.title }}</h2>
+						<ul>
+							<li><i class="fa fa-calendar"></i>Duration:{{ resource.duration }}</li>
+							<li><i class="fa fa-book"></i>{{ resource.get_modules.count }} Lectures</li>
+							<li><i class="fa fa-user"></i>{{ resource.get_enrolments.count }} Student Enrolled</li>
+						</ul>
+					</div>
+					<div class="ed_header_short">
+						<p>{{ resource.description }}</p>
+					</div>
+
+					<div class="ed_rate_info">
+						{% get_average_rating resource as rate %}
+						<div class="star_info">
+							<i class="{% if rate <= 0 %} fas fa-star {% else %} fa fa-star filled {% endif %}"></i>
+							<i class="{% if rate >= 1 %} fas fa-star filled {% else %} fas fa-star {% endif %}"></i>
+							<i class="{% if rate >= 2 %} fas fa-star filled {% else %} fas fa-star {% endif %}"></i>
+							<i class="{% if rate >= 3 %} fas fa-star filled {% else %} fas fa-star {% endif %}"></i>
+							<i class="{% if rate >= 4 %} fas fa-star filled {% else %} fas fa-star {% endif %}"></i>
+						</div>
+						<div class="review_counter">
+							<strong class="high">{{ rate }}</strong> -  {{ resource.get_reviews.count }} Reviews
+						</div>
+					</div>
+
+					<div>
+						{% check_course_enrolment_status request resource as enrolment %}
+						{% if not enrolment %}
+						<a class="btn btn-primary" href="{% url 'enrol_course' resource.id %}">Start Course</a>
+						{% elif enrolment.status == True %}
+						<a class="btn btn-primary" href="{% url 'unrol_course' resource.id %}">Quit Course</a>
+						{% elif enrolment.status == False %}
+						<a class="btn btn-primary" href="{% url 'enrol_course' resource.id %}">Start Course</a>
+						{% endif %}
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- ============================ Page Title End ================================== -->
+<!-- ============================ Course Detail ================================== -->
+<section class="bg-light">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-lg-8 col-md-8">
+
+				<!-- Overview -->
+				<div class="edu_wraper">
+					<h4 class="edu_title">Course Overview</h4>
+					<p>{{ resource.overview }}</p>
+					<h6>Requirements</h6>
+					<ul class="lists-3">
+						{% for requirement in resource.get_requirements %}
+						<li>{{ requirement.requirement }}</li>
+						{% endfor %}
+
+					</ul>
+				</div>
+
+				<div class="edu_wraper">
+					<h4 class="edu_title">Course Curriculum</h4>
+					<div id="accordionExample" class="accordion shadow circullum">
+
+						<!-- Course Topics -->
+						{% include 'staff/learning/module/view.html' %}
+						<!--content goes here-->
+
+
+
+					</div>
+				</div>
+
+				<!-- Reviews -->
+				<div class="rating-overview">
+					{% get_average_rating resource as rate %}
+					{% if rate > 0 %}
+					<div class="rating-overview-box">
+						<span class="rating-overview-box-total">{{ rate }}</span>
+						<span class="rating-overview-box-percent">out of 5.0</span>
+						<div class="star-rating" data-rating="5">
+							<i class="{% if rate <= 0 %} fa fa-star-o {% else %} fa fa-star {% endif %}"></i>
+							<i class="{% if rate >= 1 %} fa fa-star {% else %} fa fa-star-o {% endif %}"></i>
+							<i class="{% if rate >= 2 %} fa fa-star {% else %} fa fa-star-o {% endif %}"></i>
+							<i class="{% if rate >= 3 %} fa fa-star {% else %} fa fa-star-o {% endif %}"></i>
+							<i class="{% if rate >= 4 %} fa fa-star {% else %} fa fa-star-o {% endif %}"></i>
+						</div>
+					</div>
+					{% endif %}
+
+					<div class="rating-bars">
+						{% get_rating_stat resource 5 as rating %}
+						{% if rating >= 0 %}
+						<div class="rating-bars-item">
+							<span class="rating-bars-name">5 Star</span>
+							<span class="rating-bars-inner">
+								<span class="rating-bars-rating high" data-rating="4.7">
+									<span class="rating-bars-rating-inner" style="width: {{rating}}%;"></span>
+								</span>
+								<strong>{{rating}}%</strong>
+							</span>
+						</div>
+						{% endif %}
+
+						{% get_rating_stat resource 4 as rating %}
+						{% if rating >= 0 %}
+						<div class="rating-bars-item">
+							<span class="rating-bars-name">4 Star</span>
+							<span class="rating-bars-inner">
+								<span class="rating-bars-rating good" data-rating="3.9">
+									<span class="rating-bars-rating-inner" style="width: {{rating}}%;"></span>
+								</span>
+								<strong>{{rating}}%</strong>
+							</span>
+						</div>
+						{% endif %}
+
+
+						{% get_rating_stat resource 3 as rating %}
+						{% if rating >= 0 %}
+						<div class="rating-bars-item">
+							<span class="rating-bars-name">3 Star</span>
+							<span class="rating-bars-inner">
+								<span class="rating-bars-rating mid" data-rating="3.2">
+									<span class="rating-bars-rating-inner" style="width: {{rating}}%;"></span>
+								</span>
+								<strong>{{rating}}%</strong>
+							</span>
+						</div>
+						{% endif %}
+
+
+						{% get_rating_stat resource 2 as rating %}
+						{% if rating >= 0 %}
+						<div class="rating-bars-item">
+							<span class="rating-bars-name">2 Star</span>
+							<span class="rating-bars-inner">
+								<span class="rating-bars-rating mid" data-rating="3.2">
+									<span class="rating-bars-rating-inner" style="width: {{rating}}%;"></span>
+								</span>
+								<strong>{{rating}}%</strong>
+							</span>
+						</div>
+						{% endif %}
+
+
+						{% get_rating_stat resource 1 as rating %}
+						{% if rating >= 0 %}
+						<div class="rating-bars-item">
+							<span class="rating-bars-name">1 Star</span>
+							<span class="rating-bars-inner">
+								<span class="rating-bars-rating poor" data-rating="2.0">
+									<span class="rating-bars-rating-inner" style="width:{{rating}}%;"></span>
+								</span>
+								<strong>{{rating}}%</strong>
+							</span>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+
+				<!-- instructor -->
+				<div class="single_instructor">
+					<div class="single_instructor_thumb">
+						<a href="course-detail.html#"><img src="assets/img/user-3.jpg" class="img-fluid" alt=""></a>
+					</div>
+					<div class="single_instructor_caption">
+						<h4><a href="course-detail.html#">{{ resource.created_by.first_name }} {{ resource.created_by.last_name }}</a></h4>
+						<ul class="instructor_info">
+							<!--<li><i class="ti-video-camera"></i>72 Videos</li>-->
+							<li><i class="ti-control-forward"></i>{{ resource.created_by.get_my_created_learning_resources.count }} Courses</li>
+							<!--<li><i class="ti-user"></i>Exp. 4 Year</li>-->
+						</ul>
+						<p>{{ request.created_by.profile.bio }}</p>
+						<!--
+			<ul class="social_info">
+				<li><a href="course-detail.html#"><i class="ti-facebook"></i></a></li>
+				<li><a href="course-detail.html#"><i class="ti-twitter"></i></a></li>
+				<li><a href="course-detail.html#"><i class="ti-linkedin"></i></a></li>
+				<li><a href="course-detail.html#"><i class="ti-instagram"></i></a></li>
+			</ul>
+
+				-->
+					</div>
+				</div>
+
+				<!-- Reviews -->
+				<div class="list-single-main-item fl-wrap">
+					<div class="list-single-main-item-title fl-wrap">
+						<h3>Item Reviews -  <span> {{ resource.get_reviews.count }} </span></h3>
+					</div>
+					<div class="reviews-comments-wrap">
+						{% for review in resource.get_reviews %}
+						<!-- reviews-comments-item -->
+						<div class="reviews-comments-item">
+							<div class="review-comments-avatar">
+								<img src="assets/img/user-1.jpg" class="img-fluid" alt="">
+							</div>
+							<div class="reviews-comments-item-text">
+								<h4><a href="course-detail.html#">{{ review.learner.learner.first_name }} {{ review.learner.learner.last_name }}</a><span class="reviews-comments-item-date"><i class="ti-calendar theme-cl"></i>{{ review.created_at }}</span></h4>
+
+								<div class="listing-rating high" data-starrating2="5">
+									<i class="fa fa-star {% if review.rating >= 1 %} active {% endif %}"></i>
+									<i class="fa fa-star {% if review.rating >= 2 %} active {% endif %}"></i>
+									<i class="fa fa-star {% if review.rating >= 3 %} active {% endif %}"></i>
+									<i class="fa fa-star {% if review.rating >= 4 %} active {% endif %}"></i>
+									<i class="fa fa-star {% if review.rating >= 5 %} active {% endif %}"></i>
+									<span class="review-count">{{ review.rating }}</span>
+								</div>
+								<div class="clearfix"></div>
+								<p>{{ review.review }}</p>
+								<div class="pull-left reviews-reaction">
+									<a href="course-detail.html#" class="comment-like active"><i class="ti-thumb-up"></i> 12</a>
+									<a href="course-detail.html#" class="comment-dislike active"><i class="ti-thumb-down"></i> 1</a>
+									<a href="course-detail.html#" class="comment-love active"><i class="ti-heart"></i> 07</a>
+								</div>
+							</div>
+						</div>
+						<!--reviews-comments-item end-->
+						{% endfor %}
+
+					</div>
+				</div>
+				{% check_course_enrolment_status request resource as enrolment %}
+				{% if enrolment.status == True %}
+
+
+				<!-- Submit Reviews -->
+				<div class="edu_wraper">
+					<h4 class="edu_title">Submit Reviews</h4>
+					<div class="review-form-box form-submit">
+						<form method="post" enctype="multipart/form-data" action="{% url 'post_course_review'%}">
+							{% csrf_token %}
+							<div class="row">
+
+
+								{% get_course_review_form as review_form %}
+								{% if review_form %}
+								{% for form in review_form %}
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<label>{{ form.label_tag }}</label>
+										<!-- <textarea class="form-control ht-140" placeholder="Review"></textarea> -->
+										{{ form }}
+									</div>
+								</div>
+								{% endfor %}
+								{% endif %}
+
+								<input type="hidden" name="course_id" value="{{ resource.id }}" />
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<button type="submit" class="btn btn-theme">Submit Review</button>
+									</div>
+								</div>
+
+							</div>
+						</form>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+
+			<!-- Sidebar -->
+			<div class="col-lg-4 col-md-4">
+				<!--
+					<div class="ed_view_box style_2">
+
+						<div class="ed_author">
+							<div class="ed_author_thumb">
+								<img class="img-fluid" src="assets/img/user-5.jpg" alt="7.jpg">
+							</div>
+							<div class="ed_author_box">
+								<h4>Michael Russell</h4>
+								<span>Web Designer in Canada</span>
+							</div>
+						</div>
+
+						<div class="ed_view_price pl-4">
+							<span>Acctual Price</span>
+							<h2 class="theme-cl">$ 149.00</h2>
+						</div>
+						<div class="ed_view_features pl-4">
+							<span>Course Features</span>
+							<ul>
+								<li><i class="ti-angle-right"></i>Fully Programming</li>
+								<li><i class="ti-angle-right"></i>Help Code to Code</li>
+								<li><i class="ti-angle-right"></i>Free Trial 7 Days</li>
+								<li><i class="ti-angle-right"></i>Unlimited Videos</li>
+								<li><i class="ti-angle-right"></i>24x7 Support</li>
+							</ul>
+						</div>
+						<div class="ed_view_link">
+							<a href="course-detail.html#" class="btn btn-theme enroll-btn">Enroll Now<i class="ti-angle-right"></i></a>
+						</div>
+
+					</div>
+				-->
+				<div class="edu_wraper">
+					<h4 class="edu_title">Course Features</h4>
+					<ul class="edu_list right">
+						<li><i class="ti-user"></i>Student Enrolled:<strong>{{ resource.get_enrolments.count }}</strong></li>
+						<li><i class="ti-files"></i>lectures:<strong>{{ resource.get_modules.count }}</strong></li>
+						<li><i class="ti-game"></i>Quizzes:<strong>4</strong></li>
+						<li><i class="ti-time"></i>Duration:<strong>{{ resource.duration }}</strong></li>
+						<li><i class="ti-tag"></i>Skill Level:<strong>{{ resource.experience_level }}</strong></li>
+						<li><i class="ti-flag-alt"></i>Language:<strong>{{ resource.language }}</strong></li>
+						<li><i class="ti-shine"></i>Assessment:<strong>Yes</strong></li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</section>
+<!-- ============================ Course Detail ================================== -->
+{% endblock %}
+
+

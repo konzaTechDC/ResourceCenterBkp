@@ -1,0 +1,111 @@
+﻿{% extends 'staff/layout.html' %}
+
+{% block content %}
+		<!-- ============================ Dashboard: Dashboard Start ================================== -->
+			<section class="gray pt-0">
+				<div class="container-fluid">
+										
+					<div class="row">
+					<!-- == check if user is authenticated: if yes, display sidebar === -->
+						{% if user.is_authenticated %}
+						<div class="col-lg-3 col-md-3 p-0">
+							<div class="dashboard-navbar">
+								<div class="d-user-avater">
+									<img src="assets/img/user-3.jpg" class="img-fluid avater" alt="">
+									<h4>{{ user.first_name }}</h4>
+									<span>{{ user.profile.department.name }}, {{ user.profile.role.name }}</span>
+								</div>
+								
+								<div class="d-navigation">
+									<ul id="side-menu">
+										<li class="active"><a href="dashboard.html"><i class="ti-user"></i>Dashboard</a></li>
+										<li><a href="my-profile.html"><i class="ti-heart"></i>My Profile</a></li>
+										<li><a href="saved-courses.html"><i class="ti-heart"></i>Saved Courses</a></li>
+										<li class="dropdown">
+											<a href="#"><i class="ti-layers"></i>My Courses<span class="ti-angle-left"></span></a>
+											<ul class="nav nav-second-level">
+												<li><a href="{% url 'list_creator_courses' user.id %}">All</a></li>
+												<li><a href="{% url 'list_creator_published_courses' user.id %}">Published</a></li>
+												<li><a href="{% url 'list_creator_pending_courses' user.id %}">Pending</a></li>
+												<li><a href="{% url 'list_creator_pending_courses' user.id %}">Expired</a></li>
+												<li><a href="{% url 'list_creator_draft_courses' user.id %}">In Draft</a></li>
+												
+											</ul>
+										</li>
+										<li><a href="settings.html"><i class="ti-settings"></i>Settings</a></li>
+										<li><a href="reviews.html"><i class="ti-comment-alt"></i>Reviews</a></li>
+
+										<li>
+											<form id="logoutForm" action="/logout/" method="post">
+												{% csrf_token %}
+												<ul>
+	
+													<li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="ti-power-off"></i>Log off</a></li>
+												</ul>
+											</form>
+										</li>
+										
+
+									</ul>
+								</div>
+								
+							</div>
+							
+							
+						</div>	
+						{% endif %}
+						<div class="col-lg-9 col-md-9 col-sm-12">
+							
+							<!-- Row -->
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
+									<nav aria-label="breadcrumb">
+										<ol class="breadcrumb">
+											<li class="breadcrumb-item"><a href="dashboard.html#">Home</a></li>
+											<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+										</ol>
+										{% if user.is_authenticated %}
+										<a href="{% url 'create_learning_resource' %}" class="btn btn-primary pull-right">Create Course</a>
+										{% endif %}
+									</nav>
+								</div>
+							</div>
+							<!-- /Row -->
+							
+								<!-- Row -->
+							<div class="row">
+						
+								<div class="col-lg-4 col-md-6 col-sm-12">
+									<div class="dashboard_stats_wrap widget-1">
+										<div class="dashboard_stats_wrap_content"><h4>O</h4> <span>Courses</span></div>
+										<div class="dashboard_stats_wrap-icon"><i class="ti-location-pin"></i></div>
+									</div>	
+								</div>
+								
+								<div class="col-lg-4 col-md-6 col-sm-12">
+									<div class="dashboard_stats_wrap widget-2">
+										<div class="dashboard_stats_wrap_content"><h4>0</h4> <span>Repository Submissions</span></div>
+										<div class="dashboard_stats_wrap-icon"><i class="ti-pie-chart"></i></div>
+									</div>	
+								</div>
+								
+								<div class="col-lg-4 col-md-6 col-sm-12">
+									<div class="dashboard_stats_wrap widget-4">
+										<div class="dashboard_stats_wrap_content"><h4>0</h4> <span>Policy Submissions</span></div>
+										<div class="dashboard_stats_wrap-icon"><i class="ti-user"></i></div>
+									</div>	
+								</div>
+
+							</div>
+							<!-- /Row -->
+							
+						</div>
+					
+					</div>
+					
+				</div>
+			</section>
+
+{% endblock %}
+			<!-- ============================ Dashboard: Dashboard End ================================== -->
+			

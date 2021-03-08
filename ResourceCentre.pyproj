@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Name>ResourceCentre</Name>
+    <RootNamespace>ResourceCentre</RootNamespace>
+    <InterpreterId>Global|VisualStudio|Resource Centre vEnv</InterpreterId>
+    <TestFramework>Pytest</TestFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>bd5c826b-0212-4b5c-8ce9-66ee35408719</ProjectGuid>
+    <ProjectHome>
+    </ProjectHome>
+    <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>manage.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Django launcher</LaunchProvider>
+    <DjangoSettingsModule>ResourceCentre.settings</DjangoSettingsModule>
+    <WebBrowserUrl>http://localhost</WebBrowserUrl>
+    <OutputPath>.</OutputPath>
+    <SuppressCollectPythonCloudServiceFiles>true</SuppressCollectPythonCloudServiceFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="app\admin.py" />
+    <Compile Include="app\apps.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\forms.py" />
+    <Compile Include="app\models.py" />
+    <Compile Include="app\templatetags\form_tags.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\templatetags\model_tags.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\templatetags\settings_tags.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\templatetags\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\tests.py" />
+    <Compile Include="app\tokens.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\urls.py" />
+    <Compile Include="app\views.py" />
+    <Compile Include="app\__init__.py" />
+    <Compile Include="manage.py" />
+    <Compile Include="ResourceCentre\__init__.py" />
+    <Compile Include="ResourceCentre\settings.py" />
+    <Compile Include="ResourceCentre\urls.py" />
+    <Compile Include="ResourceCentre\wsgi.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\" />
+    <Folder Include="app\migrations\" />
+    <Folder Include="app\templatetags\" />
+    <Folder Include="app\static\" />
+    <Folder Include="app\static\app\" />
+    <Folder Include="app\static\app\assets - Copy\" />
+    <Folder Include="app\static\app\assets - Copy\css\" />
+    <Folder Include="app\static\app\assets - Copy\css\fonts\" />
+    <Folder Include="app\static\app\assets\" />
+    <Folder Include="app\static\app\assets\css\" />
+    <Folder Include="app\static\app\assets\css\fonts\" />
+    <Folder Include="app\static\app\assets - Copy\css\img\" />
+    <Folder Include="app\static\app\assets - Copy\css\plugins\" />
+    <Folder Include="app\static\app\assets - Copy\img\" />
+    <Folder Include="app\static\app\assets - Copy\js\" />
+    <Folder Include="app\static\app\content\" />
+    <Folder Include="app\static\app\fonts\" />
+    <Folder Include="app\static\app\scripts\" />
+    <Folder Include="app\templates\" />
+    <Folder Include="app\templates\app\" />
+    <Folder Include="app\templates\auth\" />
+    <Folder Include="app\templates\learning\" />
+    <Folder Include="app\templates\registration\" />
+    <Folder Include="app\templates\staff\" />
+    <Folder Include="app\templates\staff\learning\" />
+    <Folder Include="app\templates\staff\learning\module\" />
+    <Folder Include="app\templates\staff\policy\" />
+    <Folder Include="app\templates\staff\repository\" />
+    <Folder Include="ResourceCentre\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\departments.json" />
+    <Content Include="app\static\app\assets - Copy\css\colors.css" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-brands-400.ttf" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-brands-400.woff" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-brands-400.woff2" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-regular-400.eot" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-regular-400.svg" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-regular-400.ttf" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-regular-400.woff" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-regular-400.woff2" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-solid-900.eot" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-solid-900.svg" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-solid-900.ttf" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-solid-900.woff" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\fa-solid-900.woff2" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\Flaticon.eot" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\Flaticon.svg" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\Flaticon.ttf" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\Flaticon.woff" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\houses.eot" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\houses.svg" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\houses.ttf" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\houses.woff" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\icofont.woff" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\icofont.woff2" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\slick.eot" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\slick.ttf" />
+    <Content Include="app\static\app\assets - Copy\css\fonts\slick.woff" />
+    <Content Include="app\static\app\assets - Copy\css\img\close.png" />
+    <Content Include="app\static\app\assets - Copy\css\img\lightbox-next.png" />
+    <Content Include="app\static\app\assets - Copy\css\img\lightbox-prev.png" />
+    <Content Include="app\static\app\assets - Copy\css\img\loading.gif" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\ajax-loader.gif" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\animation.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\bootstrap.min.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\date-picker.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\dropzone.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\flaticon.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\font-awesome.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\iconfont.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\ion.rangeSlider.min.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\light-box.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\line-icons.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\magnifypopup.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\morris.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\select2.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\slick-theme.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\slick.css" />
+    <Content Include="app\static\app\assets - Copy\css\plugins\themify.css" />
+    <Content Include="app\static\app\assets - Copy\css\styles.css" />
+    <Content Include="app\static\app\assets - Copy\img\404.png" />
+    <Content Include="app\static\app\assets - Copy\img\6518.png" />
+    <Content Include="app\static\app\assets - Copy\img\b-1.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\b-2.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\b-3.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\banner-1.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\banner-2.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\banner-3.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\banner-4.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\banner-5.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\book-1.png" />
+    <Content Include="app\static\app\assets - Copy\img\book-2.png" />
+    <Content Include="app\static\app\assets - Copy\img\book-3.png" />
+    <Content Include="app\static\app\assets - Copy\img\book-4.png" />
+    <Content Include="app\static\app\assets - Copy\img\book-5.png" />
+    <Content Include="app\static\app\assets - Copy\img\book-6.png" />
+    <Content Include="app\static\app\assets - Copy\img\book-7.png" />
+    <Content Include="app\static\app\assets - Copy\img\book-8.png" />
+    <Content Include="app\static\app\assets - Copy\img\book-9.png" />
+    <Content Include="app\static\app\assets - Copy\img\brand-1.png" />
+    <Content Include="app\static\app\assets - Copy\img\brand-2.png" />
+    <Content Include="app\static\app\assets - Copy\img\brand-3.png" />
+    <Content Include="app\static\app\assets - Copy\img\brand-4.png" />
+    <Content Include="app\static\app\assets - Copy\img\brand-5.png" />
+    <Content Include="app\static\app\assets - Copy\img\brand-6.png" />
+    <Content Include="app\static\app\assets - Copy\img\brand-7.png" />
+    <Content Include="app\static\app\assets - Copy\img\briefcase.png" />
+    <Content Include="app\static\app\assets - Copy\img\career.png" />
+    <Content Include="app\static\app\assets - Copy\img\circle-6.png" />
+    <Content Include="app\static\app\assets - Copy\img\co-1.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\co-2.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\co-3.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\co-4.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\co-5.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\co-6.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\co-7.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\content.png" />
+    <Content Include="app\static\app\assets - Copy\img\course-1.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-10.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-11.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-2.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-3.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-4.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-5.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-6.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-7.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-8.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\course-9.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\designer.png" />
+    <Content Include="app\static\app\assets - Copy\img\edu_1.png" />
+    <Content Include="app\static\app\assets - Copy\img\edu_2.png" />
+    <Content Include="app\static\app\assets - Copy\img\green-logo.png" />
+    <Content Include="app\static\app\assets - Copy\img\h-3.png" />
+    <Content Include="app\static\app\assets - Copy\img\h-5.png" />
+    <Content Include="app\static\app\assets - Copy\img\health.png" />
+    <Content Include="app\static\app\assets - Copy\img\loader.svg" />
+    <Content Include="app\static\app\assets - Copy\img\logo-light.png" />
+    <Content Include="app\static\app\assets - Copy\img\logo.png" />
+    <Content Include="app\static\app\assets - Copy\img\mastercard.png" />
+    <Content Include="app\static\app\assets - Copy\img\pat.png" />
+    <Content Include="app\static\app\assets - Copy\img\paypal.png" />
+    <Content Include="app\static\app\assets - Copy\img\photo.png" />
+    <Content Include="app\static\app\assets - Copy\img\pin.svg" />
+    <Content Include="app\static\app\assets - Copy\img\python.png" />
+    <Content Include="app\static\app\assets - Copy\img\search.svg" />
+    <Content Include="app\static\app\assets - Copy\img\speaker.png" />
+    <Content Include="app\static\app\assets - Copy\img\st-3.png" />
+    <Content Include="app\static\app\assets - Copy\img\star-banner.png" />
+    <Content Include="app\static\app\assets - Copy\img\testimonial.png" />
+    <Content Include="app\static\app\assets - Copy\img\user-1.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\user-2.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\user-3.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\user-4.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\user-5.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\user-6.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\user-7.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\user-8.jpg" />
+    <Content Include="app\static\app\assets - Copy\img\visa.png" />
+    <Content Include="app\static\app\assets - Copy\img\yoga.png" />
+    <Content Include="app\static\app\assets - Copy\js\bootstrap.min.js" />
+    <Content Include="app\static\app\assets - Copy\js\counterup.min.js" />
+    <Content Include="app\static\app\assets - Copy\js\custom.js" />
+    <Content Include="app\static\app\assets - Copy\js\jquery.counterup.min.js" />
+    <Content Include="app\static\app\assets - Copy\js\jquery.min.js" />
+    <Content Include="app\static\app\assets - Copy\js\metisMenu.min.js" />
+    <Content Include="app\static\app\assets - Copy\js\popper.min.js" />
+    <Content Include="app\static\app\assets - Copy\js\select2.min.js" />
+    <Content Include="app\static\app\assets - Copy\js\slick.js" />
+    <Content Include="app\templates\auth\account_activation_email.html" />
+    <Content Include="app\templates\auth\account_activation_invalid.html" />
+    <Content Include="app\templates\auth\account_activation_sent.html" />
+    <Content Include="app\templates\auth\base.html" />
+    <Content Include="app\templates\auth\signin.html" />
+    <Content Include="app\templates\auth\signup.html" />
+    <Content Include="app\templates\learning\create.html" />
+    <Content Include="app\templates\learning\list.html" />
+    <Content Include="app\templates\learning\update.html" />
+    <Content Include="app\templates\registration\password_reset_complete.html" />
+    <Content Include="app\templates\registration\password_reset_confirm.html" />
+    <Content Include="app\templates\registration\password_reset_done.html" />
+    <Content Include="app\templates\registration\password_reset_email.html" />
+    <Content Include="app\templates\registration\password_reset_form.html" />
+    <Content Include="app\templates\registration\password_reset_subject.txt" />
+    <Content Include="app\templates\staff\dashboard.html" />
+    <Content Include="app\templates\staff\layout.html" />
+    <Content Include="app\templates\staff\learning\analytics.html" />
+    <Content Include="app\templates\staff\learning\create.html" />
+    <Content Include="app\templates\staff\learning\list.html" />
+    <Content Include="app\templates\staff\learning\module\create.html" />
+    <Content Include="app\templates\staff\learning\module\list.html" />
+    <Content Include="app\templates\staff\learning\module\update.html" />
+    <Content Include="app\templates\staff\learning\module\view.html" />
+    <Content Include="app\templates\staff\learning\update.html" />
+    <Content Include="app\templates\staff\learning\view.html" />
+    <Content Include="app\templates\staff\policy\analytics.html" />
+    <Content Include="app\templates\staff\policy\create.html" />
+    <Content Include="app\templates\staff\policy\list.html" />
+    <Content Include="app\templates\staff\policy\update.html" />
+    <Content Include="app\templates\staff\repository\analytics.html" />
+    <Content Include="app\templates\staff\repository\create.html" />
+    <Content Include="app\templates\staff\repository\index.html" />
+    <Content Include="app\templates\staff\repository\list.html" />
+    <Content Include="app\templates\staff\repository\update.html" />
+    <Content Include="app\templates\staff\repository_layout.html" />
+    <Content Include="requirements.txt" />
+    <Content Include="app\samples.json" />
+    <Content Include="app\templates\app\details.html" />
+    <Content Include="app\templates\app\results.html" />
+    <Content Include="app\static\app\content\bootstrap.css" />
+    <Content Include="app\static\app\content\bootstrap.min.css" />
+    <Content Include="app\static\app\content\site.css" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="app\static\app\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="app\static\app\scripts\bootstrap.js" />
+    <Content Include="app\static\app\scripts\bootstrap.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.js" />
+    <Content Include="app\static\app\scripts\jquery-1.10.2.min.map" />
+    <Content Include="app\static\app\scripts\jquery.validate-vsdoc.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.min.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="app\static\app\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="app\static\app\scripts\modernizr-2.6.2.js" />
+    <Content Include="app\static\app\scripts\respond.js" />
+    <Content Include="app\static\app\scripts\respond.min.js" />
+    <Content Include="app\static\app\scripts\_references.js" />
+    <Content Include="app\templates\app\about.html" />
+    <Content Include="app\templates\app\contact.html" />
+    <Content Include="app\templates\app\index.html" />
+    <Content Include="app\templates\app\layout.html" />
+    <Content Include="app\templates\app\login.html" />
+    <Content Include="app\templates\app\loginpartial.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="readme.html">
+      <SubType>WebBrowser</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|VisualStudio|Resource Centre vEnv" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
