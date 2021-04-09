@@ -1,0 +1,435 @@
+﻿
+{% extends 'staff/layout.html' %}
+
+{% block content %}
+    
+    {% load model_tags %}
+
+    			<!-- ============================ Page Title Start================================== -->
+			<section class="page-title">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 col-md-12">
+							
+							<div class="breadcrumbs-wrap">
+								<h1 class="breadcrumb-title">Courses</h1>
+								<nav aria-label="breadcrumb">
+									<ol class="breadcrumb">
+										<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+										<li class="breadcrumb-item active" aria-current="page">Find Courses</li>
+									</ol>
+								</nav>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- ============================ Page Title End ================================== -->			
+
+			
+			<!-- ============================ Find Courses with Sidebar ================================== -->
+			<section class="pt-0">
+				<div class="container">
+					
+					<!-- Onclick Sidebar -->
+					<div class="row">
+						<div class="col-md-12 col-lg-12">
+							<div id="filter-sidebar" class="filter-sidebar">
+								<div class="filt-head">
+									<h4 class="filt-first">Advance Options</h4>
+									<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">Close <i class="ti-close"></i></a>
+								</div>
+								<div class="show-hide-sidebar">
+									
+									<!-- Find New Property -->
+									<div class="sidebar-widgets">
+										
+										<!-- Search Form -->
+										<form method="post" enctype="multipart/form-data" action="{% url 'search_learning_resource'%}" class="form-inline addons mb-3">
+											{% csrf_token %}
+											<input class="form-control" type="search" name="key" placeholder="Search Courses" aria-label="Search">
+											<button class="btn my-2 my-sm-0" type="submit"><i class="ti-search"></i></button>
+										</form>	
+										
+										<h4 class="side_title">Course categories</h4>
+										<ul class="no-ul-list mb-3">
+											<li>
+												<input id="a-4" class="checkbox-custom" name="a-4" type="checkbox">
+												<label for="a-4" class="checkbox-custom-label">Backend (3)</label>
+											</li>
+											<li>
+												<input id="a-5" class="checkbox-custom" name="a-5" type="checkbox">
+												<label for="a-5" class="checkbox-custom-label">Frontend (2)</label>
+											</li>
+											<li>
+												<input id="a-6" class="checkbox-custom" name="a-6" type="checkbox">
+												<label for="a-6" class="checkbox-custom-label">General (2)</label>
+											</li>
+											<li>
+												<input id="a-7" class="checkbox-custom" name="a-7" type="checkbox">
+												<label for="a-7" class="checkbox-custom-label">IT & Software (2)</label>
+											</li>
+											<li>
+												<input id="a-8" class="checkbox-custom" name="a-8" type="checkbox">
+												<label for="a-8" class="checkbox-custom-label">Photography (2)</label>
+											</li>
+											<li>
+												<input id="a-9" class="checkbox-custom" name="a-9" type="checkbox">
+												<label for="a-9" class="checkbox-custom-label">Technology (2)</label>
+											</li>
+										</ul>
+										
+										<h4 class="side_title">Instructors</h4>
+										<ul class="no-ul-list mb-3">
+											<li>
+												<input id="a-1" class="checkbox-custom" name="a-1" type="checkbox">
+												<label for="a-1" class="checkbox-custom-label">Keny White (4)</label>
+											</li>
+											<li>
+												<input id="a-2" class="checkbox-custom" name="a-2" type="checkbox">
+												<label for="a-2" class="checkbox-custom-label">Hinata Hyuga (11)</label>
+											</li>
+											<li>
+												<input id="a-6" class="checkbox-custom" name="a-6" type="checkbox">
+												<label for="a-6" class="checkbox-custom-label">Mike hussy (4)</label>
+											</li>
+											<li>
+												<input id="a-7" class="checkbox-custom" name="a-7" type="checkbox">
+												<label for="a-7" class="checkbox-custom-label">Adam Riky (7)</label>
+											</li>
+											<li>
+												<input id="a-8" class="checkbox-custom" name="a-8" type="checkbox">
+												<label for="a-8" class="checkbox-custom-label">Balcony</label>
+											</li>
+											<li>
+												<input id="a-9" class="checkbox-custom" name="a-9" type="checkbox">
+												<label for="a-9" class="checkbox-custom-label">Icon</label>
+											</li>
+										</ul>
+										
+										<h4 class="side_title">Price</h4>
+										<ul class="no-ul-list mb-3">
+											<li>
+												<input id="a-10" class="checkbox-custom" name="a-10" type="checkbox">
+												<label for="a-10" class="checkbox-custom-label">All (75)</label>
+											</li>
+											<li>
+												<input id="a-11" class="checkbox-custom" name="a-11" type="checkbox">
+												<label for="a-11" class="checkbox-custom-label">Free (15)</label>
+											</li>
+											<li>
+												<input id="a-12" class="checkbox-custom" name="a-12" type="checkbox">
+												<label for="a-12" class="checkbox-custom-label">Paid (60)</label>
+											</li>
+										</ul>
+										
+										<button class="btn btn-theme full-width mb-2">Filter Result</button>
+									
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Row -->
+					<div class="row">
+					
+						<div class="col-lg-4 col-md-12 col-sm-12 order-2 order-lg-1 order-md-2">							
+							<div class="page_sidebar hide-23">
+								
+								<!-- Search Form -->
+								<form method="post" enctype="multipart/form-data" action="{% url 'search_learning_resource'%}" class="form-inline addons mb-3">
+									{% csrf_token %}
+									<input class="form-control" type="search" name="key" placeholder="Search Courses" aria-label="Search">
+									<button class="btn my-2 my-sm-0" type="submit"><i class="ti-search"></i></button>
+								</form>	
+								
+								<h4 class="side_title">Course categories</h4>
+								<ul class="no-ul-list mb-3">
+									<li>
+										<input id="aa-4" class="checkbox-custom" name="aa-4" type="checkbox">
+										<label for="aa-4" class="checkbox-custom-label">Backend (3)</label>
+									</li>
+									<li>
+										<input id="aa-5" class="checkbox-custom" name="aa-5" type="checkbox">
+										<label for="aa-5" class="checkbox-custom-label">Frontend (2)</label>
+									</li>
+									<li>
+										<input id="aa-6" class="checkbox-custom" name="aa-6" type="checkbox">
+										<label for="aa-6" class="checkbox-custom-label">General (2)</label>
+									</li>
+									<li>
+										<input id="aa-7" class="checkbox-custom" name="aa-7" type="checkbox">
+										<label for="aa-7" class="checkbox-custom-label">IT & Software (2)</label>
+									</li>
+									<li>
+										<input id="aa-8" class="checkbox-custom" name="aa-8" type="checkbox">
+										<label for="aa-8" class="checkbox-custom-label">Photography (2)</label>
+									</li>
+									<li>
+										<input id="aa-9" class="checkbox-custom" name="aa-9" type="checkbox">
+										<label for="aa-9" class="checkbox-custom-label">Technology (2)</label>
+									</li>
+								</ul>
+								
+								<h4 class="side_title">Instructors</h4>
+								<ul class="no-ul-list mb-3">
+									<li>
+										<input id="aa-41" class="checkbox-custom" name="aa-41" type="checkbox">
+										<label for="aa-41" class="checkbox-custom-label">Keny White (4)</label>
+									</li>
+									<li>
+										<input id="aa-2" class="checkbox-custom" name="aa-2" type="checkbox">
+										<label for="aa-2" class="checkbox-custom-label">Hinata Hyuga (11)</label>
+									</li>
+									<li>
+										<input id="aa-3" class="checkbox-custom" name="aa-3" type="checkbox">
+										<label for="aa-3" class="checkbox-custom-label">Mike hussy (4)</label>
+									</li>
+									<li>
+										<input id="aa-71" class="checkbox-custom" name="aa-71" type="checkbox">
+										<label for="aa-71" class="checkbox-custom-label">Adam Riky (7)</label>
+									</li>
+									<li>
+										<input id="aa-81" class="checkbox-custom" name="aa-81" type="checkbox">
+										<label for="aa-81" class="checkbox-custom-label">Balcony</label>
+									</li>
+									<li>
+										<input id="aa-91" class="checkbox-custom" name="aa-91" type="checkbox">
+										<label for="aa-91" class="checkbox-custom-label">Icon</label>
+									</li>
+								</ul>
+								
+								<h4 class="side_title">Price</h4>
+								<ul class="no-ul-list mb-3">
+									<li>
+										<input id="aa-10" class="checkbox-custom" name="aa-10" type="checkbox">
+										<label for="aa-10" class="checkbox-custom-label">All (75)</label>
+									</li>
+									<li>
+										<input id="b-8" class="checkbox-custom" name="b-8" type="checkbox">
+										<label for="b-8" class="checkbox-custom-label">Free (15)</label>
+									</li>
+									<li>
+										<input id="b-9" class="checkbox-custom" name="b-9" type="checkbox">
+										<label for="b-9" class="checkbox-custom-label">Paid (60)</label>
+									</li>
+								</ul>
+								
+							</div>
+							
+							<div class="page_sidebar hidden-md-down">
+								<h4 class="side_title">Related Products</h4>
+								<div class="related_items mb-4">
+									<!-- Single Related Items -->
+									<div class="product_item">
+										<div class="thumbnail">
+											<a href="grid-with-sidebar-2.html#"><img src="assets/img/book-1.png" class="img-fluid" alt=""></a>
+										</div>
+										<div class="info">
+											<h6 class="product-title"><a href="grid-with-sidebar-2.html#">The Source of Learning and Development</a></h6>
+											<div class="woo_rating">
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star"></i>
+											</div>
+											<span class="price"><p class="price_ver">$99.00<del>$149.00</del>
+										</p></span></div>
+									</div>	
+									<!-- Single Related Items -->
+									<div class="product_item">
+										<div class="thumbnail">
+											<a href="grid-with-sidebar-2.html#"><img src="assets/img/book-2.png" class="img-fluid" alt=""></a>
+										</div>
+										<div class="info">
+											<h6 class="product-title"><a href="grid-with-sidebar-2.html#">Full Web Designing Course with 20% Offer</a></h6>
+											<div class="woo_rating">
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+											</div>
+											<span class="price"><p class="price_ver">$89.00<del>$179.00</del>
+										</p></span></div>
+									</div>
+									<!-- Single Related Items -->
+									<div class="product_item">
+										<div class="thumbnail">
+											<a href="grid-with-sidebar-2.html#"><img src="assets/img/book-3.png" class="img-fluid" alt=""></a>
+										</div>
+										<div class="info">
+											<h6 class="product-title"><a href="grid-with-sidebar-2.html#">The Source of Learning Advance WordPress</a></h6>
+											<div class="woo_rating">
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star"></i>
+											</div>
+											<span class="price"><p class="price_ver">$199.00<del>$279.00</del>
+										</p></span></div>
+									</div>
+									<!-- Single Related Items -->
+									<div class="product_item">
+										<div class="thumbnail">
+											<a href="grid-with-sidebar-2.html#"><img src="assets/img/book-4.png" class="img-fluid" alt=""></a>
+										</div>
+										<div class="info">
+											<h6 class="product-title"><a href="grid-with-sidebar-2.html#">Advance Magento & Drupal Development</a></h6>
+											<div class="woo_rating">
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star filled"></i>
+												<i class="fas fa-star"></i>
+											</div>
+											<span class="price"><p class="price_ver">$599.00<del>$999.00</del>
+										</p></span></div>
+									</div>
+								</div>
+								
+								<h4 class="side_title">Popular Tags</h4>
+								<div class="popular_tags">
+									<!-- Tags -->
+									<div class="tag_cloud">
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">business</a>
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">design</a>
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">development</a>
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">php</a>
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">wordpress</a>
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">magento</a>
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">skills</a>
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">software</a>
+										<a href="grid-with-sidebar-2.html#" class="tag-cloud-lin">accounting</a>
+									</div>	
+								</div>
+								
+							</div>
+							
+						</div>	
+						
+						<div class="col-lg-8 col-md-12 col-sm-12 order-1 order-lg-2 order-md-1">
+							
+							<!-- Row -->
+							<div class="row align-items-center mb-3">
+								<div class="col-lg-6 col-md-6 col-sm-12">
+									We found <strong>{{ learning_resources.count }}<!-- this function needs improvement --></strong> courses for you
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-12 ordering">
+									<div class="filter_wraps">
+										<div class="dn db-991 mt30 mb0 show-23">
+											<div id="main2">
+												<a href="javascript:void(0)" class="btn btn-theme arrow-btn filter_open" onclick="openNav()" id="open2">Show Filter<span><i class="fas fa-arrow-alt-circle-right"></i></span></a>
+											</div>
+										</div>
+										<div class="dropdown show">
+											<a class="btn btn-custom dropdown-toggle" href="grid-with-sidebar-2.html#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Recent Courses
+											</a>
+											<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+											<a class="dropdown-item" href="grid-with-sidebar-2.html#">Popular Courses</a>
+											<a class="dropdown-item" href="grid-with-sidebar-2.html#">Recent Courses</a>
+											<a class="dropdown-item" href="grid-with-sidebar-2.html#">Featured Courses</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Row -->
+							
+							<div class="row">
+						
+								<!-- Cource Grid 1 -->
+
+
+								
+
+
+
+
+
+
+
+
+
+								{% for resource in learning_resources %}
+								<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="education_block_grid style_2">
+										
+										<div class="education_block_thumb">
+											{% get_average_rating resource as rate %}
+											<a href="{% url 'view_learning_resource' resource.id %}"><img src="{{ resource.featured_image.url }}" class="img-fluid" alt=""></a>
+											<div class="education_ratting"><i class="fa fa-star"></i>{{rate}}</div>
+										</div>
+										
+										<div class="education_block_body">
+											<h4 class="bl-title"><a href="{% url 'view_learning_resource' resource.id %}">{{ resource.title }}</a></h4>
+										</div>
+										
+										<div class="cources_info_style3">
+											<ul>
+												<li><i class="fa fa-eye mr-2"></i>{{ resource.get_views.count }} Views</li>
+												<li><i class="fa fa-book mr-2"></i>{{ resource.get_modules.count }} Lectures</li>
+												<li><i class="fa fa-calendar mr-2"></i>{% if resource.duration %}{{ resource.duration }}{% else %}unspecified duration{% endif %}</li>
+											</ul>
+										</div>
+										
+										<div class="education_block_footer">
+											<div class="education_block_author">
+												<div class="path-img"><a href="instructor-detail.html"><img src="assets/img/user-1.jpg" class="img-fluid" alt=""></a></div>
+												<h5><a href="instructor-detail.html">{{ resource.created_by.first_name }} {{ resource.created_by.last_name }}</a></h5>
+											</div>
+											<!-- <div class="cources_price_foot"><span class="price_off">$79.0</span>49.99</div> -->
+										</div>
+										
+									</div>	
+								</div>
+
+								{% endfor %}
+								
+							</div>
+							
+							<!-- Row -->
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="pagination">
+										<span class="step-links">
+											{% if page_obj.has_previous %}
+												<a href="?page=1">&laquo; first</a>
+												<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+											{% endif %}
+
+											<span class="current">
+												Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+											</span>
+
+											{% if page_obj.has_next %}
+												<a href="?page={{ page_obj.next_page_number }}">next</a>
+												<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+											{% endif %}
+										</span>
+									</div>
+									<!-- Pagination -->
+									
+								</div>
+							</div>
+							<!-- /Row -->
+							
+						</div>
+					
+					</div>
+					<!-- Row -->
+					
+				</div>
+			</section>
+			<!-- ============================ Find Courses with Sidebar End ================================== -->
+			
+
+
+
+{% endblock %}

@@ -1,0 +1,97 @@
+﻿{% extends 'staff/repository_layout.html' %}
+
+{% block content %}
+{% load model_tags %}
+{% load static %}
+{% get_featured_content as content %}
+
+<div class="search-control-wrapper">
+	<form method="post" enctype="multipart/form-data" action="{% url 'search_repository' %}" class="search nav-form">
+	{% csrf_token %}
+		<div class="form-group">
+			<div class="input-group">
+				<input type="text" name="q" required class="form-control" value="{{search_tag}}">
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="submit">Search</button>
+				</span>
+			</div>
+		</div>
+	</form>
+</div>
+
+<h3>Featured</h3>
+<div class="owl-carousel" data-plugin-carousel data-plugin-options='{ "autoPlay": 3000, "items": 6, "itemsDesktop": [1199,4], "itemsDesktopSmall": [979,3], "itemsTablet": [768,2], "itemsMobile": [479,1] }'>
+	{% for pic in content.pics %}
+		<div class="item spaced"><a target="_blank" class="thumb-image" href="{{ pic.image.url }}"><img class="img-thumbnail" src="{{ pic.image.url }}" alt=""></a></div>
+	{% endfor %}
+	
+</div>
+
+<div class="owl-carousel" data-plugin-carousel data-plugin-options='{ "autoPlay": 3000, "items": 6, "itemsDesktop": [1199,4], "itemsDesktopSmall": [979,3], "itemsTablet": [768,2], "itemsMobile": [479,1] }'>
+	{% for doc in content.docs %}
+		<div class="item spaced">
+			<img class="img-thumbnail" src="{% static 'assets/img/file.png' %}" alt="{{ doc.name_of_document }}">
+			<a class="btn-sm btn-primary" href="{{ doc.reference_material_download.url }}" target="_blank"><i class="fa fa-file"></i> {{ doc.name_of_document }}</a>
+			
+		</div>
+	{% endfor %}
+	
+</div>
+
+<div class="owl-carousel" data-plugin-carousel data-plugin-options='{ "autoPlay": 3000, "items": 6, "itemsDesktop": [1199,4], "itemsDesktopSmall": [979,3], "itemsTablet": [768,2], "itemsMobile": [479,1] }'>
+	{% for vid in content.vids %}
+		<div class="item spaced">
+
+			<a class="btn-sm btn-primary" href="{% url 'play_repo_video' vid.id %}"><i class="fa fa-play"></i> {{ vid.name_of_video }}</a>
+			<img class="img-thumbnail" src="{% static 'assets/img/video.png' %}" alt="">
+		</div>
+	{% endfor %}
+	
+</div>
+
+<hr>
+
+{% curate_my_directory request as contents %}
+<h3>Browse  Department Folders</h3>
+
+
+
+<div class="col-md-12 col-lg-12 col-xl-4">
+	<div class="row">
+		{% for folder in contents %}
+		<div class="col-md-6 col-xl-12">
+			
+			<section class="panel">
+				
+				<div class="panel-body bg-primary">
+					<div class="widget-summary">
+						<!--
+						<div class="widget-summary-col widget-summary-col-icon">
+							<div class="summary-icon">
+								<i class="fa fa-life-ring"></i>
+							</div>
+						</div>
+						-->
+						<div class="widget-summary-col">
+							<div class="summary">
+								<h4 class="title">{{ folder.folder_name }}</h4>
+								<div class="info">
+									<strong class="amount"></strong>
+								</div>
+							</div>
+							<div class="summary-footer">
+								<a href="{% url 'filter_repo_by_folder' folder.id %}" class="text-uppercase">(browse)</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</section>
+			
+		</div>
+			{% endfor %}						
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'staff/repository_layout.html' %}
+{% load static %}
+{% load social_share %}
+{% block styles %}
+<style>
+	.container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+}
+
+/* Then style the iframe to fit in the container div with full height and width */
+.responsive-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    
+
+	<div class="panel">
+		
+	<!--<iframe id="iframe_pdf" src="http://view.officeapps.live.com/op/view.aspx?src=https://resourcecenter.konza.go.ke/{{ document.reference_material_download.url }}" 
+      style="width:1000px; height:1000px;"  ></iframe> -->
+
+		<div class="container">
+			<iframe class="responsive-iframe" id="responsive-iframe" src="https://docs.google.com/gview?url=https://resourcecenter.konza.go.ke/{{ document.reference_material_download.url }}&embedded=true" 
+      style="width:100%; height:100%;"  scrolling=no frameborder="0"></iframe>
+
+		
+		</div>
+
+		<a class="thumb-image" href="{{ document.reference_material_download.url }}">
+		<img style="border: 5px solid #555;" src="{% static 'assets/img/file.png' %}" class="img-responsive" alt="Document">
+	</a>
+	</div>
+    <div class="panel">
+        <h2>{{ document.name_of_document }}</h2>
+        <p>{{ document.repository.description | safe }}</p>
+        <p>[ {{ document.repository.access_level }} ]</p>
+        <a class="btn-sm btn-primary" href="{{ document.reference_material_download.url }}" download><i class="fa fa-download"></i> Download</a>
+
+        <div class="btn-group dropup">
+			<button type="button" class="mb-xs mt-xs mr-xs btn btn-default dropdown-toggle" data-toggle="dropdown">Share <span class="caret"></span></button>
+			<ul class="dropdown-menu" role="menu">
+				<li>{% send_email  'document shared from resource center'  'Check this out.' document.reference_material_download.url email btn %}</li>
+				<li>{% post_to_facebook document.reference_material_download.url facebook share %}</li>
+				<li>{% post_to_twitter "{{request.user}} shared {{ document.name_of_document }}. Check it out!" document.reference_material_download.url "Peleka Twitter" %}</li>
+				<li>{% post_to_linkedin document.reference_material_download.url btn %}</li>
+				<li class="divider"></li>
+				<li>{% post_to_telegram  document.name_of_document  document.reference_material_download.url Telegram  btn %}</li>
+				<li>{% post_to_whatsapp document.reference_material_download.url Whatsapp btn %}</li>
+			</ul>
+		</div>
+        
+        
+    </div>
+</div>
+
+<div class="row">
+	<div class="panel">
+		<!-- get related documents -->
+	</div>
+</div>
+{% endblock %}

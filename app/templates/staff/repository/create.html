@@ -1,0 +1,400 @@
+﻿{% extends 'staff/repository_layout.html' %}
+
+{% block content %}
+
+				
+
+<div class="row">
+		<div class="col-md-12">
+			<section class="panel">
+				<header class="panel-heading">
+					
+					<h2 class="panel-title">Create new resource</h2>
+				</header>
+				
+				<div class="panel-body">
+					<form method="post" enctype="multipart/form-data" action="{% url 'post_update_repo_resource' %}" class="form-horizontal form-bordered">
+					{% csrf_token %}
+					
+					{% if form %}
+					
+					{% load form_tags %}
+					{% get_repository_form_instance resource.id as repo_form %}
+
+					<div class="form-group">
+						<label class="col-md-3 control-label" for="{{ form.title.label }}">{{ form.title.label }}</label>
+						<div class="col-md-6">
+							{{ repo_form.title }}
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-md-3 control-label">{{ form.type.label }}</label>
+						<div class="col-md-6">
+							{{ repo_form.department_folder }}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-3 control-label">{{ form.type.label }}</label>
+						<div class="col-md-6">
+							{{ repo_form.doc_type }}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">{{ form.description.label }}</label>
+						<div class="col-md-12">
+							{{ repo_form.description }}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-3 control-label">{{ form.access_level.label }}</label>
+						<div class="col-md-12">
+							{{ repo_form.access_level }}
+						</div>
+						<span>{{ repo_form.access_level.help_texts }}</span>
+					</div>
+
+					
+
+					{% endif %}
+
+					
+
+					<div class="form-group">
+						<label for="tags-input-multiple" class="col-md-3 control-label">Tags</label>
+						<div class="col-md-7">
+							<select id="tags-input-multiple" name="tags[]" multiple data-role="tagsinput" data-tag-class="label label-primary">
+								
+									<option value=""></option>
+								
+							</select>
+							<p>
+								Set tags to make your content easy to find
+							</p>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-md-3 control-label">Host departments</label>
+						<div class="col-md-6">
+							<select class="form-control" name="department[]" multiple="multiple" data-plugin-multiselect data-plugin-options='{ "includeSelectAllOption": true }' id="ms_example5">
+								{% load model_tags %}
+								{% get_all_departments as departments %}
+								
+								{% load model_tags %}
+								<optgroup label="KoTDA Departments">
+									{% for department in departments %}
+									<option {% check_if_repo_department_exist resource.id department.id as relationship%} {% if relationship != None %}selected {% endif %} value="{{ department.id }}"  >{{ department.name }}</option>
+									{% endfor %}
+								</optgroup>
+								
+							</select>
+						</div>
+					</div>
+
+						<!-- add new url link start -->
+					<hr />
+						<br />
+						<div class="list" {% if resource.upload_type != 'url' %} style="display:none;" {% endif %}>
+							<ul>
+								{% for link in resource.get_urls %}
+								<li>{{ link.name_of_website }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+					<div class="form-group" id="requirement-container" {% if resource.upload_type != 'url' %} style="display:none;" {% endif %}>
+						<h3>Add url links</h3>
+						<div class="col-md-6">
+							<label class="col-md-3 control-label" for="name_of_website[]">Name of Website</label>
+							<input type="text" name="name_of_website[]" class="form-control simple">
+							<br />
+							<label>External website link</label>
+							<input type="url" name="url[]" class="form-control simple">
+						</div>
+						
+					</div>
+					<a {% if resource.upload_type != 'url' %} style="display:none;" {% endif %} href="javascript:;" id="add-new-requirement">Add another url</a>
+					<hr />
+						<!-- add new url end -->
+
+
+						<!-- upload new document start-->
+					<hr />
+
+						{# {% if resource.upload_type == 'document' %} #}
+					<div {% if resource.upload_type != 'document' %} style="display:none;" {% endif %}>
+						<!--image uploads start-->
+						<ul style="list-style: none; display: inline-block;">
+						{% for document in resource.get_documents %}
+							<li>
+								<!--image thumbnail-->
+								
+								<h4><i class="fa fa-file-text"></i> - {{document.name_of_document}}</h4>
+								<!--delete resource button-->
+								<a href="{% url 'delete_repo_document' document.id %}" class="btn-sm btn-danger"><i class="fa fa-trash-o"></i></a>
+
+							</li>
+						{% endfor %}
+						</ul>
+
+						
+						<!--start updated upload form-->
+						{% get_repo_document_form as doc_form %}
+						<div class="col-md-6">
+							<label class="col-md-3 control-label" for="name_of_document[]">Name of Document</label>
+							{{ doc_form }}
+						</div>
+						<!--end updated upload form-->
+
+					</div>
+					<hr />
+						<!-- upload new document end -->
+						<!-- upload new image start-->
+					<hr />
+					
+					<div {% if resource.upload_type != 'image' %} style="display:none;" {% endif %}>
+
+						<ul style="list-style: none; display: inline-block;">
+							{% for image in resource.get_images %}
+							<li>
+								<!--image thumbnail-->
+								<a class="thumb-image" target="_blank" href="{{ image.image.url }}">
+									<img src="{{ image.image.url }}" class="img-responsive" height="50" width="50" alt="Project">
+								</a>
+								<!--delete resource button-->
+								<a href="{% url 'delete_repo_image' image.id %}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+							</li>
+						{% endfor %}
+						</ul>
+
+					<div class="form-group" id="image-container">
+						
+						<div class="col-md-6">
+							<label class="col-md-3 control-label" for="name_of_image[]">Image caption</label>
+							<input type="text" value="{{ resource.title }}" name="name_of_image[]" class="form-control simple">
+							<br />
+							<label>Upload image</label>
+							<input type="file" accept="image/*" name="image[]"  class="form-control simple">
+
+						</div>
+						
+					</div>
+					<a href="javascript:;" id="add-new-image">Add another image</a>
+					</div>
+
+					<hr />
+						<!-- upload new image end -->
+
+					<!-- upload new video start-->
+					<hr />
+					<div {% if resource.upload_type != 'video' %} style="display:none;" {% endif %}>
+
+						<!--uploaded videos list-->
+						<ul style="list-style: none; display: inline-block;">
+							{% for video in resource.get_videos %}
+							<li>
+								{% if video.thumbnail %}
+								<!--image thumbnail-->
+								<a class="thumb-image" target="_blank" href="{{ video.thumbnail.url }}">
+									<img src="{{ video.thumbnail.url }}" class="img-responsive" height="50" width="50" alt="Project">
+								</a>
+								{% endif %}
+								<p>{{ video.name_of_video }}</p>
+								<!--delete resource button-->
+								<a href="{% url 'delete_repo_video' video.id %}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+							</li>
+							{% endfor %}
+						</ul>
+
+						<div class="form-group" id="video-container">
+						
+						<div class="col-md-6">
+							<label class="col-md-3 control-label" for="name_of_video[]">Video title</label>
+							<input type="text" name="name_of_video[]" class="form-control simple">
+							<br />
+							<label>Upload Video</label>
+							<input type="file" accept="video/*" name="video_file[]"  class="form-control simple">
+
+						</div>
+						
+					</div>
+					<a href="javascript:;" id="add-new-video">Add another video</a>
+					<hr />
+					</div>
+						<!-- upload new video end -->
+					
+
+
+
+
+
+					<input type="hidden" value="{{ resource.id }}" name="resource_id"/>
+					<input type="hidden" name="upload_type" value="{{ resource.upload_type }}" />
+					
+				  <!--Footer-->
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save</button>
+				  </div>
+      
+				</form>
+				</div>
+				
+			</section>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+	
+
+<script type="text/javascript">
+	//upload link [form]
+let i = 1;
+document.getElementById('add-new-requirement').onclick = function () {
+    let template = `
+        <div class="col-md-6">
+			<label class="col-md-3 control-label" for="name_of_website[]">Name of Website</label>
+			<input type="text" name="name_of_website[]" class="form-control simple">
+			<br />
+			<label>External website link</label>
+			<input type="url" name="url[]" class="form-control simple">
+		</div>
+        `;
+   
+
+    let container = document.getElementById('requirement-container');
+    let div = document.createElement('div');
+    div.innerHTML = template;
+    container.appendChild(div);
+
+    i++;
+	}
+
+	//upload document [ form ] 
+	let j = 1;
+	document.getElementById('add-new-document').onclick = function () {
+    let template = `
+        <div class="col-md-6">
+			<label class="col-md-3 control-label" for="name_of_document[]">Name of Document</label>
+			<input type="text" name="name_of_document[]" class="form-control simple">
+			<br />
+			<label>Upload document</label>
+			<input type="file" name="reference_material_download[]" class="form-control simple">
+		</div>
+        `;
+   
+
+    let container = document.getElementById('document-container');
+    let div = document.createElement('div');
+    div.innerHTML = template;
+    container.appendChild(div);
+
+    j++;
+	}
+
+
+	//upload image [ form ] 
+	let k = 1;
+	document.getElementById('add-new-image').onclick = function () {
+    let template = `
+        <div class="col-md-6">
+			<label class="col-md-3 control-label" for="name_of_image[]">Image caption</label>
+			<input type="text" name="name_of_image[]" class="form-control simple">
+			<br />
+			<label>Upload image</label>
+			<input type="file" accept="image/*" name="image[]"  class="form-control simple">
+		</div>
+        `;
+   
+
+    let container = document.getElementById('image-container');
+    let div = document.createElement('div');
+    div.innerHTML = template;
+    container.appendChild(div);
+
+    k++;
+	}
+
+
+		//upload video [ form ] 
+	let l = 1;
+	document.getElementById('add-new-video').onclick = function () {
+    let template = `
+        <div class="col-md-6" id="extra">
+			<label class="col-md-3 control-label" for="name_of_video[]">Video title</label>
+			<input type="text" name="name_of_video[]" class="form-control simple">
+			<br />
+			<label>Upload Video</label>
+			<input type="file" accept="video/*" name="video_file[]"  class="form-control simple">
+			
+			<a href="javascript:;" id="remove-video">Remove</a>
+		</div>
+		
+        `;
+   
+
+    let container = document.getElementById('video-container');
+    let div = document.createElement('div');
+    div.innerHTML = template;
+    container.appendChild(div);
+
+    l++;
+	}
+
+	$(document).ready(function(){
+
+	 // Add new element
+	 $(".add").click(function(){
+
+	  // Finding total number of elements added
+	  var total_element = $(".element").length;
+ 
+	  // last <div> with element class id
+	  var lastid = $(".element:last").attr("id");
+	  var split_id = lastid.split("_");
+	  var nextindex = Number(split_id[1]) + 1;
+
+	  var max = 5;
+	  // Check total number elements
+	  if(total_element < max ){
+	   // Adding new div container after last occurance of element class
+	   $(".element:last").after("<div class='element' id='div_"+ nextindex +"'></div>");
+ 
+	   // Adding element to <div>
+	   $("#div_" + nextindex).append("<input type='text' placeholder='Enter your skill' id='txt_"+ nextindex +"'>&nbsp;<span id='remove_" + nextindex + "' class='remove'>X</span>");
+ 
+	  }
+ 
+	 });
+
+	 // Remove element
+	 $('.container').on('click','.remove',function(){
+ 
+	  var id = this.id;
+	  var split_id = id.split("_");
+	  var deleteindex = split_id[1];
+
+	  // Remove <div> with id
+	  $("#div_" + deleteindex).remove();
+
+	 }); 
+	});
+</script>
+
+					<!-- end: page -->
+
+
+
+{% endblock %}

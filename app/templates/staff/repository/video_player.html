@@ -1,0 +1,34 @@
+﻿{% extends 'staff/repository_layout.html' %}
+{% load static %}
+{% load social_share %}
+{% block content %}
+
+<div class="row">
+    <div class="embed-responsive embed-responsive-4by3">
+        <video width='320' height='240' controls>
+            <source src="{{ video.video_file.url }}">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="panel">
+        <h2>{{ video.name_of_video }}</h2>
+        <p>{{ video.repository.description | safe }}</p>
+        <p>[ {{ video.repository.access_level }} ]</p>
+
+        <a class="btn-sm btn-primary" href="{{ video.video_file.url }}" download><i class="fa fa-download"></i> Download</a>
+
+        <div class="btn-group dropup">
+			<button type="button" class="mb-xs mt-xs mr-xs btn btn-default dropdown-toggle" data-toggle="dropdown">Share <span class="caret"></span></button>
+			<ul class="dropdown-menu" role="menu">
+				<li>{% send_email  'video shared from resource center'  'Check this out.' video.video_file.url email btn %}</li>
+				<li>{% post_to_facebook video.video_file.url facebook share %}</li>
+				<li>{% post_to_twitter "{{request.user.first_name}} shared {{ video.name_of_video }}. Check it out!" video.video_file.url "Twitter" %}</li>
+				<li>{% post_to_linkedin video.video_file.url btn %}</li>
+				<li class="divider"></li>
+				<li>{% post_to_telegram  video.name_of_video  video.video_file.url Telegram  btn %}</li>
+				<li>{% post_to_whatsapp video.video_file.urll Whatsapp btn %}</li>
+			</ul>
+		</div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+﻿{% extends 'staff/layout.html' %}
+
+{% block content %}
+  <h2>Create new learning resource</h2>
+  <form method="post" enctype="multipart/form-data" action="{% url 'create_learning_resource'%}">
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+      <div class="form-group" id="requirement-container">
+		    <label>Requirement</label>
+		    <input type="text" name="requirements[]" class="form-control simple">
+	    </div>
+      <a href="javascript:;" id="add-new-requirement">Add new requirement</a>
+      
+    <button type="submit">Save</button>
+  </form>
+
+<script type="text/javascript">
+let i = 1;
+document.getElementById('add-new-requirement').onclick = function () {
+    let template = `
+        <div class="form-group">
+		    <label>Requirement</label>
+		    <input type="text" name="requirements[]" class="form-control simple">
+	    </div>
+        `;
+   
+
+    let container = document.getElementById('requirement-container');
+    let div = document.createElement('div');
+    div.innerHTML = template;
+    container.appendChild(div);
+
+    i++;
+}
+</script>
+{% endblock %}
