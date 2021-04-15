@@ -24,6 +24,7 @@
 						</div>
 					</div>
 
+					{% if request.user == user %}
 					<div class="widget-toggle-expand mb-md">
 						<div class="widget-header">
 							<h6><strong>Profile Completion</strong></h6>
@@ -47,11 +48,13 @@
 							</ul>
 						</div>
 					</div>
-
+					{% endif %}
 					<hr class="dotted short">
 
+					{% if user.profile.bio.is_public or request.user == user %}
 					<h6 class="text-muted">About</h6>
 					<p>{{ user.profile.bio }}</p>
+					
 					<div class="clearfix">
 					</div>
 
@@ -61,13 +64,14 @@
 						<a rel="tooltip" data-placement="bottom" target="_blank" href="mailto:{{ user.email.url }}" data-original-title="Send Mail"><i class="fa fa-envelope-square"></i><span>Send mail</span></a>
 
 					</div>
+					{% endif %}
 
 				</div>
 			</section>
 
 
 		</div>
-		<h4 class="mb-md">User Dashboard</h4>
+		<h4 class="mb-md">Staff Dashboard</h4>
 		<div class="col-md-8 col-lg-9">
 
 			<div class="tabs">
@@ -161,11 +165,11 @@
 											{% for document in user.get_my_documents %}
 											<tr class="gradeX">
 												<td>
-													
-													{{ document.name_of_document }}
+													<a class="link" href="{% url 'view_document' document.id %}" > {{ document.name_of_document }}</a>
+													 <span class="text-info">[{{ document.repository.publish_status }}]</span>
 												</td>
 												<td>{{ document.repository.description | safe }}</td>
-												<td>{{ document.repository.department_folder }}</td>
+												<td>{{ document.repository.department_folder }} | <span class="text-info">[ {{ document.repository.department_folder.access_level }} ]</span></td>
 												
 												
 												<td class="actions">
@@ -227,6 +231,8 @@
 														</a>
 												
 													</div>
+													<h5>{{ image.name_of_image }}</h5>
+													<span class="text-info">[ {{ image.repository.access_level }} | {{ image.repository.publish_status }} ]</span>
 												</td>
 												<td>{{ image.repository.description | safe }}</td>
 												<td>{{ image.repository.department_folder }}</td>
@@ -293,6 +299,8 @@
 														Your browser does not support the video tag.
 														</video>
 													</div>
+													<h5>{{ video.name_of_video }}</h5>
+													<span class="text-info">[ {{ video.repository.access_level }} | {{ video.repository.publish_status }} ]</span>
 												</td>
 												<td>{{ video.repository.description | safe }}</td>
 												<td>{{ video.repository.department_folder }}</td>

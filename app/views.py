@@ -45,6 +45,18 @@ from django.contrib.auth import update_session_auth_hash
 def home(request):
     return render(request,'staff/repository/index.html',)
 
+#pata ip
+def visitor_ip_address(request):
+
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 ######################################################################################################
 ################=========Authentication Views=============############################################
 
@@ -776,9 +788,9 @@ class BasicUploadView(View):
                 file_upload.repository = resource
             
                 file_upload.name_of_document = request.FILES.get('reference_material_download').name
-                
+                file_upload.publish_status='Draft'
                 file_upload.save()
-                #TODO::validation of file extensions
+                #TODO::validation of file extensions. seems to be a futile event if the purpose is to protect from hackers
 
                 data = {'is_valid': True, 'name': file_upload.reference_material_download.name, 'url': file_upload.reference_material_download.url}
 
@@ -786,6 +798,8 @@ class BasicUploadView(View):
             else:
                 data = {'is_valid': False}
             return JsonResponse(data)
+
+
         elif resource.upload_type == 'image':
             if image_form.is_valid():
             
@@ -793,6 +807,7 @@ class BasicUploadView(View):
 
                 file_upload = image_form.save(commit=False)
                 file_upload.repository = resource
+                file_upload.publish_status='Draft'
                 file_upload.name_of_image = request.FILES.get('image').name
                 file_upload.save()
                 #TODO::validation of file extensions
@@ -810,6 +825,7 @@ class BasicUploadView(View):
 
                 file_upload = video_form.save(commit=False)
                 file_upload.repository = resource
+                file_upload.publish_status='Draft'
                 file_upload.name_of_video = request.FILES.get('video_file').name
                 file_upload.save()
                 #TODO::validation of file extensions
@@ -832,6 +848,7 @@ def check_repo_capacity(resource_id):
 
 
 ###get the create repo page
+@login_required
 def get_create_repo_resource(request, upload_type=''):
     form = KotdaRepositoryResourceForm()
     resource = KotdaRepositoryResource()
@@ -860,6 +877,7 @@ def get_create_repo_resource(request, upload_type=''):
 
 
 ###create a repo object
+@login_required
 def create_repo_resource(request):
     if request.method == 'POST':
         form=KotdaRepositoryResourceForm(request.POST)
@@ -953,12 +971,18 @@ def post_update_repo_resource(request):
                 
         if form.is_valid() and resource is not None:
             repo = form.save(commit=False)
-            #repo.access_level = 'protected'
             repo.save()
             #raise Exception(request.POST)
+            folder = RepositoryDocumentFolder.objects.get(id=request.POST.get('department_folder'))
+
+            if folder:
+                resource.department_folder = folder
+            else:
+                 messages.add_message(request, messages.ERROR, 'An error occured. You must select a valid department folder to add the resource')
+                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
             if request.POST.getlist('tags[]'):
                 resource.tags = request.POST.getlist('tags[]')
-          
+            
             resource.save()
 
             #save department relationship start#
@@ -1001,7 +1025,24 @@ def publish_resource(request, resource_id):
         resource.save()
 
         messages.add_message(request, messages.SUCCESS, 'Resource published successfully')       
-        return redirect('get_user_dashboard', user_id=request.user.id, tab='overview')
+
+        if resource.upload_type == 'document':
+            doc = RepositoryResourceDownload.objects.filter(repository=resource,is_deleted=False)
+            #raise Exception(doc)
+            return redirect('view_document', document_id=doc[0].id)
+
+        #if its an image redirect to view image page
+        elif resource.upload_type == 'image':
+            image = RepositoryResourceImage.objects.filter(repository=resource,is_deleted=False)
+            return redirect('view_image', image_id=image[0].id)
+
+        #if its an image redirect to view image page
+        elif resource.upload_type == 'video':
+            video = RepositoryResourceVideoUrl.objects.filter(repository=resource,is_deleted=False)
+            return redirect('play_repo_video', video_id=video[0].id)
+
+        else:
+            return redirect('get_user_dashboard', user_id=request.user.id, tab='overview')
 
     else:
         messages.add_message(request, messages.ERROR, '(ACCESS_DENIED) An error occured. Resource can not be validated. Contact Konza ICT Office for support')
@@ -1040,11 +1081,24 @@ def filter_repo_by_dept(request, dept_id):
         department = Department.objects.get(id=dept_id)
         repo_dept = RepositoryDepartment.objects.filter(department=department)
         folder_relationships = DepartmentFolderRelationship.objects.filter(department=department)
-        #add to list
-        for rel in folder_relationships:
-            for res in rel.folder.get_folder_resources():
-                if res.publish_status == 'Published':
-                    resources.append(res)
+       
+        #add to list depending on reuest.user
+        if not request.user.is_authenticated:
+            for resource in repo_dept:
+                if 'Published' in resource.repository.publish_status and 'Public' in resource.repository.access_level:
+                    resources.append(resource.repository)
+
+        elif request.user.is_authenticated:
+            for resource in repo_dept:
+                    if 'Published' in resource.repository.publish_status:
+                       if 'Public' in resource.repository.access_level:
+                            resources.append(resource.repository)
+                       elif 'Internal' in resource.repository.access_level:
+                            resources.append(resource.repository)
+                       elif 'Restricted' in resource.repository.access_level:
+                           #get the relationship
+                           if request.user.profile.department in resource.repository.get_host_departments():
+                                resources.append(resource.repository)
         
         
 
@@ -1110,11 +1164,24 @@ def get_repo_images_by_dept(request, dept_id):
         department = Department.objects.get(id=dept_id)
         repo_dept = RepositoryDepartment.objects.filter(department=department)
 
-        #add to list
-        for resource in repo_dept:
-            if resource.repository.get_images():
-                if resource.repository.publish_status == 'Published':
-                    resources.append(resource.repository)
+        #add to list depending on reuest.user
+        if not request.user.is_authenticated:
+            for resource in repo_dept:
+                if resource.repository.get_images():
+                    if 'Published' in resource.repository.publish_status and 'Public' in resource.repository.access_level:
+                        resources.append(resource.repository)
+        elif request.user.is_authenticated:
+            for resource in repo_dept:
+                if resource.repository.get_images():
+                    if 'Published' in resource.repository.publish_status:
+                       if 'Public' in resource.repository.access_level:
+                            resources.append(resource.repository)
+                       elif 'Internal' in resource.repository.access_level:
+                            resources.append(resource.repository)
+                       elif 'Restricted' in resource.repository.access_level:
+                           #get the relationship
+                           if request.user.profile.department in resource.repository.get_host_departments():
+                                resources.append(resource.repository)
 
          #pagination
         paginator = Paginator(resources, 5)
@@ -1140,11 +1207,29 @@ def get_repo_videos_by_dept(request, dept_id):
         department = Department.objects.get(id=dept_id)
         repo_dept = RepositoryDepartment.objects.filter(department=department)
 
-        #add to list
-        for resource in repo_dept:
-            if resource.repository.get_videos():
-                if resource.repository.publish_status == 'Published':
-                    resources.append(resource.repository)
+        #add to list depending on reuest.user
+        if not request.user.is_authenticated:
+            for resource in repo_dept:
+                if resource.repository.get_videos():
+                    if 'Published' in resource.repository.publish_status:
+                        if 'Published' in resource.repository.publish_status and 'Public' in resource.repository.access_level:
+                            resources.append(resource.repository)
+
+        elif request.user.is_authenticated:#user is authenticated
+            for resource in repo_dept:
+                if resource.repository.get_videos():
+                    if 'Published' in resource.repository.publish_status:
+                       if 'Public' in resource.repository.access_level:
+                            resources.append(resource.repository)
+                       elif 'Internal' in resource.repository.access_level:
+                            resources.append(resource.repository)
+                       elif 'Restricted' in resource.repository.access_level:
+                           #get the relationship
+                           if request.user.profile.department in resource.repository.get_host_departments():
+                                resources.append(resource.repository)
+
+
+
 
          #pagination
         paginator = Paginator(resources, 5)
@@ -1165,33 +1250,62 @@ def get_repo_videos_by_dept(request, dept_id):
     #filter by document type
 def filter_repo_by_folder(request, folder_id):
     
-    try:
+    #try:
+        #get the folder
+    folder = RepositoryDocumentFolder.objects.get(id=folder_id, is_deleted=False)
+    if folder:
+        #get the related folders
+        folder_relationships = folder.get_folder_relationship()
 
-        folder = RepositoryDocumentFolder.objects.get(id=folder_id, is_deleted=False)
-    
-        folder_relationships = DepartmentFolderRelationship.objects.filter(folder=folder)
-
+        
         resources = KotdaRepositoryResource.objects.filter(department_folder=folder, publish_status='Published', is_deleted=False)
-    except:
+        
+        #check privacy and store result in collection
+        filtered_resources = []
+
+        #raise Exception(resources)
+        if request.user.is_authenticated == True:
+            for resource in resources:
+                if "Public" in resource.access_level  or "Internal" in resource.access_level:
+                    filtered_resources.append(resource)
+                elif "Restricted" in resource.access_level:
+                        if  request.user.profile.department in resource.get_host_departments():
+                            filtered_resources.append(resource)
+
+
+        #get results for unauthorized users
+        elif request.user.is_authenticated == False:
+            for resource in resources:
+                if "Public" in resource.access_level:
+                    filtered_resources.append(resource)
+
+        
+                
+
+
+        #raise Exception(filtered_resources)
+            #pagination
+        paginator = Paginator(filtered_resources, 5)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(
+                request,
+                'staff/repository/media_view.html',
+                {
+                    'title':folder,
+                    'year':datetime.now().year,
+                    'resources':filtered_resources,
+                    'perspective':'folder',
+                    'current_folder':folder,
+                    'folder_relationships':folder_relationships,
+                    'page_obj': page_obj,
+                })
+
+
+    else:
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    #raise Exception(resources)
-        #pagination
-    paginator = Paginator(resources, 5)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(
-            request,
-            'staff/repository/media_view.html',
-            {
-                'title':folder,
-                'year':datetime.now().year,
-                'resources':resources,
-                'perspective':'folder',
-                'current_folder':folder,
-                'folder_relationships':folder_relationships,
-                'page_obj': page_obj,
-            })
+    
 
 #create new doc type
 @login_required
@@ -1204,17 +1318,27 @@ def create_document_folder(request):
             folder.created_by = request.user
             folder.save()
 
-            if request.POST.get('department'):
-                relationship = DepartmentFolderRelationship()
-                relationship.folder = folder
-                if request.POST.get('parent_folder_id'):#if is sub folder
-                    paro = RepositoryDocumentFolder.objects.get(id=request.POST.get('parent_folder_id')) or None
-                    relationship.parent = paro
-                relationship.department = Department.objects.get(id=request.POST.get('department'))
-                relationship.created_by = request.user
-                relationship.save()
+            
+            relationship = DepartmentFolderRelationship()
+            relationship.folder = folder
+            if request.POST.get('parent_folder_id'):#if is sub folder
+                paro = RepositoryDocumentFolder.objects.get(id=request.POST.get('parent_folder_id')) or None
+                relationship.parent = paro
+            if request.POST.get('department'): 
+                if request.user.is_superuser:#check if this was submitted by a superuser if not arudi penye ametoka
+                    relationship.department = Department.objects.get(id=request.POST.get('department'))
+                else:
+                    messages.add_message(request, messages.ERROR, '(ACCESS_DENIED) An error occured. Resource can not be validated. Contact Konza ICT Office for support')
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            else:
+                relationship.department = Department.objects.get(id=request.user.profile.department.id)
+            relationship.created_by = request.user
+            relationship.save()
 
-                #raise Exception(relationship)
+            messages.add_message(request, messages.SUCCESS, 'Folder created successfully')
+                
+            
+
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -1286,81 +1410,87 @@ def search_repository(request):
         resources = []
 
         for repo in repos:
-            #get results for unauthorized users
-            if not request.user.is_authenticated:
-                if repo.access_level == "Public":
-                    resources.append(repo)
-            #get results for authorized users
-            else:
-                if repo.access_level == "Public":
-                    resources.append(repo)
-                if repo.access_level == "Internal":
-                    resources.append(repo)
-                if repo.access_level == "Restricted":
-                    if  request.user.profile.department in repo.get_host_departments():
+            if "Published" in repo.publish_status and repo.is_deleted == False:
+                #get results for unauthorized users
+                if not request.user.is_authenticated:
+                    if "Public" in repo.access_level:
                         resources.append(repo)
-                #todo: confidential check
+                #get results for authorized users
+                else:
+                    if "Public" in repo.access_level:
+                        resources.append(repo)
+                    if "Internal" in repo.access_level:
+                        resources.append(repo)
+                    if "Restricted" in repo.access_level:
+                        if  request.user.profile.department in repo.get_host_departments():
+                            resources.append(repo)
+                    #todo: confidential check
 
         #sort documents
         for doc in docs:
-            #get results for unauthorized users
-            if not request.user.is_authenticated:
-                if doc.repository.access_level == "Public":
-                    if doc.repository not in resources:
-                        resources.append(doc.repository)
-                #get results for authorized users
-            else:
-                if doc.repository.access_level == "Public":
-                    if doc.repository not in resources:
-                        resources.append(doc.repository)
-                if doc.repository.access_level == "Internal":
-                    if doc.repository not in resources:
-                        resources.append(doc.repository)
-                if doc.repository.access_level == "Restricted":
-                    if request.user.profile.department in doc.repository.get_host_departments():
+            if "Published" in doc.repository.publish_status and doc.repository.is_deleted == False and doc.is_deleted == False:
+                #get results for unauthorized users
+                if not request.user.is_authenticated:
+                    if "Public" in doc.repository.access_level:
                         if doc.repository not in resources:
                             resources.append(doc.repository)
-                #todo: confidential check
+                    #get results for authorized users
+                else:
+                    if "Public" in doc.repository.access_level:
+                        if doc.repository not in resources:
+                            resources.append(doc.repository)
+                    if "Internal" in doc.repository.access_level:
+                        if doc.repository not in resources:
+                            resources.append(doc.repository)
+                    if "Restricted" in doc.repository.access_level:
+                        if request.user.profile.department in doc.repository.get_host_departments():
+                            if doc.repository not in resources:
+                                resources.append(doc.repository)
+                    #todo: confidential check
 
         #sort pictures
         for pic in pics:
-            #get results for unauthorized users
-            if not request.user.is_authenticated:
-                if pic.repository.access_level == "Public":
-                    if pic.repository not in resources:
-                        resources.append(pic.repository)
-                #get results for authorized users
-            else:
-                if pic.repository.access_level == "Public":
-                    if pic.repository not in resources:
-                        resources.append(pic.repository)
-                if pic.repository.access_level == "Internal":
-                    if pic.repository not in resources:
-                        resources.append(pic.repository)
-                if pic.repository.access_level == "Restricted":
-                    if request.user.profile.department in pic.repository.get_host_departments():
+            if "Published" in pic.repository.publish_status and pic.repository.is_deleted == False and pic.is_deleted == False:
+
+                #get results for unauthorized users
+                if not request.user.is_authenticated:
+                    if"Public" in pic.repository.access_level:
                         if pic.repository not in resources:
                             resources.append(pic.repository)
-                #todo: confidential check
+                    #get results for authorized users
+                else:
+                    if "Public" in pic.repository.access_level:
+                        if pic.repository not in resources:
+                            resources.append(pic.repository)
+                    if "Internal" in pic.repository.access_level:
+                        if pic.repository not in resources:
+                            resources.append(pic.repository)
+                    if "Restricted" in pic.repository.access_level:
+                        if request.user.profile.department in pic.repository.get_host_departments():
+                            if pic.repository not in resources:
+                                resources.append(pic.repository)
+                    #todo: confidential check
 
 
           #sort videos
         for video in videos:
-            #get results for unauthorized users
-            if not request.user.is_authenticated:
-                if video.repository.access_level == "Public":
-                    if video.repository not in resources:
-                        resources.append(video.repository)
+            if video.repository.publish_status == "Published" and video.repository.is_deleted == False and video.is_deleted == False:
+
                 #get results for unauthorized users
-            else:
-                if video.repository.access_level == "Internal":
-                    if video.repository not in resources:
-                        resources.append(video.repository)
-                if video.repository.access_level == "Restricted":
-                    if request.user.profile.department in video.repository.get_host_departments():
+                if not request.user.is_authenticated:
+                    if "Public" in video.repository.access_level:
                         if video.repository not in resources:
                             resources.append(video.repository)
-                #todo: confidential check
+                    #get results for unauthorized users
+                else:
+                    if "Internal" in video.repository.access_level:
+                        if video.repository not in resources:
+                            resources.append(video.repository)
+                    if "Restricted" in video.repository.access_level:
+                        if request.user.profile.department in video.repository.get_host_departments():
+                            if video.repository not in resources:
+                                resources.append(video.repository)
+                    #todo: confidential check
 
         return get_search(request, search_tag, resources)
 
@@ -1393,7 +1523,7 @@ def get_search(request, search_tag, resources):
             request,
             'staff/repository/media_view.html',
             {
-                'title':search_tag+' search results',
+                'title':'"'+search_tag+'"'+' search results',
                 'year':datetime.now().year,
                 'resources':resources,
                 'search_tag':search_tag,
@@ -1423,10 +1553,10 @@ def download_file(request, document_id):
     return response
 
 
-def list_repo_resources():
-    pass
+
 
 #delete an image
+@login_required
 def delete_repo_image(request, image_id):
     image = RepositoryResourceImage.objects.get(id = image_id)
     if image:
@@ -1434,6 +1564,15 @@ def delete_repo_image(request, image_id):
             image.is_deleted = True
             image.deleted_by = request.user
             image.save()
+
+            #should I delete the repo too?
+            repo = KotdaRepositoryResource.objects.get(id=image.repository.id)
+
+            if repo.get_images().count() <= 0 and repo.get_videos().count() <= 0 and repo.get_documents().count() <= 0:
+                repo.is_deleted=True
+                repo.publish_status='Rejected'
+                repo.deleted_by = request.user
+                repo.save()
 
             messages.add_message(request, messages.SUCCESS, 'Image deleted successfully')       
         else:
@@ -1443,6 +1582,7 @@ def delete_repo_image(request, image_id):
 
 
 #delete document
+@login_required
 def delete_repo_document(request, document_id):
     document = RepositoryResourceDownload.objects.get(id = document_id)
     if document:
@@ -1450,6 +1590,16 @@ def delete_repo_document(request, document_id):
             document.is_deleted = True
             document.deleted_by = request.user
             document.save()
+
+            
+            #should I delete the repo too?
+            repo = KotdaRepositoryResource.objects.get(id=document.repository.id)
+
+            if repo.get_images().count() <= 0 and repo.get_videos().count() <= 0 and repo.get_documents().count() <= 0:
+                repo.is_deleted=True
+                repo.publish_status='Rejected'
+                repo.deleted_by = request.user
+                repo.save()
 
             messages.add_message(request, messages.SUCCESS, 'Document deleted successfully')       
         else:
@@ -1459,6 +1609,7 @@ def delete_repo_document(request, document_id):
 
 
 #delete video
+@login_required
 def delete_repo_video(request, video_id):
     video = RepositoryResourceVideoUrl.objects.get(id = video_id)
     if video:
@@ -1466,6 +1617,16 @@ def delete_repo_video(request, video_id):
             video.is_deleted = True
             video.deleted_by = request.user
             video.save()
+
+            
+            #should I delete the repo too?
+            repo = KotdaRepositoryResource.objects.get(id=video.repository.id)
+
+            if repo.get_images().count() <= 0 and repo.get_videos().count() <= 0 and repo.get_documents().count() <= 0:
+                repo.is_deleted=True
+                repo.publish_status='Rejected'
+                repo.deleted_by = request.user
+                repo.save()
 
             messages.add_message(request, messages.SUCCESS, 'Video deleted successfully')       
         else:
@@ -1498,10 +1659,21 @@ def delete_repo_folder(request, folder_id):
 def play_repo_video(request, video_id):
     video = RepositoryResourceVideoUrl.objects.get(id = video_id)
     if video:
-        #security check
 
+        #record click
+        try:
+            stat = RepositoryResourceViewStat()
+            stat.repository = video.repository
+            if request.user.is_authenticated:
+                stat.viewer = request.user
+            stat.anwani_ip = visitor_ip_address(request)
+            stat.save()
+        except:
+            pass
         
-        return render(
+        #security check
+        if video.repository.access_level == "Public":
+            return render(
                 request,
                 'staff/repository/video_player.html',
                 {
@@ -1510,7 +1682,32 @@ def play_repo_video(request, video_id):
                     'video':video,
                     
                 })
+        if request.user.is_authenticated:
+            if "Internal" in video.repository.access_level:
+                    return render(
+                        request,
+                        'staff/repository/video_player.html',
+                        {
+                            'title':video.name_of_video,
+                            'year':datetime.now().year,
+                            'video':video,
+                    
+                        })
 
+            if "Restricted" in video.repository.access_level:
+                    if request.user.profile.department in video.repository.get_host_departments():
+                        return render(
+                            request,
+                            'staff/repository/video_player.html',
+                            {
+                                'title':video.name_of_video,
+                                'year':datetime.now().year,
+                                'video':video,
+                    
+                            })
+
+        
+        
     else:
         messages.add_message(request, messages.ERROR, 'An error occured. Video could not be loaded. Contact Konza ICT Office for support')
     
@@ -1522,8 +1719,19 @@ def view_image(request, image_id):
     image = RepositoryResourceImage.objects.get(id = image_id)
     if image:
 
+        #record click
+        try:
+            stat = RepositoryResourceViewStat()
+            stat.repository = image.repository
+            if request.user.is_authenticated:
+                stat.viewer = request.user
+            stat.anwani_ip = visitor_ip_address(request)
+            stat.save()
+        except:
+            pass
+
         #security check
-        if image.repository.access_level == "Public":
+        if 'Public' in image.repository.access_level:
             return render(
                 request,
                 'staff/repository/photo_view.html',
@@ -1533,7 +1741,7 @@ def view_image(request, image_id):
                     'image':image,
                     
                 })
-        if image.repository.access_level == "Internal":
+        if 'Internal' in image.repository.access_level:
             if request.user.is_authenticated:
                 return render(
                     request,
@@ -1544,7 +1752,7 @@ def view_image(request, image_id):
                         'image':image,
                     
                     })
-        if image.repository.access_level == "Restricted":
+        if 'Restricted' in image.repository.access_level:
             if request.user.is_authenticated:
                 if request.user.profile.department in image.repository.get_host_departments():
                     return render(
@@ -1570,8 +1778,21 @@ def view_image(request, image_id):
 def view_document(request, document_id):
     document = RepositoryResourceDownload.objects.get(id = document_id)
     if document:
+
+        #record click
+        try:
+            stat = RepositoryResourceViewStat()
+            stat.repository = document.repository
+            if request.user.is_authenticated:
+                stat.viewer = request.user
+            stat.anwani_ip = visitor_ip_address(request)
+            stat.save()
+        except:
+            pass
+
+        #raise Exception(document)
         #security check
-        if document.repository.access_level == "Public":
+        if "Public" in document.repository.access_level:
             return render(
                 request,
                 'staff/repository/document_view.html',
@@ -1581,7 +1802,7 @@ def view_document(request, document_id):
                     'document':document,
                     
                 })
-        if document.repository.access_level == "Internal":
+        if "Internal" in document.repository.access_level:
             if request.user.is_authenticated:
                 return render(
                     request,
@@ -1592,7 +1813,7 @@ def view_document(request, document_id):
                         'document':document,
                     
                     })
-        if document.repository.access_level == "Restricted":
+        if "Restricted" in document.repository.access_level:
             if request.user.is_authenticated:
                 if request.user.profile.department in document.repository.get_host_departments():
                     return render(
@@ -1609,6 +1830,134 @@ def view_document(request, document_id):
         messages.add_message(request, messages.ERROR, 'An error occured. Document could not be loaded. Contact Konza ICT Office for support')
     
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def bookmark_document(request, document_id=''):
+    if request.method == "POST":
+        doc = RepositoryResourceDownload.objects.get(id=request.POST.get('module_id'))
+        #return Exception(message)
+        try:
+            #check if record already exists, if yes set status to inactive/active
+            mark = RepositoryDocumentBookmark.objects.get(document=doc,marked_by=request.user)
+            if mark.status == True:
+                mark.status = False
+                message = 'Bookmark'
+            elif mark.status == False:
+                mark.status = True
+                message = 'Bookmarked'
+            mark.anwani_ip = visitor_ip_address(request)
+            mark.save()
+            
+
+        except:
+            mark = RepositoryDocumentBookmark()
+            mark.marked_by = request.user
+            mark.document = doc
+            mark.anwani_ip = visitor_ip_address(request)
+            mark.save()
+            message = 'Bookmarked'
+
+
+        fail = 'Bookmark Fail!'
+        success = message
+        #return Exception(message)
+
+        return HttpResponse(success)
+
+
+@login_required
+def bookmark_image(request, image_id=''):
+    if request.method == "POST":
+        img = RepositoryResourceImage.objects.get(id=request.POST.get('module_id'))
+        #return Exception(message)
+        try:
+            #check if record already exists, if yes set status to inactive/active
+            mark = RepositoryImageBookmark.objects.get(image=img,marked_by=request.user)
+            if mark.status == True:
+                mark.status = False
+                message = 'Bookmark'
+            elif mark.status == False:
+                mark.status = True
+                message = 'Bookmarked'
+            mark.anwani_ip = visitor_ip_address(request)
+            mark.save()
+            
+
+        except:
+            mark = RepositoryImageBookmark()
+            mark.marked_by = request.user
+            mark.image = img
+            mark.anwani_ip = visitor_ip_address(request)
+            mark.save()
+            message = 'Bookmarked'
+
+
+        fail = 'Bookmark Fail!'
+        success = message
+        #return Exception(message)
+
+        return HttpResponse(success)
+
+
+@login_required
+def bookmark_video(request, video_id=''):
+    if request.method == "POST":
+        vid = RepositoryResourceVideoUrl.objects.get(id=request.POST.get('module_id'))
+        #return Exception(message)
+        try:
+            #check if record already exists, if yes set status to inactive/active
+            mark = RepositoryVideoBookmark.objects.get(video=vid,marked_by=request.user)
+            if mark.status == True:
+                mark.status = False
+                message = 'Bookmark'
+            elif mark.status == False:
+                mark.status = True
+                message = 'Bookmarked'
+            mark.anwani_ip = visitor_ip_address(request)
+            mark.save()
+            
+
+        except:
+            mark = RepositoryVideoBookmark()
+            mark.marked_by = request.user
+            mark.video = vid
+            mark.anwani_ip = visitor_ip_address(request)
+            mark.save()
+
+
+        fail = 'Bookmark Fail!'
+        success = message
+        #return Exception(message)
+
+        return HttpResponse(success)
+
+
+@login_required
+def get_my_bookmarks(request):
+    bookmarks = []
+
+    doc_marks = RepositoryDocumentBookmark.objects.filter(marked_by=request.user, status=True)
+    for doc in doc_marks:
+        bookmarks.append(doc.document.repository)
+
+    image_marks = RepositoryImageBookmark.objects.filter(marked_by=request.user, status=True)
+    for img in image_marks:
+        bookmarks.append(img.image.repository)
+
+    video_marks = RepositoryVideoBookmark.objects.filter(marked_by=request.user, status=True)
+    for vid in video_marks:
+        bookmarks.append(vid.video.repository)
+
+
+    return render(
+            request,
+            'staff/repository/media_view.html',
+            {
+                'title':'Bookmarks',
+                'year':datetime.now().year,
+                'resources':bookmarks,
+            })
+ 
 
 ######################################################################################################
 

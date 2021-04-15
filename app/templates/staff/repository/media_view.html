@@ -6,6 +6,11 @@
 
     <!-- start: page -->
 	<section class="content-with-menu content-with-menu-has-toolbar media-gallery">
+
+
+		
+
+
 		<div class="content-with-menu-container">
 			<div class="inner-menu-toggle">
 				<a href="#" class="inner-menu-expand" data-open="inner-menu">
@@ -28,12 +33,11 @@
 							
 						<div class="inner-menu-content">
 							
-							{% if request.user.is_authenticated %}
+							
 							<h3  class="text text-primary">
 								{{ title }}
 							</h3>
-							{% endif %}
-							
+													
 							<hr class="separator" />
 							
 							<div class="sidebar-widget m-none">
@@ -44,10 +48,16 @@
 										<a href="#modalForm" class="modal-with-form btn btn-dark btn-sm btn-widget-act">Add Folder</a>
 
 									<!-- Modal Form -->
-									<div id="modalForm" class="modal-block modal-block-primary mfp-hide">
+									
+
+									<div class="modal-block modal-block-primary mfp-hide" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+											aria-hidden="true">
 										<section class="panel">
 											<header class="panel-heading">
-												<h2 class="panel-title">Create new folder</h2>
+												<h2 class="panel-title">Create new folder to {{ request.user.profile.department }} repository</h2>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												  <span aria-hidden="true">×</span>
+												</button>
 											</header>
 											{% get_document_form as document_type_form %}
 											{% get_department_form as department_form %}
@@ -61,13 +71,16 @@
 															{{ document_type_form.folder_name }}
 														</div>
 													</div>
-
+													
+													{% if request.user.is_superuser %}
 													<div class="form-group mt-lg">
 														<label class="col-sm-3 control-label">{{ department_form.department.label_tag }}</label>
 														<div class="col-sm-9">
+
 															{{ department_form.department }}
 														</div>
 													</div>
+													{% endif %}
 													
 													
 													<div class="form-group">
@@ -88,9 +101,11 @@
 											</div>
 											<footer class="panel-footer">
 												<div class="row">
-													<div class="col-md-12 text-right">
+													<div class="col-md-3 text-right">
 														<button type="submit" class="btn btn-primary">Create</button>
-														<button class="btn btn-default modal-dismiss">Cancel</button>
+													</div>
+													<div class="col-md-3 text-right">
+														<button type="reset" class="btn btn-default modal-dismiss">Cancel</button>
 													</div>
 												</div>
 											</footer>
@@ -192,7 +207,32 @@ s
 					</div>
 				</div>
 			</menu>
+
+			
 			<div class="inner-body mg-main">
+				<div class="clearfix"></div>
+				<div class="search-control-wrapper">
+					<form method="post" enctype="multipart/form-data" action="{% url 'search_repository' %}" class="search nav-form">
+					{% csrf_token %}
+						<div class="form-group">
+							<div class="input-group">
+								<input type="text" name="q" required class="form-control" value="{{search_tag}}">
+								<span class="input-group-btn">
+									<button class="btn btn-primary" type="submit">Search</button>
+								</span>
+							</div>
+						</div>
+					</form>
+				</div>
+				<br />
+				{% if resources|length <= 0 %}
+				<div class="search-control-wrapper">
+					<div class="panel">
+						<h4>No resources available for <i>{{ title }}</i> search</h4>
+					</div>
+				</div>
+				{% endif %}
+				<div class="clearfix"></div>
 							
 				<div class="inner-toolbar clearfix">
 					<ul>
@@ -228,6 +268,7 @@ s
 						</li>
 					</ul>
 				</div>
+				
 				<div class="row mg-files" data-sort-destination data-sort-id="media-gallery">
 								
 					<!--begin image lists-->
@@ -329,9 +370,9 @@ s
 								<small class="pull-left text-muted">Video</small><br />
 								{% if request.user.is_authenticated %}
 								<small class="pull-left text-muted">Uploaded by:</small><a href="{% url 'get_user_dashboard' resource.created_by.id 'videos' %}">{{ resource.created_by.first_name }}</a><br>
-								<small class="pull-right text-muted">Last updated: {{ video.updated_at }}</small>
 								<span>[ {{ video.repository.access_level }} ]</span>
 								{% endif %}
+								<small class="pull-right text-muted">Last updated: {{ video.updated_at }}</small>
 							</div>
 						</div>
 					</div>
@@ -346,6 +387,7 @@ s
 					</div>
 				{% endif %}
 			</div>
+
 		</div>
 	</section>
 	<!-- end: page -->

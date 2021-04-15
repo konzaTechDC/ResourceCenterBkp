@@ -22,7 +22,7 @@
 <h3>Featured</h3>
 <div class="owl-carousel" data-plugin-carousel data-plugin-options='{ "autoPlay": 3000, "items": 6, "itemsDesktop": [1199,4], "itemsDesktopSmall": [979,3], "itemsTablet": [768,2], "itemsMobile": [479,1] }'>
 	{% for pic in content.pics %}
-		<div class="item spaced"><a target="_blank" class="thumb-image" href="{{ pic.image.url }}"><img class="img-thumbnail" src="{{ pic.image.url }}" alt=""></a></div>
+		<div class="item spaced"><a class="thumb-image" href="{% url 'view_image' pic.id %}"><img class="img-thumbnail" src="{{ pic.image.url }}" alt=""></a></div>
 	{% endfor %}
 	
 </div>
@@ -30,8 +30,11 @@
 <div class="owl-carousel" data-plugin-carousel data-plugin-options='{ "autoPlay": 3000, "items": 6, "itemsDesktop": [1199,4], "itemsDesktopSmall": [979,3], "itemsTablet": [768,2], "itemsMobile": [479,1] }'>
 	{% for doc in content.docs %}
 		<div class="item spaced">
+			
+			<a class="" href="{% url 'view_document' doc.id %}">
 			<img class="img-thumbnail" src="{% static 'assets/img/file.png' %}" alt="{{ doc.name_of_document }}">
-			<a class="btn-sm btn-primary" href="{{ doc.reference_material_download.url }}" target="_blank"><i class="fa fa-file"></i> {{ doc.name_of_document }}</a>
+			<i class="fa fa-file"></i> {{ doc.name_of_document }}
+			</a>
 			
 		</div>
 	{% endfor %}

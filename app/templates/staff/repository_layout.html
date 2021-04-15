@@ -16,7 +16,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 		<!-- Web Fonts  -->
-		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+		<link href="http://fonts.googleapis.com/css?family=Futura:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 		
 		<script src="{% static 'repository_assets/vendor/jquery/jquery.js' %}"></script>
 
@@ -115,7 +115,7 @@
 							 <a href="" data-toggle="modal" data-target="#modalCart">Create Repository Resource<span class="submenu-indicator"></span></a> -->
 						</li>
 						<li>
-							<a href="" data-toggle="modal" data-target="#modalManage" class="btn btn-primary">
+							<a href="{% url 'get_user_dashboard' request.user.id 'document' %}"  class="btn btn-default">
 								Manage Resources
 							</a>
 			
@@ -174,45 +174,7 @@
 					</div>
 					<!-- Modal: modal Repo create -->
 
-					<!-- Modal: modal repo manage -->
-					<div class="modal fade" id="modalManage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-					  aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-						<div class="modal-content">
-						  <!--Header-->
-						  <div class="modal-header">
-							<h4 class="modal-title" id="myModalLabel">Manage your resources</h4>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							  <span aria-hidden="true">×</span>
-							</button>
-						  </div>
-						  <!--Body-->
-
-						
-							<div class="modal-body">
-							  {% load model_tags %}
-							  {% get_my_repositories request.user as my_resources %}
-								<div style="overflow:scroll; height:400px;">
-									<ul type="None">
-										{% for resource in my_resources %}
-											<li><a href="{% url 'get_update_repo_resource' resource.id %}">{{ resource.title }}</a></li>
-										{% endfor %}
-									</ul>
-								</div>
-							  
-        
-
-						  </div>
-						  <!--Footer-->
-						  <div class="modal-footer">
-							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<!--<button type="button" class="btn btn-primary">Continue</button>-->
-						  </div>
-     
-						</div>
-					  </div>
-					</div>
-					<!-- Modal: modal Repo manage -->
+					
 					{% endif %}
 					<span class="separator"></span>
 			
@@ -280,15 +242,25 @@
 									</li>
 									{% load model_tags %}
 									{% get_all_departments as departments %}
+
+									{% if request.user.is_authenticated %}
+									<li>
+										<a href="{% url 'get_my_bookmarks' %}">
+											<i class="fa fa-bookmark" aria-hidden="true"></i>
+											<span>Bookmarks</span>
+										</a>
+									</li>
+									{% endif %}
+
 									<li class="nav-parent">
 										<a>
 											<i class="fa fa-building-o" aria-hidden="true"></i>
 											<span>Departments</span>
 										</a>
 										<ul class="nav nav-children">
-											<li>
+											<!--<li>
 												<a>Browse All</a>
-											</li>
+											</li>-->
 											{% for department in departments %}
 											<li class="nav-parent">
 												<a>{{ department }}</a>
@@ -333,49 +305,6 @@
 										</ul>
 									</li>
 									
-									<!--
-									<li class="nav-parent">
-										<a>
-											<i class="fa fa-tasks" aria-hidden="true"></i>
-											<span>Analytics</span>
-										</a>
-									</li>
-									
-									
-									<li class="nav-parent">
-										<a>
-											<i class="fa fa-align-left" aria-hidden="true"></i>
-											<span>Menu Levels</span>
-										</a>
-										<ul class="nav nav-children">
-											<li>
-												<a>First Level</a>
-											</li>
-											<li class="nav-parent">
-												<a>Second Level</a>
-												<ul class="nav nav-children">
-													<li class="nav-parent">
-														<a>Third Level</a>
-														<ul class="nav nav-children">
-															<li>
-																<a>Third Level Link #1</a>
-															</li>
-															<li>
-																<a>Third Level Link #2</a>
-															</li>
-														</ul>
-													</li>
-													<li>
-														<a>Second Level Link #1</a>
-													</li>
-													<li>
-														<a>Second Level Link #2</a>
-													</li>
-												</ul>
-											</li>
-										</ul>
-									</li>
-									-->
 								</ul>
 							</nav>
 				
@@ -389,9 +318,9 @@
 								<div class="widget-content">
 									<!--
 									<ul class="list-unstyled m-none">
-										<li><a href="#">Porto HTML5 Template</a></li>
-										<li><a href="#">Tucson Template</a></li>
-										<li><a href="#">Porto Admin</a></li>
+										<li><a href="#"></a></li>
+										<li><a href="#"></a></li>
+										<li><a href="#"></a></li>
 									</ul>
 									-->
 								</div>
@@ -408,7 +337,7 @@
 
 				<section role="main" class="content-body">
 					<header class="page-header" style="background-color:#008234;">
-						<h2>KoTDA - Resource Center</h2>
+						<h2 style = "font-family:Futura;font-size:25px;font-style:normal;" >KoTDA - Resource Center</h2>
 					
 						<div class="right-wrapper pull-right">
 							<ol class="breadcrumbs">
@@ -428,6 +357,9 @@
 							<a class="sidebar-right-toggle"></a>
 						</div>
 					</header>
+
+					
+
 					<!--notification start-->
 				  <div class="clearfix"></div>
 					{% if messages %}

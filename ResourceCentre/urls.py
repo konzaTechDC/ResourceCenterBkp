@@ -169,6 +169,16 @@ urlpatterns = [
      #delete folder
     path('remove_repo_folder/<int:folder_id>', views.delete_repo_folder, name='delete_repo_folder'),
     
+     #bookmark a document
+    path('repository/bookmark/post/document/', views.bookmark_document, name='bookmark_document'),
+    #bookmark a document
+    path('repository/bookmark/post/image/', views.bookmark_image, name='bookmark_image'),
+    #bookmark a video
+    path('repository/bookmark/post/video/', views.bookmark_video, name='bookmark_video'),
+     #go to my bookmark
+    path('repository/bookmark/get/all/', views.get_my_bookmarks, name='get_my_bookmarks'),
+
+
 
     #basic upload
     url(r'^basic-upload/$', views.BasicUploadView.as_view(), name='basic_upload'),

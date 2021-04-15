@@ -9,6 +9,18 @@ def get_all_departments():
     departments = Department.objects.filter(is_active=True)
     return departments
 
+
+@register.simple_tag
+def get_form_department_folders(request):
+    if request.user.is_superuser:
+        dept_folder_relationship = DepartmentFolderRelationship.objects.filter()
+        return dept_folder_relationship
+        #department_folders = RepositoryDocumentFolder.objects.filter(is_deleted=False)
+    else:
+        dept_folder_relationship = DepartmentFolderRelationship.objects.filter(department=request.user.profile.department)
+        return dept_folder_relationship
+
+
 @register.simple_tag
 def check_if_repo_department_exist(repository_id, department_id):
     repo = KotdaRepositoryResource.objects.get(id=repository_id)
@@ -187,3 +199,39 @@ def get_featured_content():
         })
     
     return contents
+
+
+@register.simple_tag
+def check_document_bookmark(request, document):
+    if request.user.is_authenticated:
+
+        try:
+            mark = RepositoryDocumentBookmark.objects.get(document=document, marked_by=request.user)
+            return mark
+        except:
+            return False
+    return False
+
+
+@register.simple_tag
+def check_image_bookmark(request, image):
+    if request.user.is_authenticated:
+
+        try:
+            mark = RepositoryImageBookmark.objects.get(image=image, marked_by=request.user)
+            return mark
+        except:
+            return False
+    return False
+
+
+@register.simple_tag
+def check_video_bookmark(request, video):
+    if request.user.is_authenticated:
+
+        try:
+            mark = RepositoryVideoBookmark.objects.get(video=video, marked_by=request.user)
+            return mark
+        except:
+            return False
+    return False

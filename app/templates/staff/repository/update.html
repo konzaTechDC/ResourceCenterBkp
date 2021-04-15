@@ -1,5 +1,6 @@
 ﻿{% extends 'staff/repository_layout.html' %}
 {% load static %}
+{% load model_tags %}
 {% block content %}
 
 				
@@ -200,12 +201,33 @@
 															{{ repo_form.title }}
 														</div>
 													</div>
-					
+													<!--
 													<div class="form-group">
 														<label class="col-md-3 control-label">{{ repo_form.department_folder.label }}</label>
 														<div class="col-md-6">
+
 															{{ repo_form.department_folder }}
 														</div>
+													</div> -->
+
+													<div class="form-group">
+														<label class="col-md-3 control-label">Department Folder</label>
+														<div class="col-md-6">
+
+															<select name="department_folder" class="form-control populate" data-plugin-selectTwo required id="pet-select">
+																<option value="">--Please choose an option--</option>
+																{% get_form_department_folders request as depts %}
+																{% for dept in depts %}
+																<option value="{{ dept.folder.id }}" {% if resource.department_folder == dept.folder %} selected {% endif %} >{{ dept }}</option>
+																{% endfor %}
+															</select>
+														</div>
+
+														<!-- TODO::create New folder start-->
+														
+														<!--TODO::create New folder end-->
+
+
 													</div>
 
 													<div class="form-group">
@@ -260,11 +282,20 @@
 																{% load model_tags %}
 																<optgroup label="KoTDA Departments">
 																	{% for department in departments %}
-																	<option {% check_if_repo_department_exist resource.id department.id as relationship%} {% if relationship != None %}selected {% endif %} value="{{ department.id }}"  >{{ department.name }}</option>
+																	<option 
+																			{% check_if_repo_department_exist resource.id department.id as relationship%}
+																			{% if relationship != None %}
+																			selected 
+																			{% endif %}
+																			value="{{ department.id }}"  >
+																				{{ department.name }}
+																	</option>
 																	{% endfor %}
 																</optgroup>
 								
 															</select>
+															<br />
+															<span>In case the resource is 'RESTRICTED', Select the departments that should have access to the resource</span>
 														</div>
 													</div>
 
@@ -386,7 +417,11 @@
 												<input type="submit" value="save and continue >" class="btn btn-primary pull-right" form="detailsForm" />
 												<!--<a href="{% url 'get_update_repo_resource' resource.id 'confirm' %}">Next <i class="fa fa-angle-right"></i></a>-->
 												{% elif step == 'confirm' %}
+													{% if 'Published' not in resource.publish_status %}
 													<a href="{% url 'publish_resource' resource.id %}" >Publish <i class="fa fa-angle-right"></i></a>
+													{% elif 'Published' in resource.publish_status %}
+														<a href="{% url 'publish_resource' resource.id %}" >Published<i class="fa fa-check"></i></a>
+													{% endif %}
 												{% endif %}
 											</li>
 										</ul>

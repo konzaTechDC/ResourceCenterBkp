@@ -1,5 +1,6 @@
 {% extends 'staff/repository_layout.html' %}
 {% load static %}
+{% load model_tags %}
 {% load social_share %}
 {% block styles %}
 <style>
@@ -39,28 +40,70 @@
 		
 		</div>
 
-		<a class="thumb-image" href="{{ document.reference_material_download.url }}">
-		<img style="border: 5px solid #555;" src="{% static 'assets/img/file.png' %}" class="img-responsive" alt="Document">
-	</a>
+		
 	</div>
     <div class="panel">
-        <h2>{{ document.name_of_document }}</h2>
-        <p>{{ document.repository.description | safe }}</p>
-        <p>[ {{ document.repository.access_level }} ]</p>
+        <h2>Title: <strong>{{ document.name_of_document }}</strong></h2>
+        <p class="text-info">Description: {{ document.repository.description | safe }}</p>
+        <p>Privacy:[ {{ document.repository.access_level }} ]</p>
         <a class="btn-sm btn-primary" href="{{ document.reference_material_download.url }}" download><i class="fa fa-download"></i> Download</a>
 
         <div class="btn-group dropup">
-			<button type="button" class="mb-xs mt-xs mr-xs btn btn-default dropdown-toggle" data-toggle="dropdown">Share <span class="caret"></span></button>
+			<a  class="mb-xs mt-xs mr-xs btn btn-default dropdown-toggle" data-toggle="dropdown">Share <span class="caret"></span></a>
 			<ul class="dropdown-menu" role="menu">
-				<li>{% send_email  'document shared from resource center'  'Check this out.' document.reference_material_download.url email btn %}</li>
-				<li>{% post_to_facebook document.reference_material_download.url facebook share %}</li>
-				<li>{% post_to_twitter "{{request.user}} shared {{ document.name_of_document }}. Check it out!" document.reference_material_download.url "Peleka Twitter" %}</li>
-				<li>{% post_to_linkedin document.reference_material_download.url btn %}</li>
-				<li class="divider"></li>
-				<li>{% post_to_telegram  document.name_of_document  document.reference_material_download.url Telegram  btn %}</li>
-				<li>{% post_to_whatsapp document.reference_material_download.url Whatsapp btn %}</li>
+				<li>{% send_email  'document shared from resource center'  'Check this out.' request.build_absolute_uri email btn %}</li>
+
+				{% if document.repository.access_level == 'Public' %}
+					<li>{% post_to_facebook request.build_absolute_uri facebook share %}</li>
+					<li>{% post_to_twitter "{{request.user}} shared {{ document.name_of_document }}. Check it out!"  request.build_absolute_uri  "Twitter" %}</li>
+					<li>{% post_to_linkedin request.build_absolute_uri btn %}</li>
+					<li class="divider"></li>
+					<li>{% post_to_telegram  document.name_of_document  request.build_absolute_uri Telegram  btn %}</li>
+					<li>{% post_to_whatsapp request.build_absolute_uri Whatsapp btn %}</li>
+				{% endif %}
 			</ul>
 		</div>
+
+
+		
+                <!-- Mark as finished -->
+                <div class="btn">
+                    
+                <form id="mark_finish_form">{% csrf_token %}
+                    <div class="text-center">
+                        <input type="hidden" name="document_id" id="module_id" value="{{document.id}}" />
+                    <button type="submit" id="mark_btn" class="btn btn-primary">
+						{% check_document_bookmark request document as mark %}
+						{% if mark == False %}
+						Bookmark
+						{% else %}
+						Bookmarked
+						{% endif %}
+                        <i class="fa fa-check ml-2" aria-hidden="true"></i>
+                    </button>
+                    </div>
+                </form>
+                        <!--form submit ajax-->
+	            <script type="text/javascript">
+		            $('#mark_finish_form').on('submit', function (e) {
+			            e.preventDefault();//prevents from reloading
+			            $.ajax({
+				            type: 'POST',
+				            url: '/repository/bookmark/post/document/',
+				            data: {
+					            module_id: $('#module_id').val(),
+					            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+				            },
+				            success: function (data) {
+								//$('button').html(data);
+								$('#mark_btn').html(data).css("background-color", "#008234");
+				            }
+			            });
+		            });
+	            </script>
+                    <!--./ for msubmit ajax-->
+                </div>
+                <!-- /.Mark as finished -->
         
         
     </div>

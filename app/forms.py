@@ -59,7 +59,7 @@ class ProfileForm(forms.ModelForm):
         labels = {
                 'bio':_('Biography'),
                 'department':_('Department'),
-                'role':_('Role'),
+                'role':_('Designation'),
             }
         help_texts = {
             'bio': _('A short description of yourself.'),
@@ -201,12 +201,12 @@ class LearningResourceReviewForm(forms.ModelForm):
 class KotdaRepositoryResourceForm(forms.ModelForm):
     class Meta:  
         model = KotdaRepositoryResource  
-        fields = ('title', 'description', 'department_folder', 'upload_type', 'tags', 'access_level' )
+        fields = ('title', 'description',  'upload_type', 'tags', 'access_level' )
         labels = {
                 'title':_('Title'),
                 'description':_('Short description'),
                 #'type':_('Type'),
-                'department_folder':_('Department Folder'),
+                #'department_folder':_('Department Folder'),
                 'upload_type':_('Type of Upload'),
                 'access_level':_('Privacy'),
                 'tags':_('Tags')
@@ -216,7 +216,7 @@ class KotdaRepositoryResourceForm(forms.ModelForm):
             'description':forms.Textarea(attrs={'cols': 40, 'rows': 20, 'class':'form-control ht-140'}),
             'title': forms.TextInput(attrs={'class':"form-control"}),
             #'type': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
-            'department_folder': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
+            #'department_folder': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
             'upload_type': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
             'access_level': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
         }

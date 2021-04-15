@@ -131,7 +131,7 @@ SERVER_EMAIL = EMAIL_HOST_USER
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -228,7 +228,7 @@ KOTDA_REPOSITORY_ACCESS_LEVEL = [
     ('Public', 'Public'),#C1
     ('Internal ', 'Internal'),#C2
     ('Restricted', 'Restricted'),#C3
-    ('Confidential', 'Confidential')#C4
+    #('Confidential', 'Confidential')#C4
     ]
 
 
