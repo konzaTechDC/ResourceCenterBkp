@@ -19,7 +19,8 @@ admin.site.site_title = "KOTDA Admin Portal"
 admin.site.index_title = "Welcome to KOTDA Resource Centre"
 
 urlpatterns = [
-    url(r'^$', views.home, name='dashboard'),
+    url(r'^$', views.landing_page, name='home-page'),
+    url('dashboard/', views.home, name='dashboard'),
     #url(r'^login/$', auth_views.login, {'template_name': 'auth/signin.html'}, name='login'),
     #url(r'^logout/$', auth_views.logout, {'next_page': 'login'}, name='logout'),
     path('signup/', views.signup, name='signup'),

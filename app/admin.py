@@ -8,6 +8,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.forms import TextInput, Textarea
 
 
+
 class UserAdminConfig(UserAdmin):
     search_fields = ('email', 'first_name', 'last_name',)
     list_filter = ('email', 'first_name', 'last_name', 'is_active', 'is_staff')
@@ -109,3 +110,5 @@ class RepositoryDocumentFolderAdmin(admin.ModelAdmin):
 
     search_fields = ['folder_name','description','access_level',]
 admin.site.register(RepositoryDocumentFolder, RepositoryDocumentFolderAdmin)
+admin.site.register(RepositoryImageBookmark)
+admin.site.register(RepositoryDocumentBookmark)

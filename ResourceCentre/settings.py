@@ -25,7 +25,7 @@ SECRET_KEY = '45c0b6c7-1251-4458-9119-e3117a24547e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['41.76.175.178', 'resourcecenter.konza.go.ke']
+ALLOWED_HOSTS = ['127.0.0.1', '41.76.175.178', 'resourcecenter.konza.go.ke']
 
 # App references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
@@ -81,21 +81,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ResourceCentre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-'''DATABASES = {
+ENV = 'DEV'
+
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}'''
+}
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
         'read_default_file': '/etc/mysql/my.cnf',
        },
     }
-}
+}'''
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = 'repository_index'

@@ -41,7 +41,12 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
 
+# landing_page
+def landing_page(request):
+    return render(request, 'staff/repository/landing.html')
+
 #index page
+@login_required
 def home(request):
     return render(request,'staff/repository/index.html',)
 

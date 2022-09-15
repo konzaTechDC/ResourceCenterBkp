@@ -1,0 +1,792 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+     <title>KoTDA - Resource Center</title>
+
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+     <meta name="description" content="">
+     <meta name="keywords" content="">
+     <meta name="author" content="">
+     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+     <!-- Bootstrap  -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+     <link rel="stylesheet" href="{% static 'landing/css/bootstrap.min.css' %}">
+     <link rel="stylesheet" href="{% static 'landing/css/font-awesome.min.css' %}">
+     <link rel="stylesheet" href="{% static 'landing/css/owl.carousel.css' %}">
+     <link rel="stylesheet" href="{% static 'landing/css/owl.theme.default.min.css' %}">
+
+     <!-- MAIN CSS -->
+     <link rel="stylesheet" href="{% static 'landing/css/templatemo-style.css' %}">
+
+</head>
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+
+     <!-- PRE LOADER -->
+     <section class="preloader">
+          <div class="spinner">
+
+               <span class="spinner-rotate"></span>
+               
+          </div>
+     </section>
+
+
+     <!-- MENU -->
+     <section class="navbar custom-navbar navbar-fixed-top" role="navigation">
+          <div class="container">
+
+               <div class="navbar-header">
+                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                         <span class="icon icon-bar"></span>
+                         <span class="icon icon-bar"></span>
+                         <span class="icon icon-bar"></span>
+                    </button>
+
+                    <!-- lOGO TEXT HERE -->
+                    <a href="#" class="navbar-brand">
+                         <img src="https://konza.go.ke/wp-content/uploads/2019/06/Konza_Techno_City_Logo.png" alt="Konza Technopolis"  width="45" id="logo" class="d-inline-block align-middle mr-2" data-height-percentage="55" />
+                    </a>
+               </div>
+
+               <!-- MENU LINKS -->
+               <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-nav-first">
+                         <li><a href="#top" class="smoothScroll">Home</a></li>
+                         <li><a href="#about" class="smoothScroll">About</a></li>
+                         <li><a href="#team" class="smoothScroll">Trainings</a></li>
+                         <li><a href="#courses" class="smoothScroll">Policies</a></li>
+                         <li><a href="#testimonial" class="smoothScroll">Reviews</a></li>
+                         <li><a href="#contact" class="smoothScroll">Contact</a></li>
+                         
+                         {% if request.user.is_authenticated %}
+                              <li><a href="{% url 'dashboard' %}" class="smoothScroll" style="color: green; font-weight: bold;">Dashboard</a></li>
+                         {% else %}
+                              <li><a href="{% url 'login' %}" class="smoothScroll">Login</a></li>
+                         {% endif %}
+                                                       
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                         <li><a href="#"><i class="fa fa-phone"></i> +254 20 434 3014</a></li>
+                    </ul>
+               </div>
+
+          </div>
+     </section>
+
+     <!-- HOME -->
+     <section id="home">
+          <div class="row">
+
+                    <div class="owl-carousel owl-theme home-slider">
+                         <div class="item item-first">
+                              <div class="caption">
+                                   <div class="container">
+                                        <div class="col-md-6 col-sm-12">
+                                             <h1>Resource Center</h1>
+                                             <h3>Our online Resource Center is designed to provide a repository of knowledge and learning materials for kotda and the community around us leveraging technology for delivery.</h3>
+                                             <a href="#feature" class="section-btn btn btn-default smoothScroll">Sign In</a>
+                                             <h3>What is Konza Resource Center ?</h3>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                         <!-- <div class="item item-second">
+                              <div class="caption">
+                                   <div class="container">
+                                        <div class="col-md-6 col-sm-12">
+                                             <h1>Start your journey with our practical courses</h1>
+                                             <h3>Our online courses are built in partnership with technology leaders and are designed to meet industry demands.</h3>
+                                             <a href="#courses" class="section-btn btn btn-default smoothScroll">Take a course</a>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <div class="item item-third">
+                              <div class="caption">
+                                   <div class="container">
+                                        <div class="col-md-6 col-sm-12">
+                                             <h1>Efficient Learning Methods</h1>
+                                             <h3>Nam eget sapien vel nibh euismod vulputate in vel nibh. Quisque eu ex eu urna venenatis sollicitudin ut at libero. Visit <a rel="nofollow" href="https://www.facebook.com/templatemo">templatemo</a> page.</h3>
+                                             <a href="#contact" class="section-btn btn btn-default smoothScroll">Let's chat</a>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div> -->
+                    </div>
+          </div>
+     </section>
+
+
+     <!-- FEATURE -->
+     <section id="feature">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-4 col-sm-4">
+                         <div class="feature-thumb">
+                              <i class="fab fa-7x fa-readme teal"></i>
+                              <h3>KoTDA Policies</h3>
+                              <p>Provide a repository of knowledge and learning materials for kotda and the community around us leveraging technology for delivery.</p>
+                         </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4">
+                         <div class="feature-thumb">
+                              <i class="fa-solid fa-7x fa-images"></i>
+                              <h3>Gallery</h3>
+                              <p>Provide a repository of knowledge and learning materials for kotda and the community around us leveraging technology for delivery.</p>
+                         </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4">
+                         <div class="feature-thumb">
+                              <i class="fas fa-7x fa-search"></i>
+                              <h3>Discover Resources</h3>
+                              <p>provide a repository of knowledge and learning materials for kotda and the community around us leveraging technology for delivery.</p>
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+     </section>
+
+
+     <!-- ABOUT -->
+     <section id="about">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-6 col-sm-12">
+                         <div class="about-info">
+                              <h2>Start your journey to a single source of information with the KoTDa resource center.</h2>
+
+                              <figure>
+                                   <span><i class="fas fa-sort-amount-up-alt"></i></span>
+                                   <figcaption>
+                                        <h3>Organized Resources</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint ipsa voluptatibus.</p>
+                                   </figcaption>
+                              </figure>
+
+                              <figure>
+                                   <span><i class="fas fa-user-shield"></i></span>
+                                   <figcaption>
+                                        <h3>Verified Resources</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint ipsa voluptatibus.</p>
+                                   </figcaption>
+                              </figure>
+
+                              <figure>
+                                   <span><i class="fa fa-bar-chart-o"></i></span>
+                                   <figcaption>
+                                        <h3>Free Access</h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint ipsa voluptatibus.</p>
+                                   </figcaption>
+                              </figure>
+                         </div>
+                    </div>
+
+                    <div class="col-md-offset-1 col-md-4 col-sm-12">
+                         <div class="entry-form">
+                              <form action="{% url 'login' %}" method="post">
+                                   {% csrf_token %}
+                                   <h2>Sign Now</h2>
+
+                                   <input type="email" name="email" class="form-control" placeholder="Your email address" required="">
+
+                                   <input type="password" name="password" class="form-control" placeholder="Your password" required="">
+
+                                   <button class="submit-btn form-control" id="form-submit">Log In</button>
+                              </form>
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+     </section>
+
+
+     <!-- TEAM -->
+     <section id="team">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-12 col-sm-12">
+                         <div class="section-title">
+                              <h2>Recommended E-Learning's</h2>
+                         </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                         <div class="team-thumb">
+                              <div class="team-image">
+                                   <img src="{% static 'landing/images/IoT.jpg' %}" class="img-responsive" alt="">
+                              </div>
+                              <div class="team-info">
+                                   <h3>HCIA-IoT</h3>
+                                   <h6>Duration: 6hrs</h6>
+                                   <h6>Fee: 0</h6>
+                                   <h6>Registration Deadline: 6hrs</h6>
+                                   <!-- <span>Self-paced learning that works</span> -->
+                              </div>
+                              <ul class="social-icon">
+                                   <li><a href="#" class="fa fa-facebook-square" attr="facebook icon"></a></li>
+                                   <li><a href="#" class="fa fa-twitter"></a></li>
+                                   <li><a href="#" class="fa fa-instagram"></a></li>
+                              </ul>
+                         </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                         <div class="team-thumb">
+                              <div class="team-image">
+                                   <img src="{% static 'landing/images/storage.png' %}" class="img-responsive" alt="">
+                              </div>
+                              <div class="team-info">
+                                   <h3>Cloud Management </h3>
+                                   <h6>Duration: 6hrs</h6>
+                                   <h6>Fee: 0</h6>
+                                   <h6>Academy: <strong>Huawei</strong></h6>
+                                   <h6>Registration Deadline: 6hrs</h6>
+                                   <!-- <span>Learners around the world are launching new careers, advancing in their fields, and enriching their lives.</span> -->
+                              </div>
+                              <ul class="social-icon">
+                                   <li><a href="#" class="fa fa-google"></a></li>
+                                   <li><a href="#" class="fa fa-instagram"></a></li>
+                              </ul>
+                         </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                         <div class="team-thumb">
+                              <div class="team-image">
+                                   <img src="{% static 'landing/images/google.png' %}" class="img-responsive" alt="">
+                              </div>
+                              <div class="team-info">
+                                   <h3>Google IT Automation</h3>
+                                   <h6>Duration: 6hrs</h6>
+                                   <h6>Fee: $199</h6>
+                                   <h6>Academy:<strong>Coursera</strong></h6>
+                                   <h6>Registration Deadline: 6hrs</h6>
+                                   <!-- <span>Udacity’s Talent Transformation Suite
+                                        Our experts work with you to design a tailored transformation journey. Solve your acute workforce challenges to deliver next-level business results.</span> -->
+                              </div>
+                              <ul class="social-icon">
+                                   <li><a href="#" class="fa fa-twitter"></a></li>
+                                   <li><a href="#" class="fa fa-envelope-o"></a></li>
+                                   <li><a href="#" class="fa fa-linkedin"></a></li>
+                              </ul>
+                         </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                         <div class="team-thumb">
+                              <div class="team-image">
+                                   <img src="{% static 'landing/images/ai.jpg' %}" class="img-responsive" alt="">
+                              </div>
+                              <div class="team-info">
+                                   <h3>Introduction to AI</h3>
+                                   <h6>Duration: 6hrs</h6>
+                                   <h6>Fee: $199</h6>
+                                   <h6>Academy:<strong>Havard</strong></h6>
+                                   <h6>Registration Deadline: 6hrs</h6>
+                                   <!-- <span>Learn Without Limits
+                                        Build skills with courses, certificates, and degrees online from world-class universities and companies.</span> -->
+                              </div>
+                              <ul class="social-icon">
+                                   <li><a href="#" class="fa fa-twitter"></a></li>
+                                   <li><a href="#" class="fa fa-google"></a></li>
+                                   <li><a href="#" class="fa fa-behance"></a></li>
+                              </ul>
+                         </div>
+                    </div>
+                   
+               </div>
+               <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                         <div class="team-thumb">
+                              <div class="team-image">
+                                   <img src="{% static 'landing/images/dc.jpg' %}" class="img-responsive" alt="">
+                              </div>
+                              <div class="team-info">
+                                   <h3>Data Center Essentials: Power & Electrical</h3>
+                                   <h6>Duration: 6hrs</h6>
+                                   <h6>Fee: $0</h6>
+                                   <h6>Academy:<strong>Udemy</strong></h6>
+                                   <h6>Registration Deadline: 6hrs</h6>
+                                   <!-- <span>Learn Without Limits
+                                        Build skills with courses, certificates, and degrees online from world-class universities and companies.</span> -->
+                              </div>
+                              <ul class="social-icon">
+                                   <li><a href="#" class="fa fa-twitter"></a></li>
+                                   <li><a href="#" class="fa fa-google"></a></li>
+                                   <li><a href="#" class="fa fa-behance"></a></li>
+                              </ul>
+                         </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                         <div class="team-thumb">
+                              <div class="team-image">
+                                   <img src="{% static 'landing/images/py.jpg' %}" class="img-responsive" alt="">
+                              </div>
+                              <div class="team-info">
+                                   <h3>Python for Data Engineering Project</h3>
+                                   <h6>Duration: 6hrs</h6>
+                                   <h6>Fee: $29</h6>
+                                   <h6>Academy:<strong>IBM & edX</strong></h6>
+                                   <h6>Registration Deadline: 6hrs</h6>
+                                   <!-- <span>Learn Without Limits
+                                        Build skills with courses, certificates, and degrees online from world-class universities and companies.</span> -->
+                              </div>
+                              <ul class="social-icon">
+                                   <li><a href="#" class="fa fa-twitter"></a></li>
+                                   <li><a href="#" class="fa fa-google"></a></li>
+                                   <li><a href="#" class="fa fa-behance"></a></li>
+                              </ul>
+                         </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                         <div class="team-thumb">
+                              <div class="team-image">
+                                   <img src="{% static 'landing/images/lead.jpg' %}" class="img-responsive" alt="">
+                              </div>
+                              <div class="team-info">
+                                   <h3>Sales Prospecting and Lead Generation</h3>
+                                   <h6>Duration: 6hrs</h6>
+                                   <h6>Fee: $0</h6>
+                                   <h6>Academy:<strong>ALISON </strong></h6>
+                                   <h6>Registration Deadline: 6hrs</h6>
+                                   <!-- <span>Learn Without Limits
+                                        Build skills with courses, certificates, and degrees online from world-class universities and companies.</span> -->
+                              </div>
+                              <ul class="social-icon">
+                                   <li><a href="#" class="fa fa-twitter"></a></li>
+                                   <li><a href="#" class="fa fa-google"></a></li>
+                                   <li><a href="#" class="fa fa-behance"></a></li>
+                              </ul>
+                         </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-6">
+                         <div class="team-thumb">
+                              <div class="team-image">
+                                   <img src="{% static 'landing/images/f.jpeg' %}" class="img-responsive" alt="">
+                              </div>
+                              <div class="team-info">
+                                   <h3>Managing the Company of the Future</h3>
+                                   <h6>Duration: 6hrs</h6>
+                                   <h6>Fee: $49</h6>
+                                   <h6>Academy:<strong>UNIVERSITY OF LONDON & LONDON BUISNESS SCHOOL </strong></h6>
+                                   <h6>Registration Deadline: 6hrs</h6>
+                                   <!-- <span>Learn Without Limits
+                                        Build skills with courses, certificates, and degrees online from world-class universities and companies.</span> -->
+                              </div>
+                              <ul class="social-icon">
+                                   <li><a href="#" class="fa fa-twitter"></a></li>
+                                   <li><a href="#" class="fa fa-google"></a></li>
+                                   <li><a href="#" class="fa fa-behance"></a></li>
+                              </ul>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </section>
+
+
+     <!-- Courses -->
+     <section id="courses">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-12 col-sm-12">
+                         <div class="section-title">
+                              <h2>Popular Policies <small>Broaden your horizon on various Policies from KoTDA</small></h2>
+                         </div>
+
+                         <div class="owl-carousel owl-theme owl-courses">
+                              <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="courses-thumb">
+                                             <div class="courses-top">
+                                                  <div class="courses-image">
+                                                       <img src="{% static 'landing/images/pexels-karolina-grabowska-4386369.jpg' %}" class="img-responsive" alt="">
+                                                  </div>
+                                                  <div class="courses-date">
+                                                       <span><i class="fa fa-calendar"></i> 11 / 26 / 2021</span>
+                                                       <span><i class="fa fa-clock-o"></i> 45 min</span>
+                                                  </div>
+                                             </div>
+
+                                             <div class="courses-detail">
+                                                  <h3><a href="#">Tax Management</a></h3>
+                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                             </div>
+
+                                             <div class="courses-info">
+                                                  <div class="courses-author">
+                                                       <img src="{% static 'landing/images/undraw_male_avatar_323b.png' %}" class="img-responsive" alt="">
+                                                       <span>John Karanja</span>
+                                                  </div>
+                                                  <!-- <div class="courses-price">
+                                                       <a href="#"><span>USD 25</span></a>
+                                                  </div> -->
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+
+                              <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="courses-thumb">
+                                             <div class="courses-top">
+                                                  <div class="courses-image">
+                                                       <img src="{% static 'landing/images/pexels-pixabay-357514.jpg' %}" class="img-responsive" alt="">
+                                                  </div>
+                                                  <div class="courses-date">
+                                                       <span><i class="fa fa-calendar"></i> 20 / 7 / 2021</span>
+                                                       <span><i class="fa fa-clock-o"></i> 4.5 Hours</span>
+                                                  </div>
+                                             </div>
+
+                                             <div class="courses-detail">
+                                                  <h3><a href="#">Record Management</a></h3>
+                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                             </div>
+
+                                             <div class="courses-info">
+                                                  <div class="courses-author">
+                                                       <img src="{% static 'landing/images/undraw_male_avatar_323b.png' %}" class="img-responsive" alt="">
+                                                       <span>Shem Andai</span>
+                                                  </div>
+                                                  <!-- <div class="courses-price">
+                                                       <a href="#"><span>USD 80</span></a>
+                                                  </div> -->
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+
+                              <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="courses-thumb">
+                                             <div class="courses-top">
+                                                  <div class="courses-image">
+                                                       <img src="{% static 'landing/images/pexels-anthony-shkraba-5816290.jpg' %}" class="img-responsive" alt="">
+                                                  </div>
+                                                  <div class="courses-date">
+                                                       <span><i class="fa fa-calendar"></i> 15 / 8 / 2021</span>
+                                                       <span><i class="fa fa-clock-o"></i> 30 Mins</span>
+                                                  </div>
+                                             </div>
+
+                                             <div class="courses-detail">
+                                                  <h3><a href="#">Finance Management</a></h3>
+                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                             </div>
+
+                                             <div class="courses-info">
+                                                  <div class="courses-author">
+                                                       <img src="{% static 'landing/images/undraw_male_avatar_323b.png' %}" class="img-responsive" alt="">
+                                                       <span>Eric Kipyegon</span>
+                                                  </div>
+                                                  <div class="courses-price free">
+                                                       <a href="#"><span>Free</span></a>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+<!-- 
+                              <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="courses-thumb">
+                                             <div class="courses-top">
+                                                  <div class="courses-image">
+                                                       <img src="images/courses-image4.jpg" class="img-responsive" alt="">
+                                                  </div>
+                                                  <div class="courses-date">
+                                                       <span><i class="fa fa-calendar"></i> 10 / 8 / 2018</span>
+                                                       <span><i class="fa fa-clock-o"></i> 8 Hours</span>
+                                                  </div>
+                                             </div>
+
+                                             <div class="courses-detail">
+                                                  <h3><a href="#">Summer Kids</a></h3>
+                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                             </div>
+
+                                             <div class="courses-info">
+                                                  <div class="courses-author">
+                                                       <img src="images/author-image1.jpg" class="img-responsive" alt="">
+                                                       <span>Mark Wilson</span>
+                                                  </div>
+                                                  <div class="courses-price">
+                                                       <a href="#"><span>USD 45</span></a>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div> -->
+
+                              <!-- <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="courses-thumb">
+                                             <div class="courses-top">
+                                                  <div class="courses-image">
+                                                       <img src="images/courses-image5.jpg" class="img-responsive" alt="">
+                                                  </div>
+                                                  <div class="courses-date">
+                                                       <span><i class="fa fa-calendar"></i> 5 / 10 / 2018</span>
+                                                       <span><i class="fa fa-clock-o"></i> 10 Hours</span>
+                                                  </div>
+                                             </div>
+
+                                             <div class="courses-detail">
+                                                  <h3><a href="#">Business &amp; Management</a></h3>
+                                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                             </div>
+
+                                             <div class="courses-info">
+                                                  <div class="courses-author">
+                                                       <img src="images/author-image2.jpg" class="img-responsive" alt="">
+                                                       <span>Jessica</span>
+                                                  </div>
+                                                  <div class="courses-price free">
+                                                       <a href="#"><span>Free</span></a>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+
+                         </div>
+
+               </div> -->
+          </div>
+     </section>
+
+
+     <!-- TESTIMONIAL -->
+     <section id="testimonial">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-12 col-sm-12">
+                         <div class="section-title">
+                              <h2>What other people are saying <small>from around the community</small></h2>
+                         </div>
+
+                         <div class="owl-carousel owl-theme owl-client">
+                              <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="tst-image">
+                                             <img src="{% static 'landing/images/undraw_male_avatar_323b.png' %}" class="img-responsive" alt="">
+                                        </div>
+                                        <div class="tst-author">
+                                             <h4>Jackson</h4>
+                                             <span>Smart City</span>
+                                        </div>
+                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus, temporibus.</p>
+                                        <div class="tst-rating">
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                        </div>
+                                   </div>
+                              </div>
+
+                              <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="tst-image">
+                                             <img src="{% static 'landing/images/undraw_female_avatar_w3jk.png' %}" class="img-responsive" alt="">
+                                        </div>
+                                        <div class="tst-author">
+                                             <h4>Sarah</h4>
+                                             <span>Marketing Manager</span>
+                                        </div>
+                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, ratione?</p>
+                                        <div class="tst-rating">
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                        </div>
+                                   </div>
+                              </div>
+
+                              <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="tst-image">
+                                             <img src="{% static 'landing/images/undraw_male_avatar_323b.png' %}" class="img-responsive" alt="">
+                                        </div>
+                                        <div class="tst-author">
+                                             <h4>Timothy</h4>
+                                             <span>Networks</span>
+                                        </div>
+                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Pariatur, voluptate.</p>
+                                        <div class="tst-rating">
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                        </div>
+                                   </div>
+                              </div>
+
+                              <div class="col-md-4 col-sm-4">
+                                   <div class="item">
+                                        <div class="tst-image">
+                                             <img src="{% static 'landing/images/undraw_male_avatar_323b.png' %}" class="img-responsive" alt="">
+                                        </div>
+                                        <div class="tst-author">
+                                             <h4>Nicholas</h4>
+                                             <span>Web Developer</span>
+                                        </div>
+                                        <p>Nam eget mi eu ante faucibus viverra nec sed magna. Vivamus viverra sapien ex, elementum varius ex sagittis vel.</p>
+                                        <div class="tst-rating">
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                             <i class="fa fa-star"></i>
+                                        </div>
+                                   </div>
+                              </div>
+
+                         </div>
+
+               </div>
+          </div>
+     </section> 
+
+
+     <!-- CONTACT -->
+     <section id="contact">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-6 col-sm-12">
+                         <form id="contact-form" role="form" action="" method="post">
+                              <div class="section-title">
+                                   <h2>Contact us <small>we love conversations. let us talk!</small></h2>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <input type="text" class="form-control" placeholder="Enter full name" name="name" required="">
+                    
+                                   <input type="email" class="form-control" placeholder="Enter email address" name="email" required="">
+
+                                   <textarea class="form-control" rows="6" placeholder="Tell us about your message" name="message" required=""></textarea>
+                              </div>
+
+                              <div class="col-md-4 col-sm-12">
+                                   <input type="submit" class="form-control" name="send message" value="Send Message">
+                              </div>
+
+                         </form>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                         <div class="contact-image">
+                              <img src="{% static 'landing/images/KoTDA Reception.jpg' %}" class="img-responsive" alt="Smiling Two Girls">
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+     </section>       
+
+
+     <!-- FOOTER -->
+     <footer id="footer">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-4 col-sm-6">
+                         <div class="footer-info">
+                              <div class="section-title">
+                                   <h2>Headquarter</h2>
+                              </div>
+                              <address>
+                                   <p>Konza Technopolis Development Authority, <br>
+                                        7th floor Konza Complex, <br>
+                                        Nairobi-Mombasa Road – Konza Technopolis, Kenya <br>
+                                        P. O. Box 1 – 90150 Konza</p>
+                              </address>
+
+                              <ul class="social-icon">
+                                   <li><a href="https://www.facebook.com/KonzaTechnopolis/" class="fa fa-facebook-square" attr="facebook icon"></a></li>
+                                   <li><a href="https://twitter.com/konzatech" class="fa fa-twitter"></a></li>
+                                   <li><a href="https://www.youtube.com/channel/UCT-mEM6MclrgfR8c8pgs8CA/featured" class="fa fa-youtube"></a></li>
+                              </ul>
+
+                              <div class="copyright-text"> 
+                                   <p>Copyright &copy; 2021 Konza Technopolis</p>
+                                   
+                                   <p>Developed with <i class="fa fa-heart"></i>  by Konza Tech Team</p>
+                              </div>
+                         </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                         <div class="footer-info">
+                              <div class="section-title">
+                                   <h2>Contact Info</h2>
+                              </div>
+                              <address>
+                                   <p>Office Tel: +254 20 434 3013 | +254 20 434 3014</p>
+                                   <p><a href="mailto:konza.go.ke">hello@konza.go.ke</a></p>
+                              </address>
+
+                              <div class="footer_menu">
+                                   <h2>Quick Links</h2>
+                                   <ul>
+                                        <li><a href="#">Career</a></li>
+                                        <li><a href="#">Investor</a></li>
+                                        <li><a href="#">Terms & Conditions</a></li>
+                                        <li><a href="#">Privacy Policy</a></li>
+                                        <li><a href="#">Tenders</a></li>
+                                   </ul>
+                              </div>
+                         </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-12">
+                         <div class="footer-info newsletter-form">
+                              <div class="section-title">
+                                   <h2>Newsletter Signup</h2>
+                              </div>
+                              <div>
+                                   <div class="form-group">
+                                        <form action="#" method="get">
+                                             <input type="email" class="form-control" placeholder="Enter your email" name="email" id="email" required="">
+                                             <input type="submit" class="form-control" name="submit" id="form-submit" value="Send me">
+                                        </form>
+                                        <span><sup>*</sup> Please note - we do not spam your email.</span>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+                    
+               </div>
+          </div>
+     </footer>
+
+
+     <!-- SCRIPTS -->
+     <script src="{% static 'landing/js/bootstrap.min.js' %}"></script>
+     <script src="{% static 'landing/js/jquery.js' %}"></script>
+     <script src="{% static 'landing/js/owl.carousel.min.js' %}"></script>
+     <script src="{% static 'landing/js/smoothscroll.js' %}"></script>
+     <script src="{% static 'landing/js/custom.js' %}"></script>
+
+</body>
+</html>
