@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 apache:
   build: ./
   ports:
     - "80:80"
   volumes:
     - "../../:/var/www/html"
+=======
+apache:
+  build: ./
+  ports:
+    - "80:80"
+  volumes:
+    - "../../:/var/www/html"
+>>>>>>> deployment-backup

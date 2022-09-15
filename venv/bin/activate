@@ -28,7 +28,11 @@ deactivate () {
     fi
 
     unset VIRTUAL_ENV
+<<<<<<< HEAD
     if [ ! "$1" = "nondestructive" ] ; then
+=======
+    if [ ! "${1:-}" = "nondestructive" ] ; then
+>>>>>>> deployment-backup
     # Self destruct!
         unset -f deactivate
     fi
@@ -37,7 +41,11 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
+<<<<<<< HEAD
 VIRTUAL_ENV="/home/rc_admin/ResourceCentre/venv"
+=======
+VIRTUAL_ENV="/mnt/d/ResourceCenterBkp/venv"
+>>>>>>> deployment-backup
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

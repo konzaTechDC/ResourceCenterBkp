@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 application: jquery-file-upload
 version: 2
 runtime: go
@@ -10,3 +11,17 @@ handlers:
   expiration: '1d'
 - url: /.*
   script: _go_app
+=======
+application: jquery-file-upload
+version: 2
+runtime: go
+api_version: go1
+
+handlers:
+- url: /(favicon\.ico|robots\.txt)
+  static_files: static/\1
+  upload: static/(.*)
+  expiration: '1d'
+- url: /.*
+  script: _go_app
+>>>>>>> deployment-backup

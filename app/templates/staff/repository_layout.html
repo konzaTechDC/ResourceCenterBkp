@@ -16,7 +16,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 		<!-- Web Fonts  -->
+<<<<<<< HEAD
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+=======
+		<link href="http://fonts.googleapis.com/css?family=Futura:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+>>>>>>> deployment-backup
 		
 		<script src="{% static 'repository_assets/vendor/jquery/jquery.js' %}"></script>
 
@@ -25,6 +29,12 @@
 		<link rel="stylesheet" href="{% static 'repository_assets/vendor/font-awesome/css/font-awesome.css' %}" />
 		<link rel="stylesheet" href="{% static 'repository_assets/vendor/magnific-popup/magnific-popup.css' %}" />
 		<link rel="stylesheet" href="{% static 'repository_assets/vendor/bootstrap-datepicker/css/datepicker3.css' %}" />
+<<<<<<< HEAD
+=======
+		
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/owl-carousel/owl.carousel.css' %}" />
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/owl-carousel/owl.theme.css' %}" />
+>>>>>>> deployment-backup
 
 
 		<!-- Specific [advanced forms] Page Vendor CSS -->
@@ -47,6 +57,11 @@
 		{% endblock %}
 		<!-- Specific Page [media gallery] Vendor CSS -->
 		<link rel="stylesheet" href="{% static 'repository_assets/vendor/isotope/jquery.isotope.css' %}" />
+<<<<<<< HEAD
+=======
+		<link rel="stylesheet" href="{% static 'repository_assets/vendor/jstree/themes/default/style.css' %}" />
+
+>>>>>>> deployment-backup
 
 		<!-- Theme CSS -->
 		<link rel="stylesheet" href="{% static 'repository_assets/stylesheets/theme.css' %}" />
@@ -67,7 +82,11 @@
 			<!-- start: header -->
 			<header class="header">
 				<div class="logo-container">
+<<<<<<< HEAD
 					<a href="{% url 'dashboard' %}" class="logo">
+=======
+					<a href="{% url 'home-page' %}" class="logo">
+>>>>>>> deployment-backup
 						<img src="{% static 'assets/img/Konza_Logo.png' %}" height="35" alt="Resource Center" />
 					</a>
 					<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
@@ -90,6 +109,7 @@
 			
 					<span class="separator"></span>
 					{% if request.user.is_authenticated %}
+<<<<<<< HEAD
 					<ul class="notifications">
 						<li>
 							<a href="" data-toggle="modal" data-target="#modalCart" class="btn btn-primary">
@@ -99,6 +119,29 @@
 						</li>
 						<li>
 							<a href="" data-toggle="modal" data-target="#modalManage" class="btn btn-primary">
+=======
+					<div class="btn-group">
+						<button type="button" style="background-color:crimson; color:white;" class="mb-xs mt-xs mr-xs btn btn-default dropdown-toggle" data-toggle="dropdown">Upload New Resource <span class="caret"></span></button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="{% url 'get_create_repo_resource' %}">Document</a></li>
+							<li><a href="{% url 'get_create_repo_resource' 'image' %}">Photo</a></li>
+							<li><a href="{% url 'get_create_repo_resource' 'video' %}">Video</a></li>
+							<!--
+							<li class="divider"></li>
+							<li><a href="#">Separated link</a></li>
+							-->
+						</ul>
+					</div>
+					<ul class="notifications">
+						<li><!--
+							<a href="{% url 'get_create_repo_resource' %}"  class="btn btn-primary">
+								Create Resource
+							</a>
+							 <a href="" data-toggle="modal" data-target="#modalCart">Create Repository Resource<span class="submenu-indicator"></span></a> -->
+						</li>
+						<li>
+							<a href="{% url 'get_user_dashboard' request.user.id 'document' %}"  class="btn btn-default">
+>>>>>>> deployment-backup
 								Manage Resources
 							</a>
 			
@@ -119,12 +162,21 @@
 						  </div>
 						  <!--Body-->
 
+<<<<<<< HEAD
 						<form method="post" action="{% url 'create_repo_resource' %}">
+=======
+						<form  class="form" method="post" action="{% url 'create_repo_resource' %}">
+>>>>>>> deployment-backup
 							{% csrf_token %}
 							<div class="modal-body">
 							  {% load form_tags %}
 							  {% get_repository_form as form %}
 							  {% if form %}
+<<<<<<< HEAD
+=======
+
+								
+>>>>>>> deployment-backup
 								<div class="form-group">
 									<label>{{form.title.label_tag}}</label>
 									{{ form.title }}
@@ -155,6 +207,7 @@
 					</div>
 					<!-- Modal: modal Repo create -->
 
+<<<<<<< HEAD
 					<!-- Modal: modal repo manage -->
 					<div class="modal fade" id="modalManage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 					  aria-hidden="true">
@@ -194,13 +247,20 @@
 					  </div>
 					</div>
 					<!-- Modal: modal Repo manage -->
+=======
+					
+>>>>>>> deployment-backup
 					{% endif %}
 					<span class="separator"></span>
 			
 					<div id="userbox" class="userbox">
 						<a href="#" data-toggle="dropdown">
 							<figure class="profile-picture">
+<<<<<<< HEAD
 								<img src="assets/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="assets/images/!logged-user.jpg" />
+=======
+								<img src="{% static 'repository_assets/images/genericuser.png' %}" alt="Joseph Doe" class="img-circle" data-lock-picture="assets/images/!logged-user.jpg" />
+>>>>>>> deployment-backup
 							</figure>
 							<div class="profile-info" data-lock-name="{{ request.user.first_name }}" data-lock-email="{{ request.user.email }}">
 								<span class="name">{{ request.user.first_name }}</span>
@@ -261,15 +321,34 @@
 									</li>
 									{% load model_tags %}
 									{% get_all_departments as departments %}
+<<<<<<< HEAD
+=======
+
+									{% if request.user.is_authenticated %}
+									<li>
+										<a href="{% url 'get_my_bookmarks' %}">
+											<i class="fa fa-bookmark" aria-hidden="true"></i>
+											<span>Bookmarks</span>
+										</a>
+									</li>
+									{% endif %}
+
+>>>>>>> deployment-backup
 									<li class="nav-parent">
 										<a>
 											<i class="fa fa-building-o" aria-hidden="true"></i>
 											<span>Departments</span>
 										</a>
 										<ul class="nav nav-children">
+<<<<<<< HEAD
 											<li>
 												<a>Browse All</a>
 											</li>
+=======
+											<!--<li>
+												<a>Browse All</a>
+											</li>-->
+>>>>>>> deployment-backup
 											{% for department in departments %}
 											<li class="nav-parent">
 												<a>{{ department }}</a>
@@ -278,12 +357,20 @@
 														<a>Resources</a>
 														<ul class="nav nav-children">
 															<li class="nav-parent">
+<<<<<<< HEAD
+=======
+																<a href="{% url 'filter_repo_by_dept' department.id %}">All</a>
+>>>>>>> deployment-backup
 																<a>
 																	 Documents
 																</a>
 																<ul class="nav nav-children">
 																	{% for folder in department.get_folder_relationships %}
+<<<<<<< HEAD
 																	<li><a href="{% url 'filter_repo_by_folder' folder.folder.id %}">{{ folder.folder }}</a></li>
+=======
+																	<li><a href="{% url 'filter_repo_by_folder' folder.folder.id %}">&emsp;&emsp;{{ folder.folder }}</a></li>
+>>>>>>> deployment-backup
 																	{% endfor %}
 																</ul>
 															</li>
@@ -313,6 +400,7 @@
 										</ul>
 									</li>
 									
+<<<<<<< HEAD
 									<!--
 									<li class="nav-parent">
 										<a>
@@ -356,6 +444,8 @@
 										</ul>
 									</li>
 									-->
+=======
+>>>>>>> deployment-backup
 								</ul>
 							</nav>
 				
@@ -369,9 +459,15 @@
 								<div class="widget-content">
 									<!--
 									<ul class="list-unstyled m-none">
+<<<<<<< HEAD
 										<li><a href="#">Porto HTML5 Template</a></li>
 										<li><a href="#">Tucson Template</a></li>
 										<li><a href="#">Porto Admin</a></li>
+=======
+										<li><a href="#"></a></li>
+										<li><a href="#"></a></li>
+										<li><a href="#"></a></li>
+>>>>>>> deployment-backup
 									</ul>
 									-->
 								</div>
@@ -388,7 +484,11 @@
 
 				<section role="main" class="content-body">
 					<header class="page-header" style="background-color:#008234;">
+<<<<<<< HEAD
 						<h2>KoTDA - Resource Center</h2>
+=======
+						<h2 style = "font-family:Futura;font-size:25px;font-style:normal;" >KoTDA - Resource Center</h2>
+>>>>>>> deployment-backup
 					
 						<div class="right-wrapper pull-right">
 							<ol class="breadcrumbs">
@@ -408,6 +508,12 @@
 							<a class="sidebar-right-toggle"></a>
 						</div>
 					</header>
+<<<<<<< HEAD
+=======
+
+					
+
+>>>>>>> deployment-backup
 					<!--notification start-->
 				  <div class="clearfix"></div>
 					{% if messages %}
@@ -543,6 +649,10 @@
 		<script src="{% static 'repository_assets/vendor/bootstrap-timepicker/js/bootstrap-timepicker.js' %}"></script>
 		<script src="{% static 'repository_assets/vendor/fuelux/js/spinner.js' %}"></script>
 		<script src="{% static 'repository_assets/vendor/dropzone/dropzone.js' %}"></script>
+<<<<<<< HEAD
+=======
+		<script src="{% static 'repository_assets/vendor/dropzone/dropzone_latest/dist/dropzone.js' %}"></script>
+>>>>>>> deployment-backup
 		<script src="{% static 'repository_assets/vendor/bootstrap-markdown/js/markdown.js' %}"></script>
 		<script src="{% static 'repository_assets/vendor/bootstrap-markdown/js/to-markdown.js' %}"></script>
 		<script src="{% static 'repository_assets/vendor/bootstrap-markdown/js/bootstrap-markdown.js' %}"></script>
@@ -558,6 +668,11 @@
 		<script src="{% static 'repository_assets/vendor/ios7-switch/ios7-switch.js' %}"></script>
 
 
+<<<<<<< HEAD
+=======
+			<script src="{% static 'repository_assets/vendor/jstree/jstree.js' %}"></script>
+
+>>>>>>> deployment-backup
 			<!-- Specific Page [media gallery] Vendor -->
 		<script src="{% static 'repository_assets/vendor/isotope/jquery.isotope.js' %}"></script>
 
@@ -567,15 +682,31 @@
 			<!-- Theme Base, Components and Settings -->
 			<script src="{% static 'repository_assets/javascripts/theme.js' %}"></script>
 			
+<<<<<<< HEAD
+=======
+			<!--carousel-->
+			<script src="{% static 'repository_assets/vendor/owl-carousel/owl.carousel.js' %}"></script>
+
+>>>>>>> deployment-backup
 			<!-- Theme Custom -->
 			<script src="{% static 'repository_assets/javascripts/theme.custom.js' %}"></script>
 			
 			<!-- Theme Initialization Files -->
 			<script src="{% static 'repository_assets/javascripts/theme.init.js' %}"></script>
 
+<<<<<<< HEAD
 			<!-- Examples -->
 			<script src="{% static 'repository_assets/javascripts/pages/examples.mediagallery.js' %}" ></script>
 			<script src="{% static 'repository_assets/javascripts/ui-elements/examples.modals.js' %}"></script>
+=======
+
+
+
+			<!-- Examples -->
+			<script src="{% static 'repository_assets/javascripts/pages/examples.mediagallery.js' %}" ></script>
+			<script src="{% static 'repository_assets/javascripts/ui-elements/examples.modals.js' %}"></script>
+		<script src="{% static 'repository_assets/javascripts/ui-elements/examples.treeview.js' %}"></script>
+>>>>>>> deployment-backup
 		</section>
 	</body>
 </html>

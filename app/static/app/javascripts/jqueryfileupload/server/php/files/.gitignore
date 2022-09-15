@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 *
 !.gitignore
 !.htaccess
+=======
+*
+!.gitignore
+!.htaccess
+>>>>>>> deployment-backup

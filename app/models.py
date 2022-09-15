@@ -125,6 +125,10 @@ class Department(models.Model):
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> deployment-backup
 class Role(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     name = models.CharField(_('name'),max_length=100,blank=False,null=False)
@@ -210,7 +214,11 @@ class LearningResource(models.Model):
     tags = models.CharField(_('tags'), max_length=5000,null=True,blank=True)
     type = models.CharField(max_length=50, choices=settings.LEARNING_RESOURCE_TYPES)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="created by")
+<<<<<<< HEAD
     access_level = models.CharField(max_length=50, choices=settings.LEARNING_RESOURCE_ACCESS_LEVEL, null=False, default="Private")
+=======
+    access_level = models.CharField(max_length=50, choices=settings.LEARNING_RESOURCE_ACCESS_LEVEL, null=False, default="Internal")
+>>>>>>> deployment-backup
     experience_level = models.CharField(max_length=50, choices=settings.LEARNING_RESOURCE_EXPERIENCE_LEVEL, null=False, default="Beginner")
     duration = models.CharField(_('Duration'),max_length=100,null=True, blank=True)
     language = LanguageField(_('language'),null=True,blank=True)
@@ -268,7 +276,11 @@ class LearningResourceModule(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="created by")
+<<<<<<< HEAD
     access_level = models.CharField(max_length=50, choices=settings.LEARNING_RESOURCE_ACCESS_LEVEL, null=False, default="Private")
+=======
+    access_level = models.CharField(max_length=50, choices=settings.LEARNING_RESOURCE_ACCESS_LEVEL, null=False, default="Internal")
+>>>>>>> deployment-backup
     publish_status = models.CharField(max_length=50, choices=settings.LEARNING_RESOURCE_PUBLISHING_STATUS,null=False, default="Draft")
 
     def __str__(self):
@@ -365,6 +377,7 @@ class LearningResourceReview(models.Model):
 
 #repo documents | another name could be folder
 class RepositoryDocumentFolder(models.Model):
+<<<<<<< HEAD
     folder_name = models.CharField(_('folder name'), max_length=50, default="New Folder")
     description = models.TextField(_('description'), max_length=50000,null=True, blank=True)
     access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=False, default="Protected")
@@ -372,50 +385,123 @@ class RepositoryDocumentFolder(models.Model):
     
     is_deleted = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="created by", null=True,blank=True)
+=======
+    folder_name = models.CharField(_('folder name'), max_length=5000, default="New Folder")
+    description = models.TextField(_('description'), max_length=50000,null=True, blank=True)
+    access_level = models.CharField(max_length=500, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=False, default="Internal")
+    is_static = models.BooleanField(default=False)#means the folder details should not be modified i.e. undeletable
+    
+    is_deleted = models.BooleanField(default=False)
+    deleted_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="deleted by", related_name="folder_deleted_by", null=True,blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="created by", related_name="folder_created_by", null=True,blank=True)
+>>>>>>> deployment-backup
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+<<<<<<< HEAD
         return self.folder_name
+=======
+        return str(self.folder_name)
+>>>>>>> deployment-backup
 
 
     def get_folder_relationships(self):
         relationships = DepartmentFolderRelationship.objects.filter(folder=self)
         return relationships
 
+<<<<<<< HEAD
+=======
+    def get_folder_relationship(self):
+        relationship = DepartmentFolderRelationship.objects.get(folder=self)
+        return relationship
+
+    def get_subfolders(self):
+        relationships = DepartmentFolderRelationship.objects.filter(parent=self)
+        subs = []
+
+        for rel in relationships:
+            if rel.parent.is_deleted == False:
+                subs.append(rel.folder)
+        
+        return subs
+
+    def folder_isempty(self):
+        contents = KotdaRepositoryResource.objects.filter(department_folder=self, is_deleted=False)
+
+        if contents.count() <= 0:
+            return True
+        else:
+            return True
+
+    def get_folder_resources(self):
+        resources = KotdaRepositoryResource.objects.filter(department_folder=self, is_deleted=False)
+        return resources
+
+>>>>>>> deployment-backup
 
 
 #document type relationships
 class DepartmentFolderRelationship(models.Model):
     folder = models.ForeignKey(RepositoryDocumentFolder, on_delete=models.CASCADE, verbose_name="folder", related_name="folder")
     #todo: parent and child
+<<<<<<< HEAD
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     created_by = models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE,related_name="user")
+=======
+    parent = models.ForeignKey(RepositoryDocumentFolder, on_delete=models.CASCADE, null=True, blank=True, related_name='parent')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, null=True,blank=True, on_delete=models.CASCADE,related_name="relationship_created_by")
+>>>>>>> deployment-backup
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+<<<<<<< HEAD
         unique_together = ("folder", "department")
+=======
+        unique_together = ("folder", "department", "parent")
+
+    def __str__(self):
+        return str(self.folder) +" - "+ str(self.department)
+>>>>>>> deployment-backup
 
     
 
 class KotdaRepositoryResource(models.Model):
+<<<<<<< HEAD
     title = models.CharField(_('title'), max_length=50)
+=======
+    title = models.CharField(_('title'), max_length=500)
+>>>>>>> deployment-backup
     description = models.TextField(_('description'), max_length=50000,null=True, blank=True)
     tags = models.CharField(_('tags'), max_length=5000,null=True,blank=True)
     #type = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_TYPES,null=True,blank=True)
     department_folder = models.ForeignKey(RepositoryDocumentFolder, on_delete=models.CASCADE, verbose_name="doc type",blank=True, null=True)
     upload_type = models.CharField(max_length=50, choices=settings.UPLOAD_TYPES, null=False, blank=True, default="document")
+<<<<<<< HEAD
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="created by")
     access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=True, blank=True, default="Private")
     publish_status = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_PUBLISHING_STATUS,null=False, default="Draft")
     is_featured = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
+=======
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="created by",related_name="user")
+    access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=True, blank=True, default="Internal")
+    publish_status = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_PUBLISHING_STATUS,null=False, default="Draft")
+    is_featured = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+    deleted_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="deleted by", related_name="resource_deleted_by", null=True,blank=True)
+>>>>>>> deployment-backup
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+<<<<<<< HEAD
         return self.title
+=======
+        return str(self.title)
+>>>>>>> deployment-backup
 
     def tags_as_list(self):
         if self.tags is not None:
@@ -446,6 +532,18 @@ class KotdaRepositoryResource(models.Model):
         documents = RepositoryResourceDownload.objects.filter(repository=self,is_deleted=False)
         return documents
 
+<<<<<<< HEAD
+=======
+    def get_host_departments(self):
+        relationships = RepositoryDepartment.objects.filter(repository=self)
+
+        departments = []
+        for relationship in relationships:
+            departments.append(relationship.department)
+
+        return departments
+
+>>>>>>> deployment-backup
 
 
 
@@ -457,7 +555,11 @@ class RepositoryDepartment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+<<<<<<< HEAD
         return self.department
+=======
+        return str(self.department)
+>>>>>>> deployment-backup
 
 class RepositoryResourceReferenceUrl(models.Model):
     repository = models.ForeignKey(KotdaRepositoryResource, on_delete=models.CASCADE)
@@ -469,6 +571,7 @@ class RepositoryResourceReferenceUrl(models.Model):
     access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=False, default="Public")
 
     def __str__(self):
+<<<<<<< HEAD
         return self.name_of_website
 
 class RepositoryResourceVideoUrl(models.Model):
@@ -477,12 +580,27 @@ class RepositoryResourceVideoUrl(models.Model):
     video_file = models.FileField(upload_to='repoVideo/', verbose_name="video url")
     thumbnail = models.ImageField(upload_to='repoImages/',null=True,blank=True)
     is_deleted = models.BooleanField(default=False)
+=======
+        return str(self.name_of_website)
+
+class RepositoryResourceVideoUrl(models.Model):
+    repository = models.ForeignKey(KotdaRepositoryResource, on_delete=models.CASCADE)
+    name_of_video = models.CharField(_('title of video'), max_length=50000, null=True, blank=True, default='UNTITLED')
+    video_file = models.FileField(upload_to='repoVideo/', verbose_name="video url")
+    thumbnail = models.ImageField(upload_to='repoImages/',null=True,blank=True)
+    is_deleted = models.BooleanField(default=False)
+    deleted_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="deleted by", related_name="video_deleted_by", null=True,blank=True)
+>>>>>>> deployment-backup
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=False, default="Public")
 
     def __str__(self):
+<<<<<<< HEAD
         return self.name_of_video
+=======
+        return str(self.name_of_video)
+>>>>>>> deployment-backup
 
     def get_default_thumbnail(self):
         thumb_url = 'assets/img/video_thumb.png'
@@ -496,21 +614,34 @@ class RepositoryResourceVideoUrl(models.Model):
     #you can call the DOCUMENTS model
 class RepositoryResourceDownload(models.Model):
     repository = models.ForeignKey(KotdaRepositoryResource, on_delete=models.CASCADE)
+<<<<<<< HEAD
     name_of_document = models.CharField(_('name of document'), max_length=50)
     reference_material_download = models.FileField(upload_to='repoDownloads/')
     is_deleted = models.BooleanField(default=False)
+=======
+    #we may need to redo this
+    name_of_document = models.CharField(_('name of document'), max_length=5000)
+    reference_material_download = models.FileField(upload_to='repoDownloads/')
+    is_deleted = models.BooleanField(default=False)
+    deleted_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="deleted by", related_name="document_deleted_by", null=True,blank=True)
+>>>>>>> deployment-backup
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=False, default="Public")
 
     def __str__(self):
+<<<<<<< HEAD
         return self.name_of_document
+=======
+        return str(self.name_of_document)
+>>>>>>> deployment-backup
 
     def get_extension(self):
         file_extension = pathlib.Path(self.reference_material_download.name).suffix
 
         return file_extension
 
+<<<<<<< HEAD
 #document download stats
 class RepositoryDocumentDownloadStat(models.Model):
     document = models.ForeignKey(RepositoryResourceDownload, on_delete=models.CASCADE)
@@ -526,35 +657,115 @@ class RepositoryResourceImage(models.Model):
     name_of_image = models.CharField(_('name of document'), max_length=50)
     image = models.ImageField(upload_to='repoImages/')
     is_deleted = models.BooleanField(default=False)
+=======
+
+
+class RepositoryResourceImage(models.Model):
+    repository = models.ForeignKey(KotdaRepositoryResource, on_delete=models.CASCADE)
+    name_of_image = models.CharField(_('name of document'), max_length=50000, null=True, blank=True, default='UNTITLED')
+    image = models.ImageField(upload_to='repoImages/')
+    is_deleted = models.BooleanField(default=False)
+    deleted_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="deleted by", related_name="image_deleted_by", null=True,blank=True)
+>>>>>>> deployment-backup
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=False, default="Public")
 
     def __str__(self):
+<<<<<<< HEAD
         return self.name_of_image
+=======
+        return str(self.name_of_image)
+>>>>>>> deployment-backup
 
     def get_extension(self):
         file_extension = pathlib.Path(self.image.name).suffix
 
         return file_extension
 
+<<<<<<< HEAD
 class RepositorySearch(models.Model):
     key = models.CharField(_('tag'), null=False, max_length=100)
     searched_by = models.ForeignKey(User, on_delete=models.CASCADE)
+=======
+class RepositoryDocumentBookmark(models.Model):
+    document = models.ForeignKey(RepositoryResourceDownload, on_delete=models.CASCADE)
+    marked_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.BooleanField(default=True)
+    anwani_ip = models.GenericIPAddressField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        return str(self.document)+" | "+str(self.marked_by)
+
+
+class RepositoryImageBookmark(models.Model):
+    image = models.ForeignKey(RepositoryResourceImage, on_delete=models.CASCADE)
+    marked_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.BooleanField(default=True)
+    anwani_ip = models.GenericIPAddressField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.image)+" | "+str(self.marked_by)
+
+
+class RepositoryVideoBookmark(models.Model):
+    video = models.ForeignKey(RepositoryResourceVideoUrl, on_delete=models.CASCADE)
+    marked_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.BooleanField(default=True)
+    anwani_ip = models.GenericIPAddressField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.video)+" | "+str(self.marked_by)
+
+
+class RepositorySearch(models.Model):
+    key = models.CharField(_('key'), null=False, max_length=10000)
+    searched_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    anwani_ip = models.GenericIPAddressField(null=True, blank=True)
+>>>>>>> deployment-backup
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+<<<<<<< HEAD
         return self.key
 
 class RepositoryResourceView(models.Model):
     repository = models.ForeignKey(KotdaRepositoryResource, on_delete=models.CASCADE)
     viewer = models.ForeignKey(User, on_delete=models.CASCADE)
+=======
+        return str(self.key)
+
+class RepositoryResourceViewStat(models.Model):
+    repository = models.ForeignKey(KotdaRepositoryResource, on_delete=models.CASCADE)
+    viewer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    anwani_ip = models.GenericIPAddressField(null=True, blank=True)
+>>>>>>> deployment-backup
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+<<<<<<< HEAD
         return self.viewer
+=======
+        return str(self.viewer)
+
+#document download stats
+class RepositoryDocumentDownloadStat(models.Model):
+    document = models.ForeignKey(RepositoryResourceDownload, on_delete=models.CASCADE)
+    downloaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.document)
+>>>>>>> deployment-backup
 
 ##################################################################################
 
@@ -570,7 +781,11 @@ class Policy(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="created by")
+<<<<<<< HEAD
     access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=False, default="Private")
+=======
+    access_level = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_ACCESS_LEVEL, null=False, default="Internal")
+>>>>>>> deployment-backup
     publish_status = models.CharField(max_length=50, choices=settings.KOTDA_REPOSITORY_PUBLISHING_STATUS,null=False, default="Draft")
 
 

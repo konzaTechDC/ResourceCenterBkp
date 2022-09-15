@@ -1,5 +1,9 @@
 ﻿{% extends 'staff/repository_layout.html' %}
 {% load staticfiles %}
+<<<<<<< HEAD
+=======
+{% load form_tags %}
+>>>>>>> deployment-backup
 {% block styles %}
 		
 	<link rel="stylesheet" href="{% static 'repository_assets/vendor/select2/select2.css' %}" />
@@ -23,6 +27,10 @@
 						</div>
 					</div>
 
+<<<<<<< HEAD
+=======
+					{% if request.user == user %}
+>>>>>>> deployment-backup
 					<div class="widget-toggle-expand mb-md">
 						<div class="widget-header">
 							<h6><strong>Profile Completion</strong></h6>
@@ -39,18 +47,33 @@
 						</div>
 						<div class="widget-content-expanded">
 							<ul class="simple-todo-list">
+<<<<<<< HEAD
 								<li {% if user.profile.email_confirmed %}class="completed"{% endif %}>Confirm email</li>
 								<li {% if user.profile.role %} class="completed" {% endif %}>Change Personal Information</li>
+=======
+								<li {% if user.is_active %}class="completed"{% endif %}>Confirm email</li>
+								<li {% if user.profile.role %} class="completed" {% endif %}>Update Personal Information</li>
+>>>>>>> deployment-backup
 								<li {% if user.get_overview.count > 0 %}class="completed"{% endif %}>Upload something</li>
 								<!-- <li>Follow Someone</li> -->
 							</ul>
 						</div>
 					</div>
+<<<<<<< HEAD
 
 					<hr class="dotted short">
 
 					<h6 class="text-muted">About</h6>
 					<p>{{ user.profile.bio }}</p>
+=======
+					{% endif %}
+					<hr class="dotted short">
+
+					{% if user.profile.bio.is_public or request.user == user %}
+					<h6 class="text-muted">About</h6>
+					<p>{{ user.profile.bio }}</p>
+					
+>>>>>>> deployment-backup
 					<div class="clearfix">
 					</div>
 
@@ -60,13 +83,21 @@
 						<a rel="tooltip" data-placement="bottom" target="_blank" href="mailto:{{ user.email.url }}" data-original-title="Send Mail"><i class="fa fa-envelope-square"></i><span>Send mail</span></a>
 
 					</div>
+<<<<<<< HEAD
+=======
+					{% endif %}
+>>>>>>> deployment-backup
 
 				</div>
 			</section>
 
 
 		</div>
+<<<<<<< HEAD
 		<h4 class="mb-md">User Dashboard</h4>
+=======
+		<h4 class="mb-md">Staff Dashboard</h4>
+>>>>>>> deployment-backup
 		<div class="col-md-8 col-lg-9">
 
 			<div class="tabs">
@@ -151,7 +182,11 @@
 											<tr>
 												<th>Name</th>
 												<th>Description</th>
+<<<<<<< HEAD
 												<th>Type</th>
+=======
+												<th>Folder</th>
+>>>>>>> deployment-backup
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -160,11 +195,20 @@
 											{% for document in user.get_my_documents %}
 											<tr class="gradeX">
 												<td>
+<<<<<<< HEAD
 													
 													{{ document.name_of_document }}
 												</td>
 												<td>{{ document.repository.description | safe }}</td>
 												<td>{{ document.repository.doc_type.document_type }}</td>
+=======
+													<a class="link" href="{% url 'view_document' document.id %}" > {{ document.name_of_document }}</a>
+													 <span class="text-info">[{{ document.repository.publish_status }}]</span>
+												</td>
+												<td>{{ document.repository.description | safe }}</td>
+												<td>{{ document.repository.department_folder }} | <span class="text-info">[ {{ document.repository.department_folder.access_level }} ]</span></td>
+												
+>>>>>>> deployment-backup
 												
 												<td class="actions">
 													<a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
@@ -210,7 +254,11 @@
 											<tr>
 												<th>Photo</th>
 												<th>Description</th>
+<<<<<<< HEAD
 												<th>Type</th>
+=======
+												<th>Folder</th>
+>>>>>>> deployment-backup
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -225,9 +273,17 @@
 														</a>
 												
 													</div>
+<<<<<<< HEAD
 												</td>
 												<td>{{ image.repository.description | safe }}</td>
 												<td>{{ image.repository.doc_type.document_type }}</td>
+=======
+													<h5>{{ image.name_of_image }}</h5>
+													<span class="text-info">[ {{ image.repository.access_level }} | {{ image.repository.publish_status }} ]</span>
+												</td>
+												<td>{{ image.repository.description | safe }}</td>
+												<td>{{ image.repository.department_folder }}</td>
+>>>>>>> deployment-backup
 												<td class="actions">
 													<a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
 													<a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
@@ -276,7 +332,11 @@
 											<tr>
 												<th>Video</th>
 												<th>Description</th>
+<<<<<<< HEAD
 												<th>Type</th>
+=======
+												<th>Folder</th>
+>>>>>>> deployment-backup
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -291,9 +351,17 @@
 														Your browser does not support the video tag.
 														</video>
 													</div>
+<<<<<<< HEAD
 												</td>
 												<td>{{ video.repository.description | safe }}</td>
 												<td>{{ video.repository.doc_type.document_type }}</td>
+=======
+													<h5>{{ video.name_of_video }}</h5>
+													<span class="text-info">[ {{ video.repository.access_level }} | {{ video.repository.publish_status }} ]</span>
+												</td>
+												<td>{{ video.repository.description | safe }}</td>
+												<td>{{ video.repository.department_folder }}</td>
+>>>>>>> deployment-backup
 												
 												<td class="actions">
 													<a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
@@ -336,12 +404,20 @@
 										<input type="text" name="last_name" value="{{user.last_name}}" class="form-control" id="profileLastName">
 									</div>
 								</div>
+<<<<<<< HEAD
+=======
+								{% if request.user.is_superuser %}
+>>>>>>> deployment-backup
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="profileAddress">Department</label>
 									<div class="col-md-8">
 										{{ profile_form.department }}
 									</div>
 								</div>
+<<<<<<< HEAD
+=======
+								{% endif %}
+>>>>>>> deployment-backup
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="profileCompany">Role</label>
 									<div class="col-md-8">
@@ -372,7 +448,11 @@
 							<hr class="dotted tall">
 							<!--
 		   
+<<<<<<< HEAD
 								<h4 class="mb-xlg">Change Password</h4>
+=======
+								
+>>>>>>> deployment-backup
 							<fieldset class="mb-xl">
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="profileNewPassword">New Password</label>
@@ -400,6 +480,23 @@
 							</div>
 
 						</form>
+<<<<<<< HEAD
+=======
+
+						<h4 class="mb-xlg"><u>Change Password</u></h4>
+                          <form method="post" action="{% url 'change_password' %}">
+                              {% csrf_token %}
+                          {% get_password_change_form request.user as pass_form %}
+                              <fieldset>
+								  {{ pass_form }}
+							  </fieldset>
+
+                              {% for error in pass_form.errors %}
+                              <p class="text-danger">{{ error }}</p>
+                              {% endfor %}<br />
+                              <button type="submit" class="btn-sm btn-primary">Save changes</button>
+                            </form>
+>>>>>>> deployment-backup
 						{% endif %}
 					</div>
 

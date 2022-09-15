@@ -19,7 +19,12 @@ admin.site.site_title = "KOTDA Admin Portal"
 admin.site.index_title = "Welcome to KOTDA Resource Centre"
 
 urlpatterns = [
+<<<<<<< HEAD
     url(r'^$', views.home, name='dashboard'),
+=======
+    url(r'^$', views.landing_page, name='home-page'),
+    url('dashboard/', views.home, name='dashboard'),
+>>>>>>> deployment-backup
     #url(r'^login/$', auth_views.login, {'template_name': 'auth/signin.html'}, name='login'),
     #url(r'^logout/$', auth_views.logout, {'next_page': 'login'}, name='logout'),
     path('signup/', views.signup, name='signup'),
@@ -45,6 +50,35 @@ urlpatterns = [
          ),
         name='login'),
 
+<<<<<<< HEAD
+=======
+
+    path('password-reset/', 
+        auth_views.PasswordResetView.as_view(
+            template_name='user_auth/password_reset.html'
+            ), 
+        name='password_reset'),
+    path('password-reset/done/', 
+        auth_views.PasswordResetDoneView.as_view(
+            template_name='user_auth/password_reset_done.html'
+            ), 
+        name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/', 
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name='user_auth/password_reset_confirm.html'
+            ), 
+        name='password_reset_confirm'),
+    path('password-reset-complete/', 
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name='user_auth/password_reset_complete.html'
+            ), 
+        name='password_reset_complete'),
+
+     #update user password
+    path('user/update/password/', views.change_password, name='change_password'),
+
+
+>>>>>>> deployment-backup
     path('profile/update/post/', views.update_user_profile, name='update_user_profile'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
@@ -90,10 +124,24 @@ urlpatterns = [
          #####################################################################################
     #######=============Repository resource urls=======#####
     path('create_repository_resource/', views.get_create_repo_resource, name='get_create_repo_resource'),
+<<<<<<< HEAD
     path('create_repository_resource/post', views.create_repo_resource, name='create_repo_resource'),
     #create document type / folder
     path('create_repo_doc_type/post', views.create_document_type, name='create_document_type'),
     path('update_repository_resource/<int:repository_id>', views.get_update_repo_resource, name='get_update_repo_resource'),
+=======
+    path('create_repository_resource/<str:upload_type>', views.get_create_repo_resource, name='get_create_repo_resource'),
+    path('create_repository_resource/post', views.create_repo_resource, name='create_repo_resource'),
+    #create document type / folder
+    path('create_repo_doc_type/post', views.create_document_folder, name='create_document_folder'),
+    #create document type / folder
+    path('update/folder/post', views.update_document_folder, name='update_document_folder'),
+    path('update_repository_resource/<int:repository_id>', views.get_update_repo_resource, name='get_update_repo_resource'),
+    #publish resource
+    path('publish/<int:resource_id>', views.publish_resource, name='publish_resource'),
+    #get by tab/step
+    path('update_repository_resource/<int:repository_id>/<str:step>', views.get_update_repo_resource, name='get_update_repo_resource'),
+>>>>>>> deployment-backup
     path('update_repository_resource/post/', views.post_update_repo_resource, name='post_update_repo_resource'),
     #view repository media
     path('view_repository/<int:resource_id>/media', views.view_repository_media, name='view_repository_media'),
@@ -104,6 +152,11 @@ urlpatterns = [
     path('repository/index', views.repository_index, name='repository_index'),
     #get repository articles by dept
     path('repository/articles/<int:dept_id>/', views.get_repo_articles_by_dept, name='get_repo_articles_by_dept'),
+<<<<<<< HEAD
+=======
+    #get repository resources by dept
+    path('repository/department/<int:dept_id>/', views.filter_repo_by_dept, name='filter_repo_by_dept'),
+>>>>>>> deployment-backup
     #get repository images by dept
     path('repository/images/<int:dept_id>/', views.get_repo_images_by_dept, name='get_repo_images_by_dept'),
      #get repository videos by dept
@@ -115,20 +168,54 @@ urlpatterns = [
     path('repository/document/download/<int:document_id>/', views.download_file, name='download_file'),
      #play video
     path('play_repo_video/<int:video_id>', views.play_repo_video, name='play_repo_video'),
+<<<<<<< HEAD
+=======
+     #view image
+    path('view/image/<int:image_id>', views.view_image, name='view_image'),
+     #view document
+    path('view/document/<int:document_id>', views.view_document, name='view_document'),
+>>>>>>> deployment-backup
     
      #get user dashboard
     path('repository/user/dashboard/<int:user_id>/<str:tab>/', views.get_user_dashboard, name='get_user_dashboard'),
 
+<<<<<<< HEAD
+=======
+    #check repo capacity
+    path('check_repo_capacity/<int:resource_id>', views.check_repo_capacity, name='check_repo_capacity'),
+>>>>>>> deployment-backup
     #delete image
     path('remove_repo_image/<int:image_id>', views.delete_repo_image, name='delete_repo_image'),
     #delete document
     path('remove_repo_document/<int:document_id>', views.delete_repo_document, name='delete_repo_document'),
      #delete video
     path('remove_repo_video/<int:video_id>', views.delete_repo_video, name='delete_repo_video'),
+<<<<<<< HEAD
     
 
     #basic upload
     url(r'^basic-upload/$', views.BasicUploadView.as_view(), name='basic_upload'),
+=======
+     #delete folder
+    path('remove_repo_folder/<int:folder_id>', views.delete_repo_folder, name='delete_repo_folder'),
+    
+     #bookmark a document
+    path('repository/bookmark/post/document/', views.bookmark_document, name='bookmark_document'),
+    #bookmark a document
+    path('repository/bookmark/post/image/', views.bookmark_image, name='bookmark_image'),
+    #bookmark a video
+    path('repository/bookmark/post/video/', views.bookmark_video, name='bookmark_video'),
+     #go to my bookmark
+    path('repository/bookmark/get/all/', views.get_my_bookmarks, name='get_my_bookmarks'),
+
+
+
+    #basic upload
+    url(r'^basic-upload/$', views.BasicUploadView.as_view(), name='basic_upload'),
+
+    #file upload
+    #path('file-upload/', views.file_upload, name='file_upload'),
+>>>>>>> deployment-backup
     #####################################################################################
 
 
@@ -145,4 +232,13 @@ urlpatterns = [
 urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
+<<<<<<< HEAD
         urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+        
+admin.site.site_header = "KoTDA | Resource Center Admin"
+admin.site.site_title = "KoTDA | Resource Center Admin Portal"
+admin.site.index_title = "KoTDA | Resource Center Admin Portal"
+>>>>>>> deployment-backup

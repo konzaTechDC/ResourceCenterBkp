@@ -1,17 +1,154 @@
 ﻿{% extends 'staff/repository_layout.html' %}
+<<<<<<< HEAD
+=======
+{% load static %}
+{% load model_tags %}
+{% load social_share %}
+
+{% block styles %}
+<link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
+<link
+  href="https://unpkg.com/@videojs/themes@1/dist/city/index.css"
+  rel="stylesheet"
+/>
+
+<style>
+    .video-js-responsive-container.vjs-hd {
+    padding-top: 56.25%;
+}
+.video-js-responsive-container.vjs-sd {
+    padding-top: 75%;
+}
+.video-js-responsive-container {
+    width: 100%;
+    position: relative;
+}
+.video-js-responsive-container .video-js {
+    height: 100% !important; 
+    width: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+</style>
+{% endblock %}
+>>>>>>> deployment-backup
 
 {% block content %}
 
 <div class="row">
+<<<<<<< HEAD
     <div class="embed-responsive embed-responsive-4by3">
         <video width='320' height='240' controls>
             <source src="{{ video.video_file.url }}">
             Your browser does not support the video tag.
         </video>
+=======
+
+
+    <div class="video-js-responsive-container vjs-hd">
+        <!--<video width='320' height='240' controls>
+            <source src="{{ video.video_file.url }}">
+            Your browser does not support the video tag.
+        </video>-->
+
+		
+	        <video
+            id="my-video"
+            class="video-js"
+            controls
+            preload="auto"
+            width="640"
+            height="264"
+            
+            poster="{% static 'assets/img/Konza_Logo.png' %}"
+            window.HELP_IMPROVE_VIDEOJS = false;
+            data-setup="{}">
+            <source src="{{ video.video_file.url }}" type="video/mp4" />
+            <source src="{{ video.video_file.url }}" type="video/webm" />
+            <p class="vjs-no-js">
+              To view this video please enable JavaScript, and consider upgrading to a
+              web browser that
+              <a href="https://videojs.com/html5-video-support/" target="_blank"
+                >supports HTML5 video</a
+              >
+            </p>
+          </video>
+
+  <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+
+
+>>>>>>> deployment-backup
     </div>
     <div class="panel">
         <h2>{{ video.name_of_video }}</h2>
         <p>{{ video.repository.description | safe }}</p>
+<<<<<<< HEAD
+=======
+        <p>[ {{ video.repository.access_level }} ]</p>
+
+        <a class="btn-sm btn-primary" href="{{ video.video_file.url }}" download><i class="fa fa-download"></i> Download</a>
+
+        <div class="btn-group dropup">
+			<button type="button" class="mb-xs mt-xs mr-xs btn btn-default dropdown-toggle" data-toggle="dropdown">Share <span class="caret"></span></button>
+			<ul class="dropdown-menu" role="menu">
+				<li>{% send_email  'video shared from Konza resource center'  'Check this out.' request.build_absolute_uri email btn %}</li>
+                {% if video.repository.access_level == 'Public' %}
+				<li>{% post_to_facebook request.build_absolute_uri facebook share %}</li>
+				<li>{% post_to_twitter "{{request.user.first_name}} shared {{ video.name_of_video }}. Check it out!" request.build_absolute_uri "Twitter" %}</li>
+				<li>{% post_to_linkedin request.build_absolute_uri btn %}</li>
+				<li class="divider"></li>
+				<li>{% post_to_telegram  video.name_of_video  request.build_absolute_uri Telegram  btn %}</li>
+				<li>{% post_to_whatsapp request.build_absolute_uri Whatsapp btn %}</li>
+                {% endif %}
+			</ul>
+		</div>
+
+
+
+        
+                <!-- Mark as finished -->
+                <div class="btn">
+                    
+                <form id="mark_finish_form">{% csrf_token %}
+                    <div class="text-center">
+                        <input type="hidden" name="video_id" id="module_id" value="{{video.id}}" />
+                    {% check_video_bookmark request video as mark %}
+					<button type="submit" id="mark_btn" class="btn btn-primary">
+						
+						{% if mark == False %}
+						Bookmark
+						{% else %}
+						Bookmarked
+						{% endif %}
+                        <i class="fa fa-check ml-2" aria-hidden="true"></i>
+                    </button>
+                    </div>
+                </form>
+                        <!--form submit ajax-->
+	            <script type="text/javascript">
+		            $('#mark_finish_form').on('submit', function (e) {
+			            e.preventDefault();//prevents from reloading
+			            $.ajax({
+				            type: 'POST',
+				            url: '/repository/bookmark/post/video/',
+				            data: {
+					            module_id: $('#module_id').val(),
+					            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+				            },
+				            success: function (data) {
+								//$('button').html(data);
+								$('#mark_btn').html(data).css("background-color", "#008234");
+				            }
+			            });
+		            });
+	            </script>
+                    <!--./ for msubmit ajax-->
+                </div>
+                <!-- /.Mark as finished -->
+
+
+>>>>>>> deployment-backup
     </div>
 </div>
 {% endblock %}

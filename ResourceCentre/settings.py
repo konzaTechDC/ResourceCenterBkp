@@ -25,7 +25,11 @@ SECRET_KEY = '45c0b6c7-1251-4458-9119-e3117a24547e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['41.76.175.178', 'resourcecenter.konza.go.ke']
+=======
+ALLOWED_HOSTS = ['127.0.0.1', '41.76.175.178', 'resourcecenter.konza.go.ke']
+>>>>>>> deployment-backup
 
 # App references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
@@ -34,6 +38,10 @@ INSTALLED_APPS = [
     'languages',
     'embed_video',
     'django_summernote',
+<<<<<<< HEAD
+=======
+    'django_social_share',
+>>>>>>> deployment-backup
     # Add your apps here to enable them
 
     'django.contrib.admin',
@@ -80,11 +88,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ResourceCentre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+<<<<<<< HEAD
 '''DATABASES = {
+=======
+ENV = 'DEV'
+
+DATABASES = {
+>>>>>>> deployment-backup
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+<<<<<<< HEAD
 }'''
 DATABASES = {
         'default': {
@@ -94,6 +109,18 @@ DATABASES = {
                 },
             }
         }
+=======
+}
+
+'''DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+        'read_default_file': '/etc/mysql/my.cnf',
+       },
+    }
+}'''
+>>>>>>> deployment-backup
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = 'repository_index'
@@ -117,18 +144,30 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #email config
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+<<<<<<< HEAD
 EMAIL_HOST = 'smtp-mail.outlook.com'
+=======
+EMAIL_HOST = 'smtp.live.com'
+>>>>>>> deployment-backup
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'resourcecenter@konza.go.ke'
 EMAIL_HOST_PASSWORD = 'KonzaResource2021'
+<<<<<<< HEAD
+=======
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+>>>>>>> deployment-backup
 SERVER_EMAIL = EMAIL_HOST_USER
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 LANGUAGE_CODE = 'en-us'
+<<<<<<< HEAD
 TIME_ZONE = 'UTC'
+=======
+TIME_ZONE = 'Africa/Nairobi'
+>>>>>>> deployment-backup
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -217,6 +256,7 @@ KOTDA_REPOSITORY_TYPES = [
 
 
 #Repository access level.
+<<<<<<< HEAD
 #public:- every user and non user can access
 #protected:- only staff and enrolled users can access
 #private:- only creator and admin can access
@@ -224,6 +264,17 @@ KOTDA_REPOSITORY_ACCESS_LEVEL = [
     ('Public', 'Public'),
     ('Protected', 'Protected'),
     ('Private', 'Private')
+=======
+#Public information:- •	Information that is intended for public distribution and requires no specific security handling. For example, marketing, press releases, website material, posters. Etc. the material is classified as the most accessible material in the organization and no restrictions are applied to the data
+#internal:- •	Information that would have minimal impact if disclosed, but where it is prudent to maintain a need-to-know approach. This category classifies information that is accessible to all staffs of staff but not external audiences. The material may include (Policies, Memos to all staff etc)
+#restricted:- •	This category includes materials intended for specific groups of people within the organization. The material is only available to the people on a need-to-know basis given the work schedules and demands. Includes (Departmental reports, project documents, management reports etc)
+#confidential:- •	This category of Information has a clear elevated sensitivity due to its legal, contractual, or business value and whose exposure may cost the organization financial, strategic and reputation risk.  For example, information containing sensitive personal data according to the GDPR definitions; information relating to ongoing commercial projects where disclosure could jeopardize the project; information that could identify a security vulnerability; large data sets containing personal data, trade secrets, contracts, detailed strategic documents, staff records, board papers, etc.
+KOTDA_REPOSITORY_ACCESS_LEVEL = [
+    ('Public', 'Public'),#C1
+    ('Internal ', 'Internal'),#C2
+    ('Restricted', 'Restricted'),#C3
+    #('Confidential', 'Confidential')#C4
+>>>>>>> deployment-backup
     ]
 
 
@@ -245,7 +296,11 @@ UPLOAD_TYPES = [
     ('document', 'document'),
     ('video', 'video'),
     ('image', 'image'),
+<<<<<<< HEAD
     ('url', 'url')
+=======
+    #('url', 'url')
+>>>>>>> deployment-backup
     ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'

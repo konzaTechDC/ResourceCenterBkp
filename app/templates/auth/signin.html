@@ -10,8 +10,18 @@
     <input type="hidden" name="next" value="{{ next }}" />
     {% for field in form %}
       <p>
+<<<<<<< HEAD
         {{ field.label_tag }}<br>
         {{ field }}<br>
+=======
+        
+          <div class="form-group">
+			    <label class="col-md-3 control-label">{{ field.label_tag }}</label>
+			    <div class="col-md-12">
+				     {{ field }}
+			    </div>
+		    </div>
+>>>>>>> deployment-backup
         {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
@@ -21,6 +31,10 @@
       </p>
     {% endfor %}
     <button type="submit">Log in</button>
+<<<<<<< HEAD
     <a href="{% url 'signup' %}">New User? Sign up</a>
+=======
+    <a href="{% url 'password_reset' %}">Forgot password?</a>
+>>>>>>> deployment-backup
   </form>
 {% endblock %}

@@ -1,0 +1,399 @@
+{% load staticfiles %}
+{% load model_tags %}
+{% load form_tags %}
+
+
+
+<ul class="mg-folders">
+
+	{% if perspective == 'department' %}
+											
+		{% curate_my_department_directory request department as folders %}
+
+										
+	{% if folders %}
+	{% for folder in folders %}
+
+	<li>
+		<a href="{% url 'filter_repo_by_folder' folder.id %}" class="menu-item"><i class="fa fa-folder" ></i> {{ folder.folder_name }}</a>
+		{% if request.user.is_authenticated %}
+		<div class="item-options">
+			<a href="#modalForm_edit{{ folder.id }}" class="modal-with-form">
+				<i class="fa fa-edit"></i>
+			</a>
+			
+
+			
+												
+			<a href="{% url 'delete_repo_folder' folder.id %}" onclick="return confirm('Are you sure you want to delete this folder? This process is irreversible');" class="text-danger">
+				<i class="fa fa-times"></i>
+			</a>
+		</div>
+		{% endif %}
+		
+		<!-- Modal edit Form -->
+			<div id="modalForm_edit{{ folder.id }}" class="modal-block modal-block-primary mfp-hide">
+				<section class="panel">
+					<header class="panel-heading">
+						<h2 class="panel-title">Edit {{ folder.folder_name }}</h2>
+					</header>
+					{% get_edit_document_form folder as document_type_form %}
+					{% get_edit_department_form folder as department_form %}
+					<form id="demo-form" action="{% url 'update_document_folder' %}" method="post" class="form-horizontal mb-lg" novalidate="novalidate">
+							{% csrf_token %}
+					<div class="panel-body">
+												
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ document_type_form.folder_name.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.folder_name }}
+								</div>
+							</div>
+
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ department_form.department.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ department_form.department }}
+								</div>
+							</div>
+													
+													
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.description.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.description }}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.access_level.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.access_level }}
+									<span>{{ document_type_form.access_level.help_text }}</span>
+								</div>
+							</div>
+						<input type="hidden" name="folder_id" value="{{ folder.id }}" />
+												
+					</div>
+
+					<footer class="panel-footer">
+						<div class="row">
+							<div class="col-md-12 text-right">
+								<button type="submit" class="btn btn-primary">Save</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+						</form>
+				</section>
+			</div>
+			<!--end modal-->
+
+	</li>
+
+
+	{% endfor %}
+	{% endif %}
+
+
+
+	{% elif perspective == 'folder' %}
+		{% curate_my_directory request as folders %}
+
+										
+	{% if folders %}
+	{% for folder in folders %}
+
+	<li>
+		<a href="{% url 'filter_repo_by_folder' folder.id %}" class="menu-item" {% if current_folder == folder %} style="color:forestgreen;" {% endif %}><i {% if current_folder == folder %} class="fa fa-folder-o" {% else %} class="fa fa-folder" {% endif %}></i> {{ folder.folder_name }}</a>
+		{% if request.user.is_authenticated %}
+		<div class="item-options">
+			<a href="#modalForm_edit{{ folder.id }}">
+				<i class="fa fa-edit"></i>
+			</a>
+			<!-- <a href="#modalForm{{ folder.id }}" class="modal-with-form">
+				<i class="fa fa-folder"></i>
+			</a>-->
+			<!-- Modal Form -->
+			<div id="modalForm{{ folder.id }}" class="modal-block modal-block-primary mfp-hide">
+				<section class="panel">
+					<header class="panel-heading">
+						<h2 class="panel-title">Create new {{ folder.folder_name }} sub-folder</h2>
+					</header>
+					{% get_document_form as document_type_form %}
+					{% get_department_form as department_form %}
+					<form id="demo-form" action="{% url 'create_document_folder' %}" method="post" class="form-horizontal mb-lg" novalidate="novalidate">
+							{% csrf_token %}
+					<div class="panel-body">
+												
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ document_type_form.folder_name.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.folder_name }}
+								</div>
+							</div>
+
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ department_form.department.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ department_form.department }}
+								</div>
+							</div>
+													
+													
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.description.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.description }}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.access_level.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.access_level }}
+									<span>{{ document_type_form.access_level.help_text }}</span>
+								</div>
+							</div>
+						<input type="hidden" name="parent_folder_id" value="{{ folder.id }}" />
+												
+					</div>
+					<footer class="panel-footer">
+						<div class="row">
+							<div class="col-md-12 text-right">
+								<button type="submit" class="btn btn-primary">Save</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+						</form>
+				</section>
+			</div>
+			<!--end modal-->
+
+			<!-- Modal Form -->
+			<div id="modalForm_edit{{ folder.id }}" class="modal-block modal-block-primary mfp-hide">
+				<section class="panel">
+					<header class="panel-heading">
+						<h2 class="panel-title">Edit {{ folder.folder_name }}</h2>
+					</header>
+					{% get_edit_document_form folder as document_type_form %}
+					{% get_edit_department_form folder as department_form %}
+					<form id="demo-form" action="{% url 'update_document_folder' %}" method="post" class="form-horizontal mb-lg" novalidate="novalidate">
+							{% csrf_token %}
+					<div class="panel-body">
+												
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ document_type_form.folder_name.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.folder_name }}
+								</div>
+							</div>
+
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ department_form.department.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ department_form.department }}
+								</div>
+							</div>
+													
+													
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.description.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.description }}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.access_level.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.access_level }}
+									<span>{{ document_type_form.access_level.help_text }}</span>
+								</div>
+							</div>
+						<input type="hidden" name="folder_id" value="{{ folder.id }}" />
+												
+					</div>
+
+					<footer class="panel-footer">
+						<div class="row">
+							<div class="col-md-12 text-right">
+								<button type="submit" class="btn btn-primary">Save</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+						</form>
+				</section>
+			</div>
+			<!--end modal-->
+												
+			<a href="{% url 'delete_repo_folder' folder.id %}" onclick="return confirm('Are you sure you want to delete this folder? This process is irreversible');" class="text-danger">
+				<i class="fa fa-times"></i>
+			</a>
+		</div>
+		{% endif %}
+		<!--list subfolders-->
+		
+
+	</li>
+
+
+	{% endfor %}
+	{% endif %}
+
+	{% else %}
+
+		{% curate_my_directory request as folders %}
+
+										
+	{% if folders %}
+	{% for folder in folders %}
+
+	<li>
+		<a href="{% url 'filter_repo_by_folder' folder.id %}" class="menu-item"><i class="fa fa-folder"></i> {{ folder.folder_name }}</a>
+		{% if request.user.is_authenticated %}
+		<div class="item-options">
+			<a href="#modalForm_edit{{ folder.id }}">
+				<i class="fa fa-edit"></i>
+			</a>
+			<!--
+			<a href="#modalForm{{ folder.id }}" class="modal-with-form">
+				<i class="fa fa-folder"></i>
+			</a> -->
+			<!-- Modal Form -->
+			<div id="modalForm{{ folder.id }}" class="modal-block modal-block-primary mfp-hide">
+				<section class="panel">
+					<header class="panel-heading">
+						<h2 class="panel-title">Create new {{ folder.folder_name }} sub-folder</h2>
+					</header>
+					{% get_document_form as document_type_form %}
+					{% get_department_form as department_form %}
+					<form id="demo-form" action="{% url 'create_document_folder' %}" method="post" class="form-horizontal mb-lg" novalidate="novalidate">
+							{% csrf_token %}
+					<div class="panel-body">
+												
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ document_type_form.folder_name.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.folder_name }}
+								</div>
+							</div>
+
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ department_form.department.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ department_form.department }}
+								</div>
+							</div>
+													
+													
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.description.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.description }}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.access_level.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.access_level }}
+									<span>{{ document_type_form.access_level.help_text }}</span>
+								</div>
+							</div>
+						<input type="hidden" name="parent_folder_id" value="{{ folder.id }}" />
+												
+					</div>
+					<footer class="panel-footer">
+						<div class="row">
+							<div class="col-md-12 text-right">
+								<button type="submit" class="btn btn-primary">Save</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+						</form>
+				</section>
+			</div>
+			<!--end modal-->
+
+			<!-- Modal Form -->
+			<div id="modalForm_edit{{ folder.id }}" class="modal-block modal-block-primary mfp-hide">
+				<section class="panel">
+					<header class="panel-heading">
+						<h2 class="panel-title">Edit {{ folder.folder_name }}</h2>
+					</header>
+					{% get_edit_document_form folder as document_type_form %}
+					{% get_edit_department_form folder as department_form %}
+					<form id="demo-form" action="{% url 'update_document_folder' %}" method="post" class="form-horizontal mb-lg" novalidate="novalidate">
+							{% csrf_token %}
+					<div class="panel-body">
+												
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ document_type_form.folder_name.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.folder_name }}
+								</div>
+							</div>
+
+							<div class="form-group mt-lg">
+								<label class="col-sm-3 control-label">{{ department_form.department.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ department_form.department }}
+								</div>
+							</div>
+													
+													
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.description.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.description }}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">{{ document_type_form.access_level.label_tag }}</label>
+								<div class="col-sm-9">
+									{{ document_type_form.access_level }}
+									<span>{{ document_type_form.access_level.help_text }}</span>
+								</div>
+							</div>
+						<input type="hidden" name="folder_id" value="{{ folder.id }}" />
+												
+					</div>
+
+					<footer class="panel-footer">
+						<div class="row">
+							<div class="col-md-12 text-right">
+								<button type="submit" class="btn btn-primary">Save</button>
+								<button class="btn btn-default modal-dismiss">Cancel</button>
+							</div>
+						</div>
+					</footer>
+						</form>
+				</section>
+			</div>
+			<!--end modal-->
+												
+			<a href="{% url 'delete_repo_folder' folder.id %}" onclick="return confirm('Are you sure you want to delete this folder? This process is irreversible');" class="text-danger">
+				<i class="fa fa-times"></i>
+			</a>
+		</div>
+		{% endif %}
+		<!--list subfolders-->
+		
+		<!-- subfolder end-->
+	</li>
+
+
+	{% endfor %}
+	{% endif %}
+
+	{% endif %}
+
+										
+										
+</ul>
+

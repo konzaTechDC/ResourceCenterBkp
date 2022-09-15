@@ -1,5 +1,10 @@
 ﻿{% extends 'staff/repository_layout.html' %}
+<<<<<<< HEAD
 
+=======
+{% load static %}
+{% load model_tags %}
+>>>>>>> deployment-backup
 {% block content %}
 
 				
@@ -8,6 +13,7 @@
 		<div class="col-md-12">
 			<section class="panel">
 				<header class="panel-heading">
+<<<<<<< HEAD
 					
 					<h2 class="panel-title">Create new resource</h2>
 				</header>
@@ -244,6 +250,451 @@
 				  </div>
       
 				</form>
+=======
+					<!--
+					<h2 class="panel-title"></h2>
+					-->
+				</header>
+				
+				<div class="panel-body">
+
+					<div class="col-lg-12">
+								<section class="panel form-wizard" id="w1">
+									<header class="panel-heading">
+										<div class="panel-actions">
+											
+										</div>
+						
+										<h2 class="panel-title">Create new resource</h2>
+									</header>
+									<div class="panel-body panel-body-nopadding">
+										<div class="wizard-tabs">
+											<ul class="wizard-steps">
+												<li class="{% if step == 'upload' %}active{% endif %}">
+													<a href="{% url 'get_update_repo_resource' resource.id 'upload' %}"  class="text-center">
+														<span class="badge hidden-xs">1</span>
+														File upload
+													</a>
+												</li>
+												<li class="{% if step == 'details' %}active{% endif %}">
+													<a href="{% url 'get_update_repo_resource' resource.id 'details' %}"  class="text-center">
+														<span class="badge hidden-xs">2</span>
+														Details
+													</a>
+												</li>
+												<li class="{% if step == 'confirm' %}active{% endif %}">
+													<a href="{% url 'get_update_repo_resource' resource.id 'confirm' %}"  class="text-center">
+														<span class="badge hidden-xs">3</span>
+														Confirm
+													</a>
+												</li>
+											</ul>
+										</div>
+											<div class="tab-content">
+												<div id="w1-account" class="tab-pane {% if step == 'upload' %}active{% endif %}">
+													
+													
+													<form method="post" enctype="multipart/form-data" action="{% url 'post_update_repo_resource' %}" class="form-horizontal form-bordered">
+													{% csrf_token %}
+					
+					
+
+														{# 1. BUTTON TO TRIGGER THE ACTION #}
+														<button type="button" class="btn btn-primary js-upload-photos">
+														  <span class="glyphicon glyphicon-cloud-upload"></span> Upload files
+														</button>
+														<div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
+														  <span class="glyphicon glyphicon-arrow-down" style="font-size: 4rem;"></span>
+														  <h3>Drop Files Here to Upload</h3>
+														</div>
+
+														{# 2. FILE INPUT TO BE USED BY THE PLUG-IN #}
+														{% if resource.upload_type == 'document' %}
+														<input id="fileupload" type="file" name="reference_material_download" multiple
+															   style="display: none;"
+															   data-url="{% url 'basic_upload' %}"
+															   
+															   accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+															   
+															   data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}","resource_id": {{ resource.id }} }'/>
+														{% elif resource.upload_type == 'image' %}
+														<input id="fileupload" type="file" name="image" multiple
+															   style="display: none;"
+															   data-url="{% url 'basic_upload' %}"
+															   
+															   accept="image/*"
+															   
+															   data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}","resource_id": {{ resource.id }} }'/>
+														{% elif resource.upload_type == 'video' %}
+															<input id="fileupload" type="file" name="video_file" multiple
+															   style="display: none;"
+															   data-url="{% url 'basic_upload' %}"
+															   
+															   accept="video/*"
+															   
+															   data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}","resource_id": {{ resource.id }} }'/>
+														{% endif %}
+
+														{# 3. TABLE TO DISPLAY THE UPLOADED RESOURCES #}
+														{% if resource.upload_type == 'document' %}
+														<table id="gallery" class="table table-bordered">
+														  <thead>
+															<tr>
+															  <th>Files</th>
+															</tr>
+														  </thead>
+														  <tbody>
+															{% for document in resource.get_documents %}
+															  <tr>
+																<td><a href="{{ document.reference_material_download.url }}">{{ document.reference_material_download.name }}</a><a href="{% url 'delete_repo_document' document.id %}" class="text-danger pull-right"><i class="fa fa-trash-o pull-right"></i>Remove</a></td>
+															  </tr>
+															{% endfor %}
+														  </tbody>
+														</table>
+														{% elif resource.upload_type == 'image' %}
+														<table id="gallery" class="table table-bordered">
+														  <thead>
+															<tr>
+															  <th>Photos</th>
+															</tr>
+														  </thead>
+														  <tbody>
+															{% for image in resource.get_images %}
+															  <tr>
+																<td><a href="{{ image.image.url }}"><img src="{{ image.image.url }}" width="500" height="300">{{ image.image.name }}</a>
+																  <span><a href="{% url 'delete_repo_image' image.id %}" class="text-danger pull-right"><i class="fa fa-trash-o pull-right"></i>Remove</a></span></td>
+															  </tr>
+															{% endfor %}
+														  </tbody>
+														</table>
+														{% elif resource.upload_type == 'video' %}
+														<table id="gallery" class="table table-bordered">
+														  <thead>
+															<tr>
+															  <th>Videos</th>
+															</tr>
+														  </thead>
+														  <tbody>
+															{% for video in resource.get_videos %}
+															  <tr>
+																<td><a href="{{ video.video_file.url }}">{{ video.video_file.name }}</a><a href="{% url 'delete_repo_video' video.id %}" class="text-danger pull-right"><i class="fa fa-trash-o pull-right"></i>Remove</a></td>
+															  </tr>
+															{% endfor %}
+														  </tbody>
+														</table>
+														{% endif %}
+
+														<div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+														  <div class="modal-dialog">
+															<div class="modal-content">
+															  <div class="modal-header">
+																<h4 class="modal-title">Uploading...</h4>
+															  </div>
+															  <div class="modal-body">
+																<div class="progress">
+																  <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+																</div>
+															  </div>
+															</div>
+														  </div>
+														</div>
+
+
+													<input type="hidden" value="{{ resource.id }}" name="resource_id"/>
+													<input type="hidden" name="upload_type" value="{{ resource.upload_type }}" />
+					
+												  <!--Footer-->
+												<!--<div class="modal-footer" id="continue" >
+													<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+													<button type="submit" class="btn btn-primary">Continue</button> 
+												  </div>-->
+
+														
+      
+												</form>
+				
+
+
+												</div>
+												<div id="w1-profile" class="tab-pane {% if step == 'details' %}active{% endif %}">
+													
+													<!--the rest of the form start-->
+													{% if resource.get_documents.count <= 0 and resource.get_videos.count <= 0 and resource.get_images.count <= 0 %}
+													<div>
+														<p>You do not have any uploads.<a href="{% url 'get_update_repo_resource' resource.id 'upload' %}">Go Back</a></p>
+													</div>
+													{% endif %}
+					
+													<div {% if resource.get_documents.count <= 0 and resource.get_videos.count <= 0 and resource.get_images.count <= 0 %} style="display:none;"{% endif %}>
+						
+													<form method="post" enctype="multipart/form-data" action="{% url 'post_update_repo_resource' %}" class="form-horizontal form-bordered" id="detailsForm">
+													{% csrf_token %}
+					
+													{% if form %}
+					
+													{% load form_tags %}
+													{% get_repository_form_instance resource.id as repo_form %}
+
+
+
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="{{ repo_form.title.label }}">{{ form.title.label }}</label>
+														<div class="col-md-6">
+															{{ repo_form.title }}
+														</div>
+													</div>
+													<!--
+													<div class="form-group">
+														<label class="col-md-3 control-label">{{ repo_form.department_folder.label }}</label>
+														<div class="col-md-6">
+
+															{{ repo_form.department_folder }}
+														</div>
+													</div> -->
+
+													<div class="form-group">
+														<label class="col-md-3 control-label">Department Folder</label>
+														<div class="col-md-6">
+
+															<select name="department_folder" class="form-control populate" data-plugin-selectTwo required id="pet-select">
+																<option value="">--Please choose an option--</option>
+																{% get_form_department_folders request as depts %}
+																{% for dept in depts %}
+																<option value="{{ dept.folder.id }}" {% if resource.department_folder == dept.folder %} selected {% endif %} >{{ dept }}</option>
+																{% endfor %}
+															</select>
+														</div>
+
+														<!-- TODO::create New folder start-->
+														
+														<!--TODO::create New folder end-->
+
+
+													</div>
+
+													<div class="form-group">
+														<label class="col-md-3 control-label">{{ repo_form.type.label }}</label>
+														<div class="col-md-6">
+															{{ repo_form.doc_type }}
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-md-3 control-label">{{ repo_form.description.label }}</label>
+														<div class="col-md-12">
+															{{ repo_form.description }}
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="col-md-3 control-label">{{ repo_form.access_level.label }}</label>
+														<div class="col-md-12">
+															{{ repo_form.access_level }}
+														</div><br />
+														<span>{{ repo_form.access_level.help_text }}</span>
+													</div>
+
+					
+
+													{% endif %}
+
+					
+
+													<div class="form-group">
+														<label for="tags-input-multiple" class="col-md-3 control-label">Tags</label>
+														<div class="col-md-7">
+															<select id="tags-input-multiple" name="tags[]" multiple data-role="tagsinput" data-tag-class="label label-primary">
+																{% for tag in resource.tags_as_list %}
+																	<option value="{{ tag }}">{{ tag }}</option>
+																{% endfor %}
+															</select>
+															<p>
+																Set tags to make your content easy to find
+															</p>
+														</div>
+													</div>
+
+
+													<div class="form-group">
+														<label class="col-md-3 control-label">Host departments</label>
+														<div class="col-md-6">
+															<select class="form-control" name="department[]" multiple="multiple" data-plugin-multiselect data-plugin-options='{ "includeSelectAllOption": true }' id="ms_example5">
+																{% load model_tags %}
+																{% get_all_departments as departments %}
+								
+																{% load model_tags %}
+																<optgroup label="KoTDA Departments">
+																	{% for department in departments %}
+																	<option 
+																			{% check_if_repo_department_exist resource.id department.id as relationship%}
+																			{% if relationship != None %}
+																			selected 
+																			{% endif %}
+																			value="{{ department.id }}"  >
+																				{{ department.name }}
+																	</option>
+																	{% endfor %}
+																</optgroup>
+								
+															</select>
+															<br />
+															<span>In case the resource is 'RESTRICTED', Select the departments that should have access to the resource</span>
+														</div>
+													</div>
+
+														<!-- add new url link start -->
+													
+														{# {% if resource.upload_type == 'document' %} #}
+								
+								
+
+
+													<input type="hidden" value="{{ resource.id }}" name="resource_id"/>
+													<input type="hidden" name="upload_type" value="{{ resource.upload_type }}" />
+					
+												  <!--Footer-->
+												  <!--
+														<div class="modal-footer">
+													<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+													<button type="submit" class="btn btn-primary">Save</button>
+												  </div>
+													-->
+      
+												</form>
+					
+													</div>
+
+													<!--the rest of the form end-->
+
+
+												</div>
+												<div id="w1-confirm" class="tab-pane {% if step == 'confirm' %}active{% endif %}">
+													{% if resource.get_documents.count <= 0 and resource.get_videos.count <= 0 and resource.get_images.count <= 0 %}
+													<div>
+														<p>You do not have any uploads.<a href="{% url 'get_update_repo_resource' resource.id 'upload' %}">Go Back</a></p>
+													</div>
+
+													{% else %}
+													<div class="row">
+														<h6><strong class="text-info">TITLE: </strong>{{ resource.title }}</h6>
+														<p><strong class="text-info">DESCRIPTION: </strong>{{ resource.description }}</p>
+														<p><strong class="text-info">FOLDER: </strong>{{ resource.department_folder }}</p>
+														<p><strong class="text-info">PRIVACY: </strong>{{ resource.access_level }}</p>
+													</div>
+													<div class="row">
+														{# 3. TABLE TO DISPLAY THE UPLOADED RESOURCES #}
+														{% if resource.upload_type == 'document' %}
+														<table id="gallery" class="table table-bordered">
+														  <thead>
+															<tr>
+															  <th>Files</th>
+															</tr>
+														  </thead>
+														  <tbody>
+															{% for document in resource.get_documents %}
+															  <tr>
+																<td><a href="{{ document.reference_material_download.url }}">{{ document.reference_material_download.name }}</a><a href="{% url 'delete_repo_document' document.id %}" class="text-danger pull-right"><i class="fa fa-trash-o pull-right"></i>Remove</a></td>
+															  </tr>
+															{% endfor %}
+														  </tbody>
+														</table>
+														{% elif resource.upload_type == 'image' %}
+														<table id="gallery" class="table table-bordered">
+														  <thead>
+															<tr>
+															  <th>Photos</th>
+															</tr>
+														  </thead>
+														  <tbody>
+															{% for image in resource.get_images %}
+															  <tr>
+																<td><a href="{{ image.image.url }}"><img src="{{ image.image.url }}" width="500" height="300">{{ image.image.name }}</a><a href="{% url 'delete_repo_image' image.id %}" class="text-danger pull-right"><i class="fa fa-trash-o pull-right"></i>Remove</a></td>
+															  </tr>
+															{% endfor %}
+														  </tbody>
+														</table>
+														{% elif resource.upload_type == 'video' %}
+														<table id="gallery" class="table table-bordered">
+														  <thead>
+															<tr>
+															  <th>Videos</th>
+															</tr>
+														  </thead>
+														  <tbody>
+															{% for video in resource.get_videos %}
+															  <tr>
+																<td><a href="{{ video.video_file.url }}">{{ video.video_file.name }}</a><a href="{% url 'delete_repo_video' video.id %}" class="text-danger pull-right"><i class="fa fa-trash-o pull-right"></i>Remove</a></td>
+															  </tr>
+															{% endfor %}
+														  </tbody>
+														</table>
+														{% endif %}
+
+													</div>
+													{% endif %}
+													
+												</div>
+											</div>
+
+
+									</div>
+									<div class="panel-footer" id="continue">
+										<ul class="pager">
+											<li class="previous">
+												{% if step == 'upload' %}
+												<a><i class="fa fa-angle-left"></i> Previous</a>
+												{% elif step == 'details' %}
+												<a href="{% url 'get_update_repo_resource' resource.id 'upload' %}"><i class="fa fa-angle-left"></i> Previous</a>
+												{% elif step == 'confirm' %}
+												<a href="{% url 'get_update_repo_resource' resource.id 'details' %}"><i class="fa fa-angle-left"></i> Previous</a>
+
+												{% endif %}
+											</li>
+											<li class="finish hidden pull-right">
+												<a>Finish</a>
+											</li>
+											<li class="next">
+												{% if step == 'upload' %}
+												<a href="{% url 'get_update_repo_resource' resource.id 'details' %}">Next <i class="fa fa-angle-right"></i></a>
+												{% elif step == 'details' %}
+												<input type="submit" value="save and continue >" class="btn btn-primary pull-right" form="detailsForm" />
+												<!--<a href="{% url 'get_update_repo_resource' resource.id 'confirm' %}">Next <i class="fa fa-angle-right"></i></a>-->
+												{% elif step == 'confirm' %}
+													{% if 'Published' not in resource.publish_status %}
+													<a href="{% url 'publish_resource' resource.id %}" >Publish <i class="fa fa-angle-right"></i></a>
+													{% elif 'Published' in resource.publish_status %}
+														<a href="{% url 'publish_resource' resource.id %}" >Published<i class="fa fa-check"></i></a>
+													{% endif %}
+												{% endif %}
+											</li>
+										</ul>
+									</div>
+								</section>
+							</div>
+
+
+					<!--form submit ajax-->
+														<script type="text/javascript">
+															var intervalId = window.setInterval(function(){
+															  /// call your function here
+																var div = document.getElementById('continue');
+								
+																var x = document.getElementById("gallery").rows.length;
+																var count = $('#gallery tr').length;
+
+
+																if(count <= 1){
+																$("#continue").hide();
+																}
+																else if(count >= 2){
+																$("#continue").show();
+																}
+															}, 0.5);
+
+		                   
+														</script>
+															<!--./ for msubmit ajax-->
+
+>>>>>>> deployment-backup
 				</div>
 				
 			</section>
@@ -263,6 +714,17 @@
 	
 
 <script type="text/javascript">
+<<<<<<< HEAD
+=======
+
+	button = document.getElementById("continue")
+
+
+	// This will disable just the div
+    //document.getElementById("continue").disabled = true
+	
+
+>>>>>>> deployment-backup
 	//upload link [form]
 let i = 1;
 document.getElementById('add-new-requirement').onclick = function () {
@@ -401,3 +863,18 @@ document.getElementById('add-new-requirement').onclick = function () {
 
 
 {% endblock %}
+<<<<<<< HEAD
+=======
+
+{% block javascript %}
+	  {# JQUERY FILE UPLOAD SCRIPTS #}
+	  <script src="{% static 'repository_assets/jQueryFileUpload/js/vendor/jquery.ui.widget.js' %}"></script>
+	  <script src="{% static 'repository_assets/jQueryFileUpload/js/jquery.iframe-transport.js' %}"></script>
+	  <script src="{% static 'repository_assets/jQueryFileUpload/js/jquery.fileupload.js' %}"></script>
+
+	  {# PHOTOS PAGE SCRIPTS #}
+	  <script src="{% static 'repository_assets/jQueryFileUpload/js/file_upload.js' %}"></script>
+
+	<script src="{% static 'repository_assets/javascripts/forms/examples.wizard.js' %}"></script>
+{% endblock %}
+>>>>>>> deployment-backup

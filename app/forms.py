@@ -13,6 +13,10 @@ from app.models import *
 from django.contrib.postgres.forms import SimpleArrayField
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 from django_summernote.fields import SummernoteTextFormField, SummernoteTextField
+<<<<<<< HEAD
+=======
+#from upload_validator import FileTypeValidator
+>>>>>>> deployment-backup
 
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -58,7 +62,11 @@ class ProfileForm(forms.ModelForm):
         labels = {
                 'bio':_('Biography'),
                 'department':_('Department'),
+<<<<<<< HEAD
                 'role':_('Role'),
+=======
+                'role':_('Designation'),
+>>>>>>> deployment-backup
             }
         help_texts = {
             'bio': _('A short description of yourself.'),
@@ -200,12 +208,20 @@ class LearningResourceReviewForm(forms.ModelForm):
 class KotdaRepositoryResourceForm(forms.ModelForm):
     class Meta:  
         model = KotdaRepositoryResource  
+<<<<<<< HEAD
         fields = ('title', 'description', 'department_folder', 'upload_type', 'tags', 'access_level' )
+=======
+        fields = ('title', 'description',  'upload_type', 'tags', 'access_level' )
+>>>>>>> deployment-backup
         labels = {
                 'title':_('Title'),
                 'description':_('Short description'),
                 #'type':_('Type'),
+<<<<<<< HEAD
                 'department_folder':_('Department Folder'),
+=======
+                #'department_folder':_('Department Folder'),
+>>>>>>> deployment-backup
                 'upload_type':_('Type of Upload'),
                 'access_level':_('Privacy'),
                 'tags':_('Tags')
@@ -215,13 +231,21 @@ class KotdaRepositoryResourceForm(forms.ModelForm):
             'description':forms.Textarea(attrs={'cols': 40, 'rows': 20, 'class':'form-control ht-140'}),
             'title': forms.TextInput(attrs={'class':"form-control"}),
             #'type': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
+<<<<<<< HEAD
             'department_folder': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
+=======
+            #'department_folder': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
+>>>>>>> deployment-backup
             'upload_type': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
             'access_level': forms.Select(attrs={'class':"form-control populate", 'required':'required', 'data-plugin-selectTwo':''}),
         }
         help_texts = {
             #'type': _('Upload graphic document that shall represent completion of course.'),
+<<<<<<< HEAD
             'access_level': _('Private - Only visible to you. Protected - Only visible to staff members. Public - Visible to everyone'),
+=======
+            'access_level': _('PUBLIC INFORMATION - Information that is intended for public distribution and requires no specific security handling. For example, marketing, press releases, website material, posters. Etc. the material is classified as the most accessible material in the organization and no restrictions are applied to the data.\n\n INTERNAL:- 	Information that would have minimal impact if disclosed, but where it is prudent to maintain a need-to-know approach. This category classifies information that is accessible to all staffs of staff but not external audiences. The material may include (Policies, Memos to all staff etc) \n RESTRICTED:- This category includes materials intended for specific groups of people within the organization. The material is only available to the people on a need-to-know basis given the work schedules and demands. Includes (Departmental reports, project documents, management reports etc) \n SECRET:- •	This category of Information has a clear elevated sensitivity due to its legal, contractual, or business value and whose exposure may cost the organization financial, strategic and reputation risk.  For example, information containing sensitive personal data according to the GDPR definitions; information relating to ongoing commercial projects where disclosure could jeopardize the project; information that could identify a security vulnerability; large data sets containing personal data, trade secrets, contracts, detailed strategic documents, staff records, board papers, etc.' ),
+>>>>>>> deployment-backup
         }
         error_messages = {
             'description': {
@@ -257,6 +281,7 @@ class RepositoryResourceReferenceUrlForm(forms.ModelForm):
 class RepositoryResourceDownloadForm(forms.ModelForm):
     class Meta:  
         model = RepositoryResourceDownload  
+<<<<<<< HEAD
         fields = ( 'name_of_document', 'reference_material_download')
         labels = {
                 'name_of_document':_('Name of document'),
@@ -265,14 +290,33 @@ class RepositoryResourceDownloadForm(forms.ModelForm):
         localized_fields = "__all__"
         widgets = {
            # 'description': forms.Textarea(attrs={'cols': 40, 'rows': 20}),
+=======
+        fields = ( 'reference_material_download',)
+        labels = {
+                #'name_of_document':_('Name of document'),
+                'reference_material_download':_('Document Upload'),
+            }
+        #validators=[FileTypeValidator(
+        #    allowed_types=[ 'application/msword','application/pdf','text/*']
+        #)]
+        localized_fields = "__all__"
+        widgets = {
+            'reference_material_download': forms.ClearableFileInput(attrs={'multiple': True}),
+>>>>>>> deployment-backup
         }
         help_texts = {
             #'type': _('Upload graphic document that shall represent completion of course.'),
         }
         error_messages = {
+<<<<<<< HEAD
             'name_of_document': {
                 'max_length': _("This name is too long."),
             },
+=======
+            #'name_of_document': {
+            #    'max_length': _("This name is too long."),
+            #},
+>>>>>>> deployment-backup
         }
 
 
@@ -281,9 +325,15 @@ class RepositoryResourceDownloadForm(forms.ModelForm):
 class RepositoryResourceImageForm(forms.ModelForm):
     class Meta:  
         model = RepositoryResourceImage  
+<<<<<<< HEAD
         fields = ( 'name_of_image', 'image')
         labels = {
                 'name_of_image':_('image caption'),
+=======
+        fields = ( 'image',)
+        labels = {
+                #'name_of_image':_('image caption'),
+>>>>>>> deployment-backup
                 'image':_('image file'),
             }
         localized_fields = "__all__"
@@ -294,9 +344,15 @@ class RepositoryResourceImageForm(forms.ModelForm):
             #'type': _('Upload graphic document that shall represent completion of course.'),
         }
         error_messages = {
+<<<<<<< HEAD
             'name_of_image': {
                 'max_length': _("This name is too long."),
             },
+=======
+            #'name_of_image': {
+            #    'max_length': _("This name is too long."),
+            #},
+>>>>>>> deployment-backup
         }
 
 
@@ -304,9 +360,15 @@ class RepositoryResourceImageForm(forms.ModelForm):
 class RepositoryResourceVideoUrlForm(forms.ModelForm):
     class Meta:  
         model = RepositoryResourceVideoUrl  
+<<<<<<< HEAD
         fields = ( 'name_of_video', 'video_file')
         labels = {
                 'name_of_video':_('Name of video'),
+=======
+        fields = ( 'video_file',)
+        labels = {
+                #'name_of_video':_('Name of video'),
+>>>>>>> deployment-backup
                 'video_file':_('video file'),
             }
         localized_fields = "__all__"
@@ -317,9 +379,15 @@ class RepositoryResourceVideoUrlForm(forms.ModelForm):
             #'type': _('Upload graphic document that shall represent completion of course.'),
         }
         error_messages = {
+<<<<<<< HEAD
             'name_of_video': {
                 'max_length': _("This name is too long."),
             },
+=======
+            #'name_of_video': {
+            #    'max_length': _("This name is too long."),
+            #},
+>>>>>>> deployment-backup
         }
 
 
@@ -340,7 +408,11 @@ class RepositoryDocumentFolderForm(forms.ModelForm):
             'access_level':forms.Select(attrs={'class':"form-control col-md-7 "}),
         }
         help_texts = {
+<<<<<<< HEAD
             'access_level': _('Private:- The folder is visible to only your department. Protected:- The folder is visible to all staff members. Public:- The folder is visible to everyone'),
+=======
+            'access_level': _('PUBLIC INFORMATION - Information that is intended for public distribution and requires no specific security handling. For example, marketing, press releases, website material, posters. Etc. the material is classified as the most accessible material in the organization and no restrictions are applied to the data.\n\n INTERNAL:- 	Information that would have minimal impact if disclosed, but where it is prudent to maintain a need-to-know approach. This category classifies information that is accessible to all staffs of staff but not external audiences. The material may include (Policies, Memos to all staff etc) \n RESTRICTED:- This category includes materials intended for specific groups of people within the organization. The material is only available to the people on a need-to-know basis given the work schedules and demands. Includes (Departmental reports, project documents, management reports etc) \n SECRET:- •	This category of Information has a clear elevated sensitivity due to its legal, contractual, or business value and whose exposure may cost the organization financial, strategic and reputation risk.  For example, information containing sensitive personal data according to the GDPR definitions; information relating to ongoing commercial projects where disclosure could jeopardize the project; information that could identify a security vulnerability; large data sets containing personal data, trade secrets, contracts, detailed strategic documents, staff records, board papers, etc.'),
+>>>>>>> deployment-backup
         }
         error_messages = {
             'description': {

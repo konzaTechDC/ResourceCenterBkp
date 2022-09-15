@@ -9,6 +9,21 @@ def get_all_departments():
     departments = Department.objects.filter(is_active=True)
     return departments
 
+<<<<<<< HEAD
+=======
+
+@register.simple_tag
+def get_form_department_folders(request):
+    if request.user.is_superuser:
+        dept_folder_relationship = DepartmentFolderRelationship.objects.filter()
+        return dept_folder_relationship
+        #department_folders = RepositoryDocumentFolder.objects.filter(is_deleted=False)
+    else:
+        dept_folder_relationship = DepartmentFolderRelationship.objects.filter(department=request.user.profile.department)
+        return dept_folder_relationship
+
+
+>>>>>>> deployment-backup
 @register.simple_tag
 def check_if_repo_department_exist(repository_id, department_id):
     repo = KotdaRepositoryResource.objects.get(id=repository_id)
@@ -28,10 +43,87 @@ def get_document_types():
 
 #curate my folders
 @register.simple_tag
+<<<<<<< HEAD
 def curate_my_directory(request, department_id=''):
     #folder list for non authenticated users
     if not request.user.is_authenticated():
         folders = RepositoryDocumentFolder.objects.filter(is_deleted=False)
+=======
+def curate_my_directory(request):
+    folders = []
+    #folder list for non authenticated users
+    if not request.user.is_authenticated:
+        relationships = DepartmentFolderRelationship.objects.filter(parent=None)
+        
+        for relationship in relationships:
+            if relationship.folder.access_level == 'Public':
+                folders.append(relationship.folder)
+        return folders
+    elif request.user.is_authenticated:
+        #folder list for authenicated users
+        relationships = DepartmentFolderRelationship.objects.filter(parent=None)
+
+        for relationship in relationships:
+            if relationship.folder.is_deleted == False:
+                if relationship.folder.access_level == 'Restricted':
+                    if relationship.department == request.user.profile.department:
+                        folders.append(relationship.folder)
+                if relationship.folder.access_level == 'Internal':
+                    folders.append(relationship.folder)
+                if relationship.folder.access_level == 'Public':
+                    folders.append(relationship.folder)
+
+        return folders
+
+
+
+
+#curate my folders
+@register.simple_tag
+def curate_my_department_directory(request, department):
+    folders = []
+    #folder list for non authenticated users
+    if not request.user.is_authenticated:
+        relationships = DepartmentFolderRelationship.objects.filter(parent=None, department=department)
+        
+        for relationship in relationships:
+            if relationship.folder.access_level == 'Public':
+                folders.append(relationship.folder)
+        return folders
+    elif request.user.is_authenticated:
+        #folder list for authenicated users
+        relationships = DepartmentFolderRelationship.objects.filter(parent=None, department=department)
+
+        for relationship in relationships:
+            if relationship.folder.is_deleted == False:
+                if relationship.folder.access_level == 'Restricted':
+                    if relationship.department == request.user.profile.department:
+                        folders.append(relationship.folder)
+                if relationship.folder.access_level == 'Internal':
+                    folders.append(relationship.folder)
+                if relationship.folder.access_level == 'Public':
+                    folders.append(relationship.folder)
+
+        return folders
+
+
+@register.simple_tag
+def get_related_documents(request, document):
+    documents = []
+
+    #folder list for non authenticated users
+    if not request.user.is_authenticated:
+        #same repo
+        others = RepositoryResourceDownload.objects.filter(id=document.id, is_deleted=False)
+
+        for other in others:
+            if other != document:
+                documents.append(other)
+
+        #TODO::same tags
+
+
+>>>>>>> deployment-backup
 
 
 @register.simple_tag
@@ -79,4 +171,81 @@ def get_average_rating(resource):
     if rate_count == 0 or rate_total == 0:
         return 'No Rating Yet'
     else:
+<<<<<<< HEAD
         return (rate_count/rate_total)
+=======
+        return (rate_count/rate_total)
+
+
+@register.simple_tag
+def get_featured_content():
+    content = []
+
+    resources = KotdaRepositoryResource.objects.filter(is_featured=True, is_deleted=False)
+    documents = RepositoryResourceDownload.objects.filter(is_deleted=False)
+    videos = RepositoryResourceVideoUrl.objects.filter(is_deleted=False)
+    images = RepositoryResourceImage.objects.filter(is_deleted=False)
+
+    docs = []
+    pics = []
+    vids = []
+
+    for doc in documents:
+        if doc.repository.is_featured:
+            docs.append(doc)
+
+    for pic in images:
+        if pic.repository.is_featured and pic.repository.access_level == 'Public':
+            pics.append(pic)
+
+    for vid in videos:
+        if vid.repository.is_featured:
+            vids.append(vid)
+
+
+    
+    contents = ({
+        'docs':docs,
+        'pics':pics,
+        'vids':vids,
+        'resources':resources
+        })
+    
+    return contents
+
+
+@register.simple_tag
+def check_document_bookmark(request, document):
+    if request.user.is_authenticated:
+
+        try:
+            mark = RepositoryDocumentBookmark.objects.get(document=document, marked_by=request.user)
+            return mark
+        except:
+            return False
+    return False
+
+
+@register.simple_tag
+def check_image_bookmark(request, image):
+    if request.user.is_authenticated:
+
+        try:
+            mark = RepositoryImageBookmark.objects.get(image=image, marked_by=request.user)
+            return mark
+        except:
+            return False
+    return False
+
+
+@register.simple_tag
+def check_video_bookmark(request, video):
+    if request.user.is_authenticated:
+
+        try:
+            mark = RepositoryVideoBookmark.objects.get(video=video, marked_by=request.user)
+            return mark
+        except:
+            return False
+    return False
+>>>>>>> deployment-backup
